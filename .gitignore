@@ -1,0 +1,5 @@
+# Caché de compilación de Sass y archivos del sistema operativo
+.sass-cache/
+.DS_Store
+Thumbs.db
+node_modules/
