@@ -41,5 +41,5 @@ JavaScript nuevos) son del equipo del proyecto.
 ## Imágenes
 
 La versión de 2022 usaba fotos de demostración sin una fuente identificable. En 2026 se
-reemplazaron por ilustraciones SVG hechas a mano para este repositorio, así que todas las
+reemplazaron por ilustraciones SVG creadas para este repositorio, así que todas las
 imágenes de `images/` y las capturas de `docs/` son propias.

@@ -77,8 +77,8 @@ solo lee el formulario y pinta los estados vacío, error y resultado.
 
 ## Qué demuestra y cómo se relaciona con mi experiencia
 
-Es el proyecto más antiguo de mi portafolio y el único de frontend. Lo conservo porque muestra
-de dónde vengo y porque, al revisarlo, le agregué algo de mi trabajo actual.
+Es el proyecto más antiguo de mi portafolio y el más centrado en frontend. Lo conservo porque
+muestra de dónde vengo y porque, al revisarlo, le agregué algo de mi trabajo actual.
 
 - **Cálculo de cuotas como en cartera.** Trabajo en automatización y backend para el sector de
   cartera y cobranzas, donde una cuota mal redondeada o un saldo que no cierra en cero es un
@@ -111,7 +111,8 @@ persona. En 2026 hice solo la revisión que se ve hoy:
 
 - Reescribí todo el contenido en español: agencia colombiana, destinos nacionales, precios en
   COP y "/mes", sin texto de relleno ni restos en inglés de la plantilla.
-- Dibujé las ilustraciones SVG de destinos y fondos para reemplazar fotos sin fuente conocida.
+- Reemplacé las fotos sin fuente conocida por ilustraciones SVG de destinos y fondos creadas
+  para este repositorio.
 - Programé el simulador de cuotas, la validación de formularios con mensajes en español y el
   selector de fechas en español (dd/mm/aaaa).
 - Agregué accesibilidad básica (textos alternativos, enlace para saltar al contenido, etiquetas
