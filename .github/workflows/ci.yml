@@ -1,0 +1,47 @@
+name: Calidad del sitio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: HTML, enlaces, estilos y pruebas
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependencias de desarrollo
+        run: npm ci
+
+      - name: Validar HTML
+        run: npm run lint:html
+
+      - name: Revisar enlaces, textos alternativos, Open Graph e imágenes sin uso
+        run: npm run verificar
+
+      - name: Pruebas del simulador de cuotas y de los formularios
+        run: npm test
+
+      - name: Comprobar que css/style.css está compilado desde sass/
+        run: |
+          npm run estilos
+          git diff --exit-code -- css/style.css || {
+            echo "::error::css/style.css no coincide con sass/. Ejecuta 'npm run estilos' y vuelve a hacer commit."
+            exit 1
+          }
