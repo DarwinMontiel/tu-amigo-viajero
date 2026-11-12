@@ -1,5 +1,13 @@
-# Caché de compilación de Sass y archivos del sistema operativo
+# Dependencias de desarrollo (Sass y html-validate)
+node_modules/
+
+# Caché de compilación de Sass y mapas de fuentes
 .sass-cache/
+*.css.map
+!css/bootstrap.css.map
+
+# Archivos del sistema operativo y del editor
 .DS_Store
 Thumbs.db
-node_modules/
+.vscode/
+.idea/

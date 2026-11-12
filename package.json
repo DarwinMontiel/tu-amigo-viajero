@@ -1,0 +1,22 @@
+﻿{
+  "name": "tu-amigo-viajero",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sitio estático de una agencia de viajes ficticia colombiana, con simulador de pago a cuotas. Proyecto académico en equipo (2022).",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "estilos": "sass --no-source-map --quiet-deps --silence-deprecation=import,global-builtin,slash-div,color-functions,if-function sass/style.scss css/style.css",
+    "estilos:vigilar": "npm run estilos -- --watch",
+    "lint:html": "html-validate index.html destination.html pricing.html contact.html",
+    "verificar": "node scripts/verificar-sitio.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run lint:html && npm run verificar && npm test"
+  },
+  "devDependencies": {
+    "html-validate": "11.21.1",
+    "sass": "1.108.2"
+  }
+}
