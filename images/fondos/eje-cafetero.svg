@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: montañas sembradas de café en el Eje Cafetero</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6a25b"/>
+      <stop offset="1" stop-color="#fde3b8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <circle cx="300" cy="300" r="90" fill="#fff1c9"/>
+  <path d="M0 460 Q260 330 520 420 T1040 380 T1600 420 V900 H0 Z" fill="#7aa86a"/>
+  <path d="M0 580 Q300 460 640 560 T1300 520 T1600 560 V900 H0 Z" fill="#4f8a4a"/>
+  <g stroke="#2f6b3a" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="1 26">
+    <path d="M0 620 Q300 500 640 600 T1300 560 T1600 600"/>
+    <path d="M0 670 Q300 550 640 650 T1300 610 T1600 650"/>
+    <path d="M0 720 Q300 600 640 700 T1300 660 T1600 700"/>
+  </g>
+  <path d="M0 780 Q400 700 800 780 T1600 760 V900 H0 Z" fill="#2f6b3a"/>
+  <!-- finca -->
+  <g transform="translate(1120 470)">
+    <rect x="0" y="0" width="150" height="70" fill="#fbf8f1"/>
+    <path d="M-12 2 L75 -45 L162 2 Z" fill="#c45a3c"/>
+    <rect x="20" y="22" width="22" height="26" fill="#d9534f"/><rect x="62" y="22" width="22" height="48" fill="#3f7f4a"/><rect x="105" y="22" width="22" height="26" fill="#d9534f"/>
+  </g>
+</svg>

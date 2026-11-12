@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: la Piedra del Peñol sobre el embalse de Guatapé</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d8bd9"/>
+      <stop offset="1" stop-color="#cfe9fb"/>
+    </linearGradient>
+    <linearGradient id="roca" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9a9a9a"/>
+      <stop offset=".6" stop-color="#cfcfcf"/>
+      <stop offset="1" stop-color="#8a8a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#cielo)"/>
+  <g fill="#fff" opacity=".9">
+    <ellipse cx="160" cy="110" rx="70" ry="20"/><ellipse cx="700" cy="80" rx="90" ry="22"/>
+  </g>
+  <!-- colinas lejanas -->
+  <path d="M0 330 Q120 270 240 320 T500 310 T760 300 T900 320 V400 H0 Z" fill="#5f9c6a"/>
+  <!-- piedra -->
+  <path d="M370 360 C 350 250, 380 130, 450 115 C 520 130, 550 250, 530 360 Z" fill="url(#roca)"/>
+  <path d="M440 120 L 450 360" stroke="#7a7a7a" stroke-width="5"/>
+  <g stroke="#e8c34a" stroke-width="4">
+    <path d="M452 140 l14 10 l-14 10 l14 10 l-14 10 l14 10 l-14 10 l14 10 l-14 10 l14 10 l-14 10 l14 10 l-14 10 l14 10" fill="none"/>
+  </g>
+  <rect x="425" y="102" width="50" height="16" fill="#f6f1e6"/>
+  <!-- islas verdes -->
+  <g fill="#3f7f4a">
+    <ellipse cx="160" cy="395" rx="120" ry="28"/>
+    <ellipse cx="720" cy="400" rx="140" ry="30"/>
+    <ellipse cx="450" cy="372" rx="130" ry="20"/>
+  </g>
+  <g fill="#2f6b3a">
+    <circle cx="110" cy="380" r="22"/><circle cx="200" cy="378" r="26"/>
+    <circle cx="680" cy="383" r="24"/><circle cx="770" cy="380" r="28"/>
+  </g>
+  <!-- embalse -->
+  <rect y="410" width="900" height="190" fill="#2a6fa8"/>
+  <g stroke="#9fd0f5" stroke-width="4" opacity=".7" stroke-linecap="round">
+    <line x1="80" y1="460" x2="200" y2="460"/><line x1="320" y1="500" x2="470" y2="500"/>
+    <line x1="600" y1="470" x2="760" y2="470"/><line x1="150" y1="550" x2="300" y2="550"/>
+    <line x1="560" y1="560" x2="700" y2="560"/>
+  </g>
+  <!-- lancha con zócalo de colores -->
+  <g transform="translate(540 515)">
+    <path d="M0 0 H110 L95 22 H12 Z" fill="#f4c542"/>
+    <rect x="12" y="4" width="22" height="8" fill="#d9534f"/><rect x="40" y="4" width="22" height="8" fill="#5bc0be"/><rect x="68" y="4" width="22" height="8" fill="#e86a5c"/>
+  </g>
+</svg>

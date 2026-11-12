@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: avión sobre la cordillera de los Andes al amanecer</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f2a5a"/>
+      <stop offset=".5" stop-color="#c8577a"/>
+      <stop offset=".85" stop-color="#ffb35c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <circle cx="1180" cy="640" r="130" fill="#ffd27a" opacity=".85"/>
+  <g fill="#fff" opacity=".25">
+    <ellipse cx="300" cy="220" rx="220" ry="18"/><ellipse cx="1000" cy="160" rx="260" ry="16"/>
+    <ellipse cx="1350" cy="330" rx="180" ry="14"/>
+  </g>
+  <!-- estela y avión -->
+  <path d="M120 520 C 420 420, 700 340, 1010 250" stroke="#fff" stroke-width="5" fill="none" opacity=".55" stroke-dasharray="2 14" stroke-linecap="round"/>
+  <g transform="translate(1040 238) rotate(-17)" fill="#1f2a5a">
+    <path d="M-70 0 C -40 -10, 40 -12, 75 -4 C 85 0, 85 6, 75 8 C 40 14, -40 12, -70 6 Z"/>
+    <path d="M-5 -2 L -40 -60 L -20 -60 L 30 -2 Z"/>
+    <path d="M-5 8 L -40 66 L -20 66 L 30 8 Z"/>
+    <path d="M-62 0 L -82 -30 L -70 -30 L -48 0 Z"/>
+  </g>
+  <!-- cordilleras -->
+  <path d="M0 620 L160 470 L290 560 L460 400 L640 540 L800 430 L980 560 L1160 450 L1340 560 L1480 470 L1600 540 V900 H0 Z" fill="#6c3f6e" opacity=".85"/>
+  <path d="M0 700 L200 570 L380 660 L560 560 L760 680 L940 590 L1140 690 L1320 600 L1600 690 V900 H0 Z" fill="#4a2f5a"/>
+  <path d="M0 790 Q200 720 420 770 T860 760 T1300 770 T1600 750 V900 H0 Z" fill="#2c1f3f"/>
+</svg>

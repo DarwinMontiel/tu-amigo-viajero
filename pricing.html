@@ -1,329 +1,368 @@
-<!DOCTYPE HTML>
-
-<html lang="es">
+<!DOCTYPE html>
+<html lang="es-CO">
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>TU AMIGO VIAJERO</title>
+	<title>Planes y pago a cuotas · Tu Amigo Viajero</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Agencia de viajes: destinos, planes y contacto. Los mejores amigos que tendrás al viajar." />
-	<meta name="keywords" content="" />
-	<meta name="author" content="Darwin, Andres, Jhon, Martin" />
-	<meta property="og:title" content="Tu Amigo Viajero"/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content="Tu Amigo Viajero"/>
-	<meta property="og:description" content="Agencia de viajes: destinos, planes y contacto."/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-	
-	
+	<meta name="description" content="Planes mensuales en pesos colombianos y simulador de pago a cuotas con tabla de amortización. Proyecto académico.">
+	<meta name="author" content="Darwin Montiel, Andrés, Jhon y Martín">
+	<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+	<link rel="canonical" href="https://darwinmontiel.github.io/tu-amigo-viajero/pricing.html">
+
+	<meta property="og:type" content="website">
+	<meta property="og:locale" content="es_CO">
+	<meta property="og:site_name" content="Tu Amigo Viajero">
+	<meta property="og:title" content="Planes y pago a cuotas · Tu Amigo Viajero">
+	<meta property="og:description" content="Planes mensuales en COP y simulador de cuota fija con tabla de amortización. Proyecto académico.">
+	<meta property="og:url" content="https://darwinmontiel.github.io/tu-amigo-viajero/pricing.html">
+	<meta property="og:image" content="https://darwinmontiel.github.io/tu-amigo-viajero/docs/vista-previa.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Portada de Tu Amigo Viajero con una ilustración de los Andes al amanecer">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Planes y pago a cuotas · Tu Amigo Viajero">
+	<meta name="twitter:description" content="Planes mensuales en COP y simulador de pago a cuotas. Proyecto académico.">
+	<meta name="twitter:image" content="https://darwinmontiel.github.io/tu-amigo-viajero/docs/vista-previa.png">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/animate.css">
-	
 	<link rel="stylesheet" href="css/icomoon.css">
-	
 	<link rel="stylesheet" href="css/themify-icons.css">
-	
 	<link rel="stylesheet" href="css/bootstrap.css">
-
-	<link rel="stylesheet" href="css/magnific-popup.css">
-
-
-	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
-
-
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-
-
 	<link rel="stylesheet" href="css/style.css">
 
 	<script src="js/modernizr-2.6.2.min.js"></script>
-
-
 	</head>
 	<body>
-		
+
+	<a class="salto-contenido" href="#contenido">Saltar al contenido</a>
 	<div class="gtco-loader"></div>
-	
+
 	<div id="page">
 
-	
-	<nav class="gtco-nav" role="navigation">
+	<nav class="gtco-nav" aria-label="Menú principal">
 		<div class="gtco-container">
-			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="index.html">TU AMIGO VIAJERO<em>.</em></a></div>
+					<div id="gtco-logo"><a href="index.html">Tu Amigo Viajero<em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
 						<li><a href="destination.html">Destinos</a></li>
 						<li class="has-dropdown">
-							<a href="#">Travel</a>
+							<a href="destination.html#destinos">Regiones</a>
 							<ul class="dropdown">
-								<li><a href="#">Europe</a></li>
-								<li><a href="#">Asia</a></li>
-								<li><a href="#">America</a></li>
-								<li><a href="#">Canada</a></li>
+								<li><a href="destination.html#cartagena">Caribe</a></li>
+								<li><a href="destination.html#valle-de-cocora">Andina</a></li>
+								<li><a href="destination.html#cano-cristales">Orinoquía</a></li>
+								<li><a href="destination.html#san-andres">Insular</a></li>
 							</ul>
 						</li>
-						<li class="active"><a href="pricing.html">Precios</a></li>
+						<li class="active"><a href="pricing.html" aria-current="page">Planes</a></li>
+						<li><a href="#simulador">Paga a cuotas</a></li>
 						<li><a href="contact.html">Contacto</a></li>
-					</ul>	
+					</ul>
 				</div>
 			</div>
-			
 		</div>
 	</nav>
-	
-	<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image: url(images/Fondo_4.jpg)">
+
+	<header id="gtco-header" class="gtco-cover gtco-cover-sm" style="background-image: url(images/fondos/eje-cafetero.svg)">
 		<div class="overlay"></div>
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-md-12 col-md-offset-0 text-center">
 					<div class="row row-mt-15em">
-
 						<div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
-							<h1>Planes Para Todos!</h1>	
+							<span class="intro-text-small">Ahorra cada mes, viaja varias veces al año</span>
+							<h1>¡Planes para todos!</h1>
 						</div>
-						
 					</div>
-					
 				</div>
 			</div>
 		</div>
 	</header>
-	
-	<div class="gtco-section border-bottom">
+
+	<main id="contenido">
+
+	<section id="planes" class="gtco-section border-bottom" aria-labelledby="titulo-planes">
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
-					<h2>Elige el mejor plan para ti!</h2>
-					<p>Ya tenemos mas de un millon de clientes satisfechos, que esperas para ser el siguiente</p>
+					<h2 id="titulo-planes">Elige el mejor plan para ti</h2>
+					<p>Pagas una cuota mensual fija y usas tus viajes cuando quieras dentro del año. Precios en pesos colombianos, con IVA incluido.</p>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-4">
 					<div class="price-box">
-						<h2 class="pricing-plan">Basico</h2>
-						<div class="price"><sup class="currency">$</sup>150<small>/mo</small></div>
-						<p>Con este podrias disfrutar de dos viajes al año a el destino que eligas</p>
+						<h3 class="pricing-plan">Básico</h3>
+						<div class="price"><sup class="currency">$</sup>189.000<small>/mes</small></div>
+						<p>Dos viajes nacionales al año, para una persona, al destino que elijas.</p>
 						<hr>
 						<ul class="pricing-info">
-							<li>1 Persona</li>
-							<li>2 Destinos</li>
-							<li>Equipaje 40kg</li>
-							<li>1ra Clase</li>
+							<li>1 persona</li>
+							<li>2 viajes al año</li>
+							<li>Equipaje de 23 kg</li>
+							<li>Asistencia en viaje</li>
 						</ul>
-						<a href="#" class="btn btn-default btn-sm">Quiero este!</a>
+						<a href="contact.html" class="btn btn-default btn-sm">Quiero este plan</a>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="price-box">
-						<h2 class="pricing-plan">Medio</h2>
-						<div class="price"><sup class="currency">$</sup>300<small>/mo</small></div>
-						<p>Con este podras disfrutar de dos viajes al año para ti y tu familia</p>
+						<h3 class="pricing-plan">Familiar</h3>
+						<div class="price"><sup class="currency">$</sup>459.000<small>/mes</small></div>
+						<p>Dos viajes al año para ti y tu familia, con hoteles que tienen plan para niños.</p>
 						<hr>
 						<ul class="pricing-info">
-							<li>4 personas</li>
-							<li>2 Destinos</li>
-							<li>Equipaje 40kg por persona</li>
-							<li>1ra Clase para los adultos</li>
+							<li>Hasta 4 personas</li>
+							<li>2 viajes al año</li>
+							<li>Equipaje de 23 kg por persona</li>
+							<li>Hoteles con plan familiar</li>
 						</ul>
-						<a href="#" class="btn btn-default btn-sm">Quiero este!</a>
+						<a href="contact.html" class="btn btn-default btn-sm">Quiero este plan</a>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="price-box popular">
-						<div class="popular-text">Popular</div>
-						<h2 class="pricing-plan">Plus</h2>
-						<div class="price"><sup class="currency">$</sup>1000<small>/mo</small></div>
-						<p>Basic customer support for small business</p>
+						<div class="popular-text">El más pedido</div>
+						<h3 class="pricing-plan">Plus</h3>
+						<div class="price"><sup class="currency">$</sup>890.000<small>/mes</small></div>
+						<p>Para quienes viajan seguido: hasta seis escapadas al año con un asesor que conoce tus gustos.</p>
 						<hr>
 						<ul class="pricing-info">
-							<li>1 Persona</li>
-							<li>10 Destinos</li>
-							<li>Equipaje 40kg</li>
-							<li>1ra Clase</li>
+							<li>2 personas</li>
+							<li>Hasta 6 viajes al año</li>
+							<li>Equipaje de 23 kg por persona</li>
+							<li>Asesor personal 24 horas</li>
 						</ul>
-						<a href="#" class="btn btn-primary btn-sm">Quiero este!</a>
+						<a href="contact.html" class="btn btn-primary btn-sm">Quiero este plan</a>
 					</div>
 				</div>
 			</div>
+			<p class="nota-ficticia">Precios ficticios de un proyecto académico.</p>
 		</div>
-	</div>
+	</section>
 
-	<div class="gtco-section">
+	<section id="simulador" class="gtco-section border-bottom simulador" aria-labelledby="titulo-simulador">
+		<div class="gtco-container">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
+					<h2 id="titulo-simulador">Viaja ahora, paga a cuotas</h2>
+					<p>Calcula cuánto pagarías cada mes por tu paquete. La cuota es fija y la tabla muestra, mes a mes, cuánto va a intereses y cuánto abona a la deuda.</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5">
+					<form id="form-simulador" class="simulador-formulario" action="#" novalidate>
+						<div class="form-group">
+							<label for="sim-paquete">Paquete</label>
+							<select id="sim-paquete" class="form-control">
+								<option value="">Escribe el valor a mano</option>
+								<option value="1290000" selected>Cartagena de Indias · $1.290.000</option>
+								<option value="2150000">Caño Cristales · $2.150.000</option>
+								<option value="890000">Salento y Valle de Cocora · $890.000</option>
+								<option value="490000">Guatapé · $490.000</option>
+								<option value="1990000">San Andrés · $1.990.000</option>
+								<option value="420000">Villa de Leyva · $420.000</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="sim-monto">Valor del viaje (COP)</label>
+							<input type="text" id="sim-monto" class="form-control" inputmode="numeric" placeholder="Por ejemplo, 1.290.000" value="1.290.000" autocomplete="off">
+							<span class="ayuda">Entre $100.000 y $50.000.000.</span>
+						</div>
+						<div class="form-group">
+							<label for="sim-plazo">Plazo</label>
+							<select id="sim-plazo" class="form-control">
+								<option value="3">3 meses</option>
+								<option value="6">6 meses</option>
+								<option value="12" selected>12 meses</option>
+								<option value="18">18 meses</option>
+								<option value="24">24 meses</option>
+								<option value="36">36 meses</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="sim-tasa">Tasa efectiva anual (%)</label>
+							<input type="text" id="sim-tasa" class="form-control" inputmode="decimal" value="24" autocomplete="off">
+							<span class="ayuda">Tasa de ejemplo. Escribe 0 para ver el pago sin intereses.</span>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block">Calcular cuota</button>
+						<div id="sim-estado" class="estado-formulario estado-vacio" role="status" aria-live="polite">Elige un paquete o escribe el valor del viaje para ver tu cuota.</div>
+					</form>
+				</div>
+				<div class="col-md-7">
+					<div id="sim-resultado" hidden>
+						<dl class="simulador-resumen">
+							<div class="destacado"><dt>Cuota mensual</dt><dd id="sim-cuota"></dd></div>
+							<div><dt>Plazo</dt><dd id="sim-plazo-texto"></dd></div>
+							<div><dt>Tasa mensual equivalente</dt><dd id="sim-tasa-mensual"></dd></div>
+							<div><dt>Total de intereses</dt><dd id="sim-intereses"></dd></div>
+							<div><dt>Total a pagar</dt><dd id="sim-total"></dd></div>
+						</dl>
+						<div class="tabla-desplazable">
+							<table class="table table-striped">
+								<caption>Tabla de amortización (cuota fija, sistema francés)</caption>
+								<thead>
+									<tr>
+										<th scope="col">Mes</th>
+										<th scope="col">Cuota</th>
+										<th scope="col">Intereses</th>
+										<th scope="col">Abono a capital</th>
+										<th scope="col">Saldo</th>
+									</tr>
+								</thead>
+								<tbody id="sim-tabla-cuerpo"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="nota-ficticia">Simulación con fines académicos: no es una oferta de crédito y no incluye seguros, comisiones ni otros cargos. La última cuota puede variar unos pesos por redondeo.</p>
+		</div>
+	</section>
+
+	<section id="preguntas" class="gtco-section" aria-labelledby="titulo-preguntas">
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
-					<h2>Preguntas Frecuentes</h2>
-					<p>Nuestros Clientes Estan Bien Informados</p>
+					<h2 id="titulo-preguntas">Preguntas frecuentes</h2>
+					<p>Lo que más nos preguntan antes de viajar.</p>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<ul class="fh5co-faq-list">
 						<li class="animate-box">
-							<h2>Porque viajar?</h2>
-							<p>El Mundo es muy grande, recuerde que las experiencias son las unicas que quedan</p>
+							<h3>¿Por qué viajar por Colombia?</h3>
+							<p>Porque en un mismo país tienes mar Caribe, selva, desierto, páramo y pueblos coloniales. Y porque las experiencias son lo único que uno se lleva.</p>
 						</li>
 						<li class="animate-box">
-							<h2>Solo se hablar mi lenguaje natal?</h2>
-							<p>Tienes la Opcion de acpetar un acompañante que te enseñe los diferentes paises y ciudades, totalmente gratis</p>
+							<h3>¿Viajo por mi cuenta o con guía?</h3>
+							<p>Como prefieras. Todos los paquetes incluyen un guía local el primer día y puedes sumar más días de acompañamiento sin costo adicional.</p>
 						</li>
 						<li class="animate-box">
-							<h2>A quien puedo acudir en caso de un problema?</h2>
-							<p>Nuestros asesores estan en funciones 24hrs tanto en el chat en vivo, como por medio de correo</p>
+							<h3>¿A quién acudo si tengo un problema durante el viaje?</h3>
+							<p>Nuestros asesores atienden las 24 horas por chat y por correo, y te damos un número de contacto en cada destino.</p>
 						</li>
 						<li class="animate-box">
-							<h2>Que tan seguro es su plataforma?</h2>
-							<p>Puede revisar nuestras redes sociales, igualmente cualquier compra le aseguramos factura</p>
+							<h3>¿Puedo pagar el viaje a cuotas?</h3>
+							<p>Sí. En el <a href="#simulador">simulador</a> ves la cuota fija, el total de intereses y la tabla completa antes de decidir.</p>
 						</li>
 						<li class="animate-box">
-							<h2>Cuentan con convenios?</h2>
-							<p>Tarjetas visa y Master Card 10% de descuento adicional</p>
+							<h3>¿Cuándo es mejor ir a Caño Cristales?</h3>
+							<p>Entre junio y noviembre, cuando el río muestra sus colores. El resto del año el parque cierra para que el ecosistema se recupere.</p>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
-	
-	<div id="gtco-subscribe">
+	<section id="gtco-subscribe" aria-labelledby="titulo-suscribete">
 		<div class="gtco-container">
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
-					<h2>Suscribete</h2>
-					<p>Se el primero en enterarse en nuestras promociones</p>
+					<h2 id="titulo-suscribete">Suscríbete</h2>
+					<p>Sé el primero en enterarte de nuestras promociones.</p>
 				</div>
 			</div>
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2">
-					<form class="form-inline">
+					<form class="form-inline" action="#" data-formulario="suscripcion">
 						<div class="col-md-6 col-sm-6">
 							<div class="form-group">
-								<label for="email" class="sr-only">Email</label>
-								<input type="email" class="form-control" id="email" placeholder="Your Email">
+								<label for="email" class="sr-only">Correo electrónico</label>
+								<input type="email" class="form-control" id="email" data-campo="correo" placeholder="Tu correo" autocomplete="email">
 							</div>
 						</div>
 						<div class="col-md-6 col-sm-6">
-							<button type="submit" class="btn btn-default btn-block">Suscribete</button>
+							<button type="submit" class="btn btn-default btn-block">Suscríbete</button>
+						</div>
+						<div class="col-md-12">
+							<div class="estado-formulario" role="status" aria-live="polite"></div>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
-	<footer id="gtco-footer" role="contentinfo">
+	</main>
+
+	<footer id="gtco-footer">
 		<div class="gtco-container">
-			<div class="row row-p	b-md">
-
+			<div class="row row-pb-md">
 				<div class="col-md-4">
 					<div class="gtco-widget">
-						<h3>Sobre Nosotros</h3>
-						<p>En desarrollo de lo dispuesto en el artículo 17 de la Ley 679 de 2001, la agencia advierte al turista que la explotación y el abuso sexual de menores de edad en el país son sancionados penal y administrativamente, conforme a las leyes vigentes.</p>
+						<h3>Sobre nosotros</h3>
+						<p>Tu Amigo Viajero es una agencia ficticia, creada para un proyecto académico, que arma viajes por Colombia con precios claros y la opción de pagar a cuotas.</p>
+						<p><small>En desarrollo de lo dispuesto en el artículo 17 de la Ley 679 de 2001, la agencia advierte al turista que la explotación y el abuso sexual de menores de edad en el país son sancionados penal y administrativamente, conforme a las leyes vigentes.</small></p>
 					</div>
 				</div>
-
 				<div class="col-md-2 col-md-push-1">
 					<div class="gtco-widget">
-						<h3>Destination</h3>
+						<h3>Destinos</h3>
 						<ul class="gtco-footer-links">
-							<li><a href="#">Europe</a></li>
-							<li><a href="#">Australia</a></li>
-							<li><a href="#">Asia</a></li>
-							<li><a href="#">Canada</a></li>
-							<li><a href="#">Dubai</a></li>
+							<li><a href="destination.html#cartagena">Cartagena</a></li>
+							<li><a href="destination.html#cano-cristales">Caño Cristales</a></li>
+							<li><a href="destination.html#valle-de-cocora">Salento</a></li>
+							<li><a href="destination.html#guatape">Guatapé</a></li>
+							<li><a href="destination.html#san-andres">San Andrés</a></li>
+							<li><a href="destination.html#villa-de-leyva">Villa de Leyva</a></li>
 						</ul>
 					</div>
 				</div>
-
 				<div class="col-md-2 col-md-push-1">
 					<div class="gtco-widget">
-						<h3>Hotels</h3>
+						<h3>Planes</h3>
 						<ul class="gtco-footer-links">
-							<li><a href="#">Luxe Hotel</a></li>
-							<li><a href="#">Italy 5 Star hotel</a></li>
-							<li><a href="#">Dubai Hotel</a></li>
-							<li><a href="#">Deluxe Hotel</a></li>
-							<li><a href="#">BoraBora Hotel</a></li>
+							<li><a href="#planes">Básico</a></li>
+							<li><a href="#planes">Familiar</a></li>
+							<li><a href="#planes">Plus</a></li>
+							<li><a href="#simulador">Paga a cuotas</a></li>
+							<li><a href="#preguntas">Preguntas frecuentes</a></li>
 						</ul>
 					</div>
 				</div>
-
 				<div class="col-md-3 col-md-push-1">
 					<div class="gtco-widget">
-						<h3>Get In Touch</h3>
+						<h3>Contáctanos</h3>
 						<ul class="gtco-quick-contact">
-							<li><a href="#"><i class="icon-phone"></i> +999-9999-999</a></li>
-							<li><a href="#"><i class="icon-mail2"></i> info@Elamigoviajero.co</a></li>
-							<li><a href="#"><i class="icon-chat"></i> Chat en vivo</a></li>
+							<li><a href="tel:+576010000000"><i class="icon-phone" aria-hidden="true"></i> +57&nbsp;601&nbsp;000&nbsp;0000</a></li>
+							<li><a href="mailto:hola@tuamigoviajero.example"><i class="icon-mail2" aria-hidden="true"></i> hola@tuamigoviajero.example</a></li>
+							<li><a href="contact.html"><i class="icon-chat" aria-hidden="true"></i> Escríbenos</a></li>
 						</ul>
+						<p><small>Teléfono y correo de ejemplo.</small></p>
 					</div>
 				</div>
-
 			</div>
-
 			<div class="row copyright">
 				<div class="col-md-12">
-					<p class="credits"><small>Proyecto académico (2022) · Darwin Montiel, Andrés, Jhon y Martín. Diseño basado en una plantilla gratuita de <a href="https://gettemplates.co/" target="_blank" rel="noopener">GetTemplates.co</a> (licencia <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>).</small></p>
-				</div>
-				<div class="col-md-12">
-					<p class="pull-right">
-						<ul class="gtco-social-icons pull-right">
-							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-facebook"></i></a></li>
-							<li><a href="#"><i class="icon-linkedin"></i></a></li>
-							<li><a href="#"><i class="icon-dribbble"></i></a></li>
-						</ul>
-					</p>
+					<p class="credits"><small>Proyecto académico en equipo (2022): Darwin Montiel, Andrés, Jhon y Martín. Ilustraciones propias. Diseño basado en una plantilla gratuita de <a href="https://gettemplates.co/" target="_blank" rel="noopener">GetTemplates.co</a> (licencia <a href="https://creativecommons.org/licenses/by/3.0/deed.es" target="_blank" rel="noopener">CC BY 3.0</a>).</small></p>
 				</div>
 			</div>
-
 		</div>
 	</footer>
-
 
 	</div>
 
 	<div class="gototop js-top">
-		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+		<a href="#page" class="js-gotop" aria-label="Volver arriba"><i class="icon-arrow-up" aria-hidden="true"></i></a>
 	</div>
-	
 
 	<script src="js/jquery.min.js"></script>
-
 	<script src="js/jquery.easing.1.3.js"></script>
-
 	<script src="js/bootstrap.min.js"></script>
-
 	<script src="js/jquery.waypoints.min.js"></script>
-
-	<script src="js/owl.carousel.min.js"></script>
-	
-	<script src="js/jquery.countTo.js"></script>
-
-	
 	<script src="js/jquery.stellar.min.js"></script>
-
-
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/magnific-popup-options.js"></script>
-	
-
-	<script src="js/bootstrap-datepicker.min.js"></script>
-	
-
-
+	<script src="js/simulador-cuotas.js"></script>
+	<script src="js/simulador-ui.js"></script>
+	<script src="js/formularios.js"></script>
 	<script src="js/main.js"></script>
 
 	</body>
 </html>
-

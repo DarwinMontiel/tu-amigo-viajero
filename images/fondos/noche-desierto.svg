@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: cielo estrellado sobre el desierto de la Tatacoa</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1330"/>
+      <stop offset="1" stop-color="#3b2f6b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <path d="M-100 500 Q800 120 1700 420" stroke="#ffffff" stroke-width="120" fill="none" opacity=".06"/>
+  <g fill="#fff">
+    <circle cx="90" cy="120" r="2"/><circle cx="210" cy="260" r="1.5"/><circle cx="330" cy="90" r="2.5"/>
+    <circle cx="460" cy="200" r="1.5"/><circle cx="590" cy="130" r="2"/><circle cx="720" cy="60" r="1.5"/>
+    <circle cx="850" cy="180" r="2.5"/><circle cx="980" cy="100" r="2"/><circle cx="1110" cy="240" r="1.5"/>
+    <circle cx="1240" cy="80" r="2"/><circle cx="1370" cy="170" r="2.5"/><circle cx="1500" cy="110" r="1.5"/>
+    <circle cx="140" cy="380" r="1.5"/><circle cx="520" cy="330" r="2"/><circle cx="900" cy="300" r="1.5"/>
+    <circle cx="1290" cy="330" r="2"/><circle cx="1560" cy="300" r="1.5"/><circle cx="700" cy="400" r="1.5"/>
+  </g>
+  <!-- cárcavas -->
+  <path d="M0 640 L120 560 L200 600 L300 520 L420 610 L560 540 L700 620 L840 560 L980 630 L1120 550 L1260 620 L1400 560 L1600 610 V900 H0 Z" fill="#8a3b2b"/>
+  <path d="M0 720 L180 660 L360 710 L560 650 L760 720 L960 670 L1180 730 L1400 670 L1600 720 V900 H0 Z" fill="#5e2a22"/>
+  <!-- cactus -->
+  <g fill="#1f3326">
+    <rect x="1180" y="600" width="22" height="160" rx="10"/><rect x="1150" y="640" width="16" height="60" rx="8"/><rect x="1150" y="690" width="40" height="14" rx="7"/>
+    <rect x="1216" y="620" width="16" height="70" rx="8"/><rect x="1196" y="676" width="36" height="14" rx="7"/>
+    <rect x="300" y="650" width="16" height="110" rx="8"/><rect x="278" y="680" width="12" height="44" rx="6"/><rect x="278" y="716" width="30" height="10" rx="5"/>
+  </g>
+</svg>

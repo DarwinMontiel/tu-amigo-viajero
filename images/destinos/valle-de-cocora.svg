@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: palmas de cera entre la niebla del Valle de Cocora, en Salento</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fc9d6"/>
+      <stop offset="1" stop-color="#e7f1ea"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#cielo)"/>
+  <!-- montañas -->
+  <path d="M0 250 Q120 150 240 220 T480 200 T720 170 T900 210 V600 H0 Z" fill="#8fb996"/>
+  <path d="M0 310 Q150 230 300 300 T600 270 T900 300 V600 H0 Z" fill="#5f9c6a"/>
+  <!-- niebla -->
+  <g fill="#ffffff" opacity=".55">
+    <ellipse cx="200" cy="290" rx="260" ry="26"/>
+    <ellipse cx="700" cy="260" rx="240" ry="22"/>
+  </g>
+  <path d="M0 400 Q200 340 450 390 T900 380 V600 H0 Z" fill="#3f7f4a"/>
+  <path d="M0 480 Q250 430 520 470 T900 460 V600 H0 Z" fill="#2f6b3a"/>
+  <!-- palmas de cera -->
+  <defs>
+    <g id="palma">
+      <rect x="-4" y="0" width="8" height="360" fill="#e9e1d0"/>
+      <g stroke="#2f6b3a" stroke-width="8" fill="none" stroke-linecap="round">
+        <path d="M0 0 Q-40 -10 -70 20"/><path d="M0 0 Q40 -10 70 20"/>
+        <path d="M0 0 Q-30 -40 -60 -40"/><path d="M0 0 Q30 -40 60 -40"/>
+        <path d="M0 0 Q0 -40 -6 -60"/>
+      </g>
+    </g>
+  </defs>
+  <use href="#palma" transform="translate(180 120)"/>
+  <use href="#palma" transform="translate(330 170) scale(.8)"/>
+  <use href="#palma" transform="translate(560 100) scale(1.05)"/>
+  <use href="#palma" transform="translate(700 190) scale(.7)"/>
+  <use href="#palma" transform="translate(800 150) scale(.85)"/>
+  <!-- sendero -->
+  <path d="M430 600 C 460 540, 400 510, 470 470" stroke="#c9a26b" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <g fill="#ffffff" opacity=".4">
+    <ellipse cx="450" cy="430" rx="420" ry="18"/>
+  </g>
+</svg>

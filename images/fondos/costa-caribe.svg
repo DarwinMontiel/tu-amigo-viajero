@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: costa del Caribe colombiano con la Sierra Nevada al fondo</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e7fc4"/>
+      <stop offset="1" stop-color="#bfe8f7"/>
+    </linearGradient>
+    <linearGradient id="mar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1563a8"/>
+      <stop offset="1" stop-color="#3cc6cf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <path d="M700 520 L900 300 L960 350 L1040 260 L1240 520 Z" fill="#7d93b0"/>
+  <path d="M900 300 L960 350 L1040 260 L1080 320 L1010 330 L960 380 L930 340 Z" fill="#fff"/>
+  <path d="M0 520 Q300 470 600 510 T1200 500 T1600 510 V560 H0 Z" fill="#3f7f4a"/>
+  <rect y="540" width="1600" height="360" fill="url(#mar)"/>
+  <g stroke="#e8fbff" stroke-width="5" opacity=".6" stroke-linecap="round">
+    <line x1="150" y1="620" x2="380" y2="620"/><line x1="600" y1="680" x2="900" y2="680"/>
+    <line x1="1100" y1="630" x2="1380" y2="630"/><line x1="300" y1="760" x2="560" y2="760"/>
+    <line x1="1000" y1="790" x2="1300" y2="790"/>
+  </g>
+  <path d="M0 820 Q500 760 1000 820 T1600 800 V900 H0 Z" fill="#f6e2b3"/>
+</svg>

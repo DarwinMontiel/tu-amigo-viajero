@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: los cerros orientales de Bogotá y la ciudad al anochecer</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141b3d"/>
+      <stop offset=".7" stop-color="#5a3f7a"/>
+      <stop offset="1" stop-color="#e2799a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <g fill="#fff" opacity=".8">
+    <circle cx="120" cy="90" r="2"/><circle cx="340" cy="160" r="2"/><circle cx="560" cy="70" r="2"/>
+    <circle cx="820" cy="130" r="2"/><circle cx="1050" cy="60" r="2"/><circle cx="1290" cy="140" r="2"/>
+    <circle cx="1480" cy="80" r="2"/><circle cx="700" cy="220" r="2"/><circle cx="1400" cy="230" r="2"/>
+  </g>
+  <circle cx="1300" cy="180" r="40" fill="#f6f1e6"/>
+  <!-- cerros con iglesia en la cima -->
+  <path d="M0 520 L220 380 L420 450 L640 300 L860 430 L1080 360 L1300 470 L1600 400 V900 H0 Z" fill="#2c3a2e"/>
+  <g transform="translate(640 300)" fill="#f6f1e6">
+    <rect x="-16" y="-34" width="32" height="34"/><path d="M-20 -34 L0 -56 L20 -34 Z"/>
+  </g>
+  <path d="M640 300 L520 380" stroke="#e8c34a" stroke-width="3" stroke-dasharray="6 8"/>
+  <!-- ciudad -->
+  <g fill="#1d2233">
+    <rect x="0" y="620" width="120" height="280"/><rect x="130" y="560" width="90" height="340"/>
+    <rect x="230" y="600" width="140" height="300"/><rect x="380" y="520" width="80" height="380"/>
+    <rect x="470" y="590" width="150" height="310"/><rect x="630" y="540" width="100" height="360"/>
+    <rect x="740" y="610" width="160" height="290"/><rect x="910" y="500" width="90" height="400"/>
+    <rect x="1010" y="580" width="140" height="320"/><rect x="1160" y="540" width="110" height="360"/>
+    <rect x="1280" y="610" width="150" height="290"/><rect x="1440" y="570" width="160" height="330"/>
+  </g>
+  <g fill="#ffd27a" opacity=".85">
+    <rect x="150" y="590" width="10" height="14"/><rect x="190" y="630" width="10" height="14"/>
+    <rect x="400" y="560" width="10" height="14"/><rect x="430" y="610" width="10" height="14"/>
+    <rect x="660" y="580" width="10" height="14"/><rect x="700" y="640" width="10" height="14"/>
+    <rect x="930" y="540" width="10" height="14"/><rect x="960" y="600" width="10" height="14"/>
+    <rect x="1190" y="580" width="10" height="14"/><rect x="1230" y="640" width="10" height="14"/>
+    <rect x="1480" y="610" width="10" height="14"/><rect x="1530" y="660" width="10" height="14"/>
+    <rect x="260" y="650" width="10" height="14"/><rect x="520" y="640" width="10" height="14"/>
+    <rect x="800" y="660" width="10" height="14"/><rect x="1060" y="620" width="10" height="14"/>
+  </g>
+</svg>

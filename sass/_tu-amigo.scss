@@ -1,0 +1,218 @@
+// Estilos propios de Tu Amigo Viajero (2026): tarjetas de destinos,
+// historias de viajeros, simulador de cuotas y estados de los formularios.
+// Se compilan junto con style.scss (ver `npm run estilos`).
+
+$color-error: #b3261e;
+$color-error-fondo: #fdecea;
+$color-exito: #0b6b5c;
+$color-exito-fondo: #e6f7f3;
+$color-texto-suave: #5f6670;
+
+// Enlace "Saltar al contenido" para quien navega con teclado.
+.salto-contenido {
+	position: absolute;
+	left: -9999px;
+	top: 0;
+	z-index: 10000;
+	padding: 10px 16px;
+	background: $brand-black;
+	color: $brand-white;
+	&:focus {
+		left: 10px;
+		top: 10px;
+		color: $brand-white;
+	}
+}
+
+// ---------- Estados de formularios ----------
+.estado-formulario {
+	margin-top: 15px;
+	padding: 12px 15px;
+	border-radius: 4px;
+	font-size: 15px;
+	line-height: 1.5;
+	text-align: left;
+	&:empty {
+		display: none;
+	}
+	&.estado-vacio {
+		background: #f3f4f6;
+		color: $color-texto-suave;
+	}
+	&.estado-error {
+		background: $color-error-fondo;
+		color: $color-error;
+	}
+	&.estado-exito {
+		background: $color-exito-fondo;
+		color: $color-exito;
+	}
+}
+
+.form-control[aria-invalid="true"] {
+	border-color: $color-error !important;
+}
+
+// ---------- Tarjetas de destinos ----------
+.fh5co-card-item {
+	figure img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.fh5co-text {
+		.destino-region {
+			display: block;
+			margin-bottom: 4px;
+			font-size: 13px;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			color: $color-texto-suave;
+		}
+		.destino-meta {
+			color: $color-texto-suave;
+			font-size: 15px;
+			margin-bottom: 6px;
+		}
+		.destino-precio {
+			color: $brand-black;
+			font-size: 17px;
+			strong {
+				color: $brand-black;
+			}
+		}
+	}
+}
+
+// Frase de la banda con parallax: es un h2 (no el título de la página) pero
+// conserva el tamaño del h1 de la plantilla.
+.gtco-cover .display-tc h2 {
+	color: $brand-white;
+	font-size: 40px;
+	font-weight: 300;
+	line-height: 1.4;
+	margin: 0;
+	@media screen and (max-width: $screen-sm) {
+		font-size: 28px;
+	}
+}
+
+// ---------- Historias de viajeros ----------
+section.testimonios {
+	// Las secciones de la plantilla flotan; esta también, para no quedar debajo de la banda anterior.
+	float: left;
+	width: 100%;
+	clear: both;
+	padding: 7em 0;
+	background: #f7f8f6;
+	.testimonio {
+		position: relative;
+		height: 100%;
+		margin: 0 0 30px 0;
+		padding: 30px 25px 25px 25px;
+		border: none;
+		border-top: 4px solid $brand-primary;
+		background: $brand-white;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, .08);
+		font-size: 16px;
+		p {
+			margin-bottom: 15px;
+			color: #3b3d40;
+		}
+		footer {
+			color: $color-texto-suave;
+			font-size: 14px;
+			&:before {
+				content: none;
+			}
+			strong {
+				display: block;
+				color: $brand-black;
+			}
+		}
+	}
+}
+
+.nota-ficticia {
+	margin-top: 10px;
+	font-size: 13px;
+	color: $color-texto-suave;
+	text-align: center;
+}
+
+// ---------- Simulador "Viaja ahora, paga a cuotas" ----------
+.simulador {
+	.simulador-formulario {
+		padding: 30px;
+		background: #f7f8f6;
+		border-radius: 4px;
+		margin-bottom: 30px;
+		label {
+			color: $brand-black;
+		}
+		.ayuda {
+			display: block;
+			margin-top: 6px;
+			font-size: 13px;
+			color: $color-texto-suave;
+		}
+	}
+	.simulador-resumen {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0 -10px 20px -10px;
+		div {
+			flex: 1 1 180px;
+			margin: 0 10px 15px 10px;
+			padding: 15px;
+			border: 1px solid #e5e7eb;
+			border-radius: 4px;
+		}
+		dt {
+			font-weight: 400;
+			font-size: 13px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			color: $color-texto-suave;
+		}
+		dd {
+			font-size: 20px;
+			color: $brand-black;
+		}
+		.destacado {
+			border-color: $brand-primary;
+			background: $color-exito-fondo;
+			dd {
+				font-size: 26px;
+				font-weight: 700;
+			}
+		}
+	}
+	.tabla-desplazable {
+		max-height: 380px;
+		overflow: auto;
+		border: 1px solid #e5e7eb;
+		border-radius: 4px;
+		table {
+			margin: 0;
+			font-size: 14px;
+		}
+		caption {
+			padding: 10px;
+			color: $brand-black;
+			text-align: left;
+		}
+		th, td {
+			text-align: right;
+			white-space: nowrap;
+		}
+		th:first-child, td:first-child {
+			text-align: center;
+		}
+		thead th {
+			position: sticky;
+			top: 0;
+			background: $brand-white;
+		}
+	}
+}

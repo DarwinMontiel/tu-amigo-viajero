@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: el mar de siete colores y una palmera en la playa de San Andrés</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2fa4e7"/>
+      <stop offset="1" stop-color="#d4f1ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#cielo)"/>
+  <circle cx="160" cy="110" r="55" fill="#fff3b0"/>
+  <g fill="#fff" opacity=".9">
+    <ellipse cx="520" cy="90" rx="90" ry="22"/><ellipse cx="580" cy="76" rx="50" ry="22"/>
+  </g>
+  <!-- franjas del mar de siete colores -->
+  <rect y="250" width="900" height="40" fill="#123d8c"/>
+  <rect y="290" width="900" height="35" fill="#1a5fb4"/>
+  <rect y="325" width="900" height="35" fill="#1f86c9"/>
+  <rect y="360" width="900" height="32" fill="#2bb3d6"/>
+  <rect y="392" width="900" height="30" fill="#4fd1d9"/>
+  <rect y="422" width="900" height="28" fill="#7fe3d6"/>
+  <rect y="450" width="900" height="24" fill="#b6f0e0"/>
+  <!-- cayo -->
+  <ellipse cx="720" cy="262" rx="70" ry="10" fill="#f3dfaa"/>
+  <g fill="#2f6b3a"><circle cx="705" cy="248" r="12"/><circle cx="730" cy="245" r="14"/></g>
+  <!-- arena -->
+  <path d="M0 470 Q450 440 900 480 V600 H0 Z" fill="#f6e2b3"/>
+  <path d="M0 470 Q450 440 900 480" stroke="#ffffff" stroke-width="8" fill="none" opacity=".8"/>
+  <!-- palmera -->
+  <path d="M120 560 C 140 470, 170 380, 230 300" stroke="#8a5a2b" stroke-width="18" fill="none" stroke-linecap="round"/>
+  <g fill="#2f8f46">
+    <path d="M230 300 C 180 260, 120 270, 90 300 C 140 285, 190 290, 230 300 Z"/>
+    <path d="M230 300 C 220 240, 260 200, 310 200 C 270 225, 245 260, 230 300 Z"/>
+    <path d="M230 300 C 280 270, 340 280, 360 320 C 320 300, 270 295, 230 300 Z"/>
+    <path d="M230 300 C 190 230, 150 220, 110 230 C 160 245, 200 270, 230 300 Z"/>
+    <path d="M230 300 C 250 340, 250 380, 230 410 C 240 370, 238 335, 230 300 Z"/>
+  </g>
+  <g fill="#6b3f1d"><circle cx="225" cy="308" r="9"/><circle cx="240" cy="312" r="9"/></g>
+  <!-- hamaca -->
+  <path d="M500 560 Q600 600 700 560" stroke="#e86a5c" stroke-width="10" fill="none"/>
+</svg>

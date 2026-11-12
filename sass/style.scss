@@ -1881,7 +1881,7 @@ form {
 		@media screen and (max-width: $screen-sm) {
 			margin: 0 0 20px 0;
 		}
-		h2 {
+		h2, h3 {
 			font-size: 26px;
 			font-weight: 300;
 			margin-bottom: 15px;
@@ -1891,3 +1891,6 @@ form {
 		}
 	}
 }
+
+// Estilos propios del proyecto (tarjetas, testimonios, simulador y formularios).
+@import 'tu-amigo';

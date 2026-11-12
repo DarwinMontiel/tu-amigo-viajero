@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="t">
+  <title id="t">Ilustración: la plaza empedrada y las casas blancas de Villa de Leyva</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5aa9e6"/>
+      <stop offset="1" stop-color="#f3e9d2"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#cielo)"/>
+  <!-- cerros secos de Boyacá -->
+  <path d="M0 240 Q150 150 300 210 T600 180 T900 220 V330 H0 Z" fill="#b39b6e"/>
+  <path d="M0 280 Q200 220 420 270 T900 260 V340 H0 Z" fill="#8c9a5b"/>
+  <!-- iglesia -->
+  <g>
+    <rect x="380" y="170" width="140" height="160" fill="#fbf8f1"/>
+    <path d="M370 172 L450 110 L530 172 Z" fill="#c45a3c"/>
+    <rect x="530" y="140" width="50" height="190" fill="#fbf8f1"/>
+    <path d="M524 142 L555 100 L586 142 Z" fill="#c45a3c"/>
+    <path d="M430 330 V260 Q450 235 470 260 V330 Z" fill="#6b4a2b"/>
+    <circle cx="450" cy="210" r="14" fill="#6b4a2b"/>
+    <rect x="545" y="170" width="20" height="30" fill="#6b4a2b"/>
+  </g>
+  <!-- casas coloniales -->
+  <g>
+    <rect x="40" y="230" width="300" height="100" fill="#fbf8f1"/>
+    <rect x="600" y="230" width="270" height="100" fill="#fbf8f1"/>
+    <rect x="30" y="215" width="320" height="20" fill="#c45a3c"/>
+    <rect x="590" y="215" width="290" height="20" fill="#c45a3c"/>
+    <g fill="#2f6b3a">
+      <rect x="70" y="260" width="30" height="40"/><rect x="140" y="260" width="30" height="40"/>
+      <rect x="210" y="260" width="30" height="40"/><rect x="280" y="260" width="30" height="40"/>
+      <rect x="630" y="260" width="30" height="40"/><rect x="700" y="260" width="30" height="40"/>
+      <rect x="770" y="260" width="30" height="40"/><rect x="830" y="260" width="24" height="40"/>
+    </g>
+    <g fill="#e8443a">
+      <circle cx="85" cy="302" r="6"/><circle cx="155" cy="302" r="6"/><circle cx="225" cy="302" r="6"/>
+      <circle cx="645" cy="302" r="6"/><circle cx="715" cy="302" r="6"/><circle cx="785" cy="302" r="6"/>
+    </g>
+  </g>
+  <!-- plaza empedrada en perspectiva -->
+  <path d="M0 330 H900 V600 H0 Z" fill="#d8c7a3"/>
+  <g stroke="#bfa97c" stroke-width="3">
+    <line x1="0" y1="370" x2="900" y2="370"/><line x1="0" y1="420" x2="900" y2="420"/>
+    <line x1="0" y1="480" x2="900" y2="480"/><line x1="0" y1="550" x2="900" y2="550"/>
+    <line x1="450" y1="330" x2="0" y2="600"/><line x1="450" y1="330" x2="200" y2="600"/>
+    <line x1="450" y1="330" x2="380" y2="600"/><line x1="450" y1="330" x2="520" y2="600"/>
+    <line x1="450" y1="330" x2="700" y2="600"/><line x1="450" y1="330" x2="900" y2="600"/>
+  </g>
+  <!-- pila de agua -->
+  <g transform="translate(450 470)">
+    <ellipse cx="0" cy="30" rx="70" ry="16" fill="#9c8a68"/>
+    <rect x="-8" y="-40" width="16" height="70" fill="#9c8a68"/>
+    <ellipse cx="0" cy="-40" rx="30" ry="8" fill="#9c8a68"/>
+  </g>
+</svg>
