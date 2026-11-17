@@ -47,13 +47,13 @@ body {
 }
 
 a {
-  color: #09C6AB;
+  color: #b8400b;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
 }
 a:hover, a:active, a:focus {
-  color: #09C6AB;
+  color: #b8400b;
   outline: none;
   text-decoration: none;
 }
@@ -71,17 +71,17 @@ h1, h2, h3, h4, h5, h6, figure {
 
 ::-webkit-selection {
   color: #fff;
-  background: #09C6AB;
+  background: #b8400b;
 }
 
 ::-moz-selection {
   color: #fff;
-  background: #09C6AB;
+  background: #b8400b;
 }
 
 ::selection {
   color: #fff;
-  background: #09C6AB;
+  background: #b8400b;
 }
 
 .gtco-container {
@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h6, figure {
   font-weight: bold;
 }
 .gtco-nav #gtco-logo em {
-  color: #09C6AB;
+  color: #b8400b;
 }
 .gtco-nav a {
   padding: 5px 10px;
@@ -201,7 +201,7 @@ h1, h2, h3, h4, h5, h6, figure {
   font-size: 15px;
 }
 .gtco-nav ul li.has-dropdown .dropdown li a:hover {
-  color: #09C6AB;
+  color: #b8400b;
 }
 .gtco-nav ul li.has-dropdown .dropdown li.active > a {
   color: #000 !important;
@@ -210,7 +210,7 @@ h1, h2, h3, h4, h5, h6, figure {
   color: #fff;
 }
 .gtco-nav ul li.btn-cta a {
-  color: #09C6AB;
+  color: #b8400b;
 }
 .gtco-nav ul li.btn-cta a span {
   border: 2px solid rgba(255, 255, 255, 0.5);
@@ -230,7 +230,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 .gtco-nav ul li.btn-cta a:hover span {
   background: #fff;
-  color: #09C6AB;
+  color: #b8400b;
 }
 .gtco-nav ul li.active > a {
   color: #fff !important;
@@ -298,7 +298,7 @@ h1, h2, h3, h4, h5, h6, figure {
   margin-bottom: 30px;
 }
 #gtco-header .form-wrap {
-  border-top: 10px solid #09C6AB;
+  border-top: 10px solid #b8400b;
   position: relative;
   width: 100%;
   -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
@@ -337,7 +337,7 @@ h1, h2, h3, h4, h5, h6, figure {
   display: block;
   padding: 10px 20px 20px 20px;
   background: #fff;
-  color: #09C6AB;
+  color: #b8400b;
 }
 #gtco-header .form-wrap .tab-menu li.gtco-first a {
   border-top-left-radius: 7px;
@@ -446,7 +446,7 @@ h1, h2, h3, h4, h5, h6, figure {
   width: 100%;
 }
 .gtco-cover a {
-  color: #09C6AB;
+  color: #b8400b;
 }
 .gtco-cover a:hover {
   color: rgb(255, 255, 255);
@@ -575,7 +575,7 @@ h1, h2, h3, h4, h5, h6, figure {
   display: inline-block;
   zoom: 1;
   *display: inline;
-  color: #09C6AB;
+  color: #b8400b;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -693,7 +693,7 @@ form label {
 #gtco-counter .counter {
   font-size: 50px;
   margin-bottom: 10px;
-  color: #09C6AB;
+  color: #b8400b;
   font-weight: 100;
   display: block;
 }
@@ -759,7 +759,7 @@ form label {
 }
 
 #gtco-features {
-  background: #09C6AB;
+  background: #b8400b;
 }
 #gtco-features .gtco-heading h2 {
   color: #fff;
@@ -774,7 +774,7 @@ form label {
   width: 90px;
   height: 90px;
   border: 1px solid rgba(255, 255, 255, 0.8);
-  background: #09C6AB;
+  background: #b8400b;
 }
 #gtco-features .feature-center .icon i {
   color: #fff;
@@ -834,7 +834,7 @@ form label {
 .feature-center h3 {
   font-size: 22px;
   margin-bottom: 20px;
-  color: #09C6AB;
+  color: #b8400b;
   position: relative;
 }
 
@@ -853,7 +853,7 @@ form label {
   display: table-cell;
   vertical-align: middle;
   font-size: 40px;
-  color: #09C6AB;
+  color: #b8400b;
 }
 .feature-left .feature-copy {
   float: right;
@@ -907,7 +907,7 @@ form label {
 }
 
 #gtco-subscribe {
-  background: #0098EF;
+  background: #3b2453;
 }
 #gtco-subscribe .form-control {
   background: transparent;
@@ -938,7 +938,7 @@ form label {
 #gtco-subscribe .btn {
   height: 46px;
   border: none !important;
-  background: #09C6AB;
+  background: #b8400b;
   color: #fff;
   font-size: 16px;
   text-transform: uppercase;
@@ -1012,7 +1012,7 @@ form label {
   *display: inline;
 }
 #gtco-footer .footer-logo span {
-  color: #09C6AB;
+  color: #b8400b;
 }
 #gtco-footer .copyright {
   color: rgb(70%, 70%, 70%);
@@ -1287,21 +1287,21 @@ form label {
 }
 
 .btn-primary {
-  background: #09C6AB;
+  background: #b8400b;
   color: #fff;
-  border: 2px solid #09C6AB !important;
+  border: 2px solid #b8400b !important;
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-  background: rgb(3.9641943734%, 87.2122762148%, 75.3196930946%) !important;
-  border-color: rgb(3.9641943734%, 87.2122762148%, 75.3196930946%) !important;
+  background: rgb(81.592760181%, 28.3800904977%, 4.8778280543%) !important;
+  border-color: rgb(81.592760181%, 28.3800904977%, 4.8778280543%) !important;
 }
 .btn-primary.btn-outline {
   background: transparent;
-  color: #09C6AB;
-  border: 2px solid #09C6AB;
+  color: #b8400b;
+  border: 2px solid #b8400b;
 }
 .btn-primary.btn-outline:hover, .btn-primary.btn-outline:focus, .btn-primary.btn-outline:active {
-  background: #09C6AB;
+  background: #b8400b;
   color: #fff;
 }
 
@@ -1453,7 +1453,7 @@ form label {
 .form-control:active, .form-control:focus {
   outline: none;
   box-shadow: none;
-  border-color: #09C6AB;
+  border-color: #b8400b;
 }
 
 .row-mt-15em {
@@ -1515,7 +1515,7 @@ form label {
   margin-left: 0px;
 }
 .gtco-nav .gtco-contact ul li a i {
-  color: #09C6AB;
+  color: #b8400b;
 }
 .gtco-nav .gtco-contact ul li a:hover i {
   color: #fff;
@@ -1634,7 +1634,7 @@ form label {
 .owl-theme .owl-dots .owl-dot span {
   width: 10px;
   height: 10px;
-  background: #09C6AB;
+  background: #b8400b;
   -webkit-transition: 0.2s;
   -o-transition: 0.2s;
   transition: 0.2s;
@@ -1642,12 +1642,12 @@ form label {
 }
 .owl-theme .owl-dots .owl-dot span:hover {
   background: none;
-  border: 2px solid #09C6AB;
+  border: 2px solid #b8400b;
 }
 
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
   background: none;
-  border: 2px solid #09C6AB;
+  border: 2px solid #b8400b;
 }
 
 .fh5co-card-item {
@@ -1723,7 +1723,7 @@ form label {
   font-size: 20px;
   font-weight: 400;
   margin: 0 0 10px 0;
-  color: #09C6AB;
+  color: #b8400b;
 }
 .fh5co-card-item .fh5co-text span {
   color: rgb(70%, 70%, 70%);
@@ -1768,8 +1768,8 @@ form label {
   opacity: 1;
   visibility: visible;
   bottom: 0px;
-  border: 2px solid rgb(3.9641943734%, 87.2122762148%, 75.3196930946%) !important;
-  background: rgb(3.9641943734%, 87.2122762148%, 75.3196930946%) !important;
+  border: 2px solid rgb(81.592760181%, 28.3800904977%, 4.8778280543%) !important;
+  background: rgb(81.592760181%, 28.3800904977%, 4.8778280543%) !important;
 }
 .fh5co-card-item:hover figure .overlay, .fh5co-card-item:focus figure .overlay {
   opacity: 1;
@@ -1801,7 +1801,7 @@ form label {
   border-radius: 5px;
 }
 .price-box.popular {
-  border: 2px solid #09C6AB;
+  border: 2px solid #b8400b;
 }
 .price-box.popular .popular-text {
   top: 0;
@@ -1810,7 +1810,7 @@ form label {
   margin-top: -2em;
   position: absolute;
   padding: 4px 20px;
-  background: #09C6AB;
+  background: #b8400b;
   color: #fff;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1824,7 +1824,7 @@ form label {
   left: 50%;
   margin-left: -10px;
   border-top: 10px solid black;
-  border-top-color: #09C6AB;
+  border-top-color: #b8400b;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
 }
@@ -1981,7 +1981,7 @@ section.testimonios .testimonio {
   margin: 0 0 30px 0;
   padding: 30px 25px 25px 25px;
   border: none;
-  border-top: 4px solid #09C6AB;
+  border-top: 4px solid #b8400b;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
   font-size: 16px;
@@ -2048,8 +2048,8 @@ section.testimonios .testimonio footer strong {
   color: #000;
 }
 .simulador .simulador-resumen .destacado {
-  border-color: #09C6AB;
-  background: #e6f7f3;
+  border-color: #b8400b;
+  background: #fff3eb;
 }
 .simulador .simulador-resumen .destacado dd {
   font-size: 26px;
@@ -2081,4 +2081,24 @@ section.testimonios .testimonio footer strong {
   position: sticky;
   top: 0;
   background: #fff;
+}
+
+body {
+  color: #5f6670;
+}
+
+.gtco-heading p,
+#gtco-footer small,
+#gtco-footer .credits small {
+  color: #5f6670;
+}
+
+#gtco-counter .counter-label {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#gtco-features .gtco-heading p,
+#gtco-features .feature-center p,
+#gtco-subscribe .gtco-heading p {
+  color: #fff;
 }

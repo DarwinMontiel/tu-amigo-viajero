@@ -2,6 +2,23 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2.1.0] - 2026-11-17
+
+### Cambiado
+
+- Identidad visual propia, «atardecer en vuelo»: naranja de atardecer (`#b8400b`) para la marca y
+  el morado del cielo de la portada para la banda de suscripción, en lugar del turquesa y el azul
+  de la plantilla. El favicon pasa a un degradado de atardecer.
+- La tarjeta «Cuota mensual» del simulador usa un tono cálido; el verde queda solo para mensajes
+  de éxito.
+- Capturas de `docs/` y vista previa para compartir regeneradas con el estilo nuevo.
+
+### Corregido
+
+- Contraste WCAG AA en los textos heredados de la plantilla: grises `#777`, `#808080` y `#b3b3b3`
+  y blancos translúcidos sobre fondos de color pasaron a colores con al menos 4,5:1. Medido con
+  una auditoría automática sobre las cuatro páginas (de 148 textos bajo el mínimo a ninguno real).
+
 ## [2.0.0] - 2026-11-12
 
 Revisión completa del proyecto académico.

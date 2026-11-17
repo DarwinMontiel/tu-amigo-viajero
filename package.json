@@ -1,6 +1,6 @@
 {
   "name": "tu-amigo-viajero",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Sitio estático de una agencia de viajes ficticia colombiana, con simulador de pago a cuotas. Proyecto académico en equipo (2022).",
   "license": "MIT",

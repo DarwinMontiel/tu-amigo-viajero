@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <title>Tu Amigo Viajero</title>
-  <rect width="64" height="64" rx="14" fill="#09C6AB"/>
+  <defs>
+    <linearGradient id="atardecer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b2453"/>
+      <stop offset="1" stop-color="#b8400b"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#atardecer)"/>
   <path d="M8 46 L22 30 L30 38 L40 24 L56 46 Z" fill="#ffffff"/>
   <circle cx="46" cy="18" r="6" fill="#ffd27a"/>
 </svg>

@@ -181,7 +181,7 @@ section.testimonios {
 		}
 		.destacado {
 			border-color: $brand-primary;
-			background: $color-exito-fondo;
+			background: #fff3eb; // tono cálido del atardecer: resalta el dato sin confundirse con un «éxito»
 			dd {
 				font-size: 26px;
 				font-weight: 700;
@@ -215,4 +215,25 @@ section.testimonios {
 			background: $brand-white;
 		}
 	}
+}
+
+// ---------- Contraste AA en los textos que venían de la plantilla ----------
+// La plantilla usaba grises claros (#777, #808080, #b3b3b3) y blancos translúcidos que no
+// llegaban a 4,5:1. Se miden con una auditoría automática sobre las cuatro páginas.
+body {
+	color: $color-texto-suave; // #777 → #5f6670 (5,9:1 sobre blanco)
+}
+.gtco-heading p,
+#gtco-footer small,
+#gtco-footer .credits small {
+	color: $color-texto-suave;
+}
+#gtco-counter .counter-label {
+	color: rgba(0, 0, 0, .7);
+}
+// Sobre el naranja de la marca y el morado del cielo, el texto va en blanco pleno.
+#gtco-features .gtco-heading p,
+#gtco-features .feature-center p,
+#gtco-subscribe .gtco-heading p {
+	color: $brand-white;
 }

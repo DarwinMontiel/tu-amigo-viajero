@@ -6,7 +6,9 @@ $grid-gutter-width: 40px ;
 $border-radius-base:  4px ;
 $padding-base-vertical: 14px ;
 
-$brand-primary: #09C6AB ;
+// Identidad propia: atardecer en vuelo. Naranja de atardecer para la marca (texto blanco encima:
+// 5,56:1; como texto sobre blanco: 5,56:1, WCAG AA) y el morado del cielo de la portada.
+$brand-primary: #b8400b ;
 $brand-secondary: #ca222f ; 
 
 $brand-white: #fff;
@@ -962,7 +964,8 @@ form {
 
 
 #gtco-subscribe {
-	background: #0098EF;
+	// Morado del cielo de la portada (antes, azul de la plantilla: no daba contraste con texto blanco).
+	background: #3b2453;
 
 	
 
