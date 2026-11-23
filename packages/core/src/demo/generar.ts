@@ -4,8 +4,9 @@ import { sumarDias } from '../fechas.ts';
 import { gruposSoloEnlaceVuelos } from '../fijos.ts';
 import { buscarLugar, esNacional, nombreCiudad } from '../lugares.ts';
 import { convertirDesdeCOP } from '../moneda.ts';
+import { AVISO_BAJO_COSTO, esBajoCosto } from '../aerolineas.ts';
 import { armarPaquetes, grupo, ordenarGrupos } from '../ranking.ts';
-import type { GrupoPlataforma, Moneda, Oferta, OfertaDestacada, RespuestaBusqueda, RespuestaOfertas, RespuestaOpciones } from '../tipos.ts';
+import type { GrupoPlataforma, Moneda, Oferta, PerspectivaPrecio, OfertaDestacada, RespuestaBusqueda, RespuestaOfertas, RespuestaOpciones } from '../tipos.ts';
 import { HOTELES, OFERTAS, RUTAS, VENDEDORES, type HotelEjemplo, type VueloEjemplo } from './datos.ts';
 
 /** Fecha fija en que se "grabaron" los datos de ejemplo. */
@@ -41,6 +42,8 @@ function ofertaVuelo(v: VueloEjemplo, i: number, plataforma: string, c: Consulta
     detalle: `${escalas === 0 ? 'Directo' : `${escalas} escala${escalas > 1 ? 's' : ''}`} · ${duracion(minutos)}${c.regreso ? ' · ida y vuelta' : ' · solo ida'}`,
     precio: convertirDesdeCOP(porPersona * factorTramo * c.adultos, c.moneda),
     enlace: { metodo: 'GET', url: enlace },
+    incluyeImpuestos: true,
+    ...(esBajoCosto(aerolinea) ? { avisoEquipaje: AVISO_BAJO_COSTO } : {}),
     ...(plataforma === 'google-flights' ? { tokenOpciones: `demo:${c.origen}-${c.destino}:${i}` } : {}),
   };
 }
@@ -68,6 +71,7 @@ function ofertaHotel(h: HotelEjemplo, i: number, plataforma: string, c: Consulta
     precioPorNoche: convertirDesdeCOP(noche, c.moneda),
     calificacion,
     enlace: { metodo: 'GET', url: enlace },
+    ...(plataforma === 'airbnb' ? { incluyeImpuestos: true } : {}),
   };
 }
 
@@ -141,7 +145,18 @@ export function buscarDemo(c: Consulta): RespuestaBusqueda {
     grupos = paquetes.grupos;
     avisos.push(...paquetes.avisos);
   }
-  return { modulo: c.modulo, modo: 'demo', moneda: c.moneda, consultadoEn: GRABADO_EN, grupos: ordenarGrupos(grupos), avisos };
+  const perspectiva = c.modulo !== 'hoteles' ? perspectivaDemo(c) : undefined;
+  return { modulo: c.modulo, modo: 'demo', moneda: c.moneda, consultadoEn: GRABADO_EN, grupos: ordenarGrupos(grupos), avisos, ...(perspectiva ? { perspectiva } : {}) };
+}
+
+/** Rango típico de ejemplo: el del vuelo más barato y el más caro grabados para la ruta. */
+function perspectivaDemo(c: Consulta): PerspectivaPrecio | undefined {
+  const ruta = rutaDemo(c);
+  if (!ruta) return undefined;
+  const precios = ruta.datos.googleFlights.map((v) => convertirDesdeCOP(v[5] * (c.regreso ? 1 : 0.55) * c.adultos, c.moneda));
+  const minimo = Math.min(...precios);
+  const maximo = Math.max(...precios);
+  return { nivel: 'normal', rangoTipico: [minimo, Math.round(maximo * 1.1)], fuente: 'datos de ejemplo' };
 }
 
 export function ofertasDemo(origen: string, moneda: Moneda, hoy: string): RespuestaOfertas {

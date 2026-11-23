@@ -9,3 +9,14 @@ const AEROLINEAS: Record<string, string> = {
 export function nombreAerolinea(codigo: string): string {
   return AEROLINEAS[codigo.toUpperCase()] ?? codigo.toUpperCase();
 }
+
+/** Aerolíneas de bajo costo frecuentes en Colombia y la región. */
+const BAJO_COSTO = ['wingo', 'jetsmart', 'viva', 'spirit', 'frontier', 'volaris', 'sky', 'clic'];
+
+export const AVISO_BAJO_COSTO = 'Bajo costo: la maleta de bodega (y a veces la de mano) se paga aparte. Súmala antes de comparar.';
+
+/** ¿Alguna aerolínea del texto ("Wingo · 05:10 → 06:38", "LATAM + JetSMART") es de bajo costo? */
+export function esBajoCosto(texto: string): boolean {
+  const t = texto.toLowerCase();
+  return BAJO_COSTO.some((a) => new RegExp(`\\b${a}\\b`).test(t));
+}

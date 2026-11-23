@@ -10,4 +10,5 @@ export * from './fijos.ts';
 export * from './aerolineas.ts';
 export * from './interprete.ts';
 export * from './recomendar.ts';
+export * from './consejo.ts';
 export { buscarDemo, ofertasDemo, opcionesDemo, AVISO_DEMO, RUTAS_DEMO, GRABADO_EN } from './demo/generar.ts';

@@ -1,4 +1,6 @@
 import {
+  AVISO_BAJO_COSTO,
+  esBajoCosto,
   enlacesHoteles,
   enlacesVuelos,
   fechaSalidaHotel,
@@ -11,6 +13,7 @@ import {
   type GrupoPlataforma,
   type Oferta,
   type OpcionCompra,
+  type PerspectivaPrecio,
 } from '@tav/core';
 import { obtenerJSON } from '../http.ts';
 
@@ -47,7 +50,22 @@ interface VueloGF {
 export interface RespuestaGoogleFlights {
   best_flights?: VueloGF[];
   other_flights?: VueloGF[];
+  price_insights?: { lowest_price?: number; price_level?: string; typical_price_range?: number[] };
   error?: string;
+}
+
+/** «price_insights» de Google Flights: si el precio de hoy está bajo, normal o alto para la ruta. */
+export function perspectivaGoogle(r: RespuestaGoogleFlights): PerspectivaPrecio | undefined {
+  const nivel = r.price_insights?.price_level?.toLowerCase();
+  if (nivel !== 'low' && nivel !== 'typical' && nivel !== 'high') return undefined;
+  const [min, max] = r.price_insights?.typical_price_range ?? [];
+  const a = precioValido(min);
+  const b = precioValido(max);
+  return {
+    nivel: nivel === 'low' ? 'bajo' : nivel === 'high' ? 'alto' : 'normal',
+    ...(a && b ? { rangoTipico: [a, b] as [number, number] } : {}),
+    fuente: 'historial de Google Flights',
+  };
 }
 
 const hora = (t?: string): string => (t ? t.slice(-5) : '--:--');
@@ -93,6 +111,9 @@ export function mapearGoogleFlights(r: RespuestaGoogleFlights, c: Consulta): Gru
         .join(' · '),
       precio,
       enlace: { metodo: 'GET', url: enlace },
+      // Google Flights muestra el total con impuestos y tasas.
+      incluyeImpuestos: true,
+      ...(esBajoCosto(aerolineas) ? { avisoEquipaje: AVISO_BAJO_COSTO } : {}),
       ...(token ? { tokenOpciones: token } : {}),
     });
   });
@@ -257,6 +278,7 @@ interface PropiedadBooking {
   rating?: number;
   extracted_price?: number;
   extracted_price_per_night?: number;
+  extracted_taxes_and_fees?: number;
   thumbnail?: string;
 }
 export interface RespuestaBooking {
@@ -280,14 +302,18 @@ export function mapearBooking(r: RespuestaBooking, c: Consulta): GrupoPlataforma
   const n = Math.max(1, noches({ ida: c.ida, regreso: fechaSalidaHotel(c) }));
   const ofertas: Oferta[] = [];
   (r.properties ?? []).forEach((p, i) => {
-    const total = precioValido(p.extracted_price) ?? (precioValido(p.extracted_price_per_night) ?? 0) * n;
-    if (!p.name || !total) return;
+    const base = precioValido(p.extracted_price) ?? (precioValido(p.extracted_price_per_night) ?? 0) * n;
+    if (!p.name || !base) return;
+    // Booking separa impuestos y tasas: se suman para mostrar el total real.
+    const impuestos = precioValido(p.extracted_taxes_and_fees) ?? 0;
+    const total = base + impuestos;
     ofertas.push({
       id: `booking-${i}`,
       titulo: p.name,
       detalle: [p.type ?? 'Alojamiento', p.location, `${n} ${n === 1 ? 'noche' : 'noches'}`].filter(Boolean).join(' · '),
       precio: total,
-      precioPorNoche: precioValido(p.extracted_price_per_night) ?? Math.round(total / n),
+      precioPorNoche: Math.round(total / n),
+      ...(impuestos > 0 ? { incluyeImpuestos: true } : {}),
       ...(p.rating ? { calificacion: p.rating } : {}),
       ...(p.thumbnail ? { imagen: p.thumbnail } : {}),
       enlace: { metodo: 'GET', url: p.link ?? enlacesHoteles.booking(c, `${p.name}, ${c.lugar}`) },
@@ -333,6 +359,8 @@ export function mapearAirbnb(r: RespuestaAirbnb, c: Consulta): GrupoPlataforma {
       detalle: `${a.title && a.name ? `${a.title} · ` : ''}${n} ${n === 1 ? 'noche' : 'noches'}`,
       precio: total,
       precioPorNoche: Math.round(total / n),
+      // Airbnb devuelve el total de la estadía con tarifas incluidas.
+      incluyeImpuestos: true,
       ...(a.rating ? { calificacion: Math.round(a.rating * 20) / 10 } : {}),
       ...(a.thumbnail ? { imagen: a.thumbnail } : {}),
       enlace: { metodo: 'GET', url: a.link ?? enlacesHoteles.airbnb(c) },

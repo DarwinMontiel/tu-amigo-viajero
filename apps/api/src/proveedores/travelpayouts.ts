@@ -1,4 +1,6 @@
 import {
+  AVISO_BAJO_COSTO,
+  esBajoCosto,
   buscarLugar,
   enlacesVuelos,
   esNacional,
@@ -100,12 +102,14 @@ export function mapearTP(r: RespuestaTP, c: Consulta, cfg: Pick<ConfigTP, 'marca
       // La API da el precio por adulto.
       precio: porPersona * c.adultos,
       enlace: { metodo: 'GET', url: enlaceAviasales(b.link, c, cfg.marcador) },
+      ...(esBajoCosto(nombreAerolinea(b.airline ?? '')) ? { avisoEquipaje: AVISO_BAJO_COSTO } : {}),
     });
   });
   return grupo('aviasales', ofertas, {
     enlaceBusqueda: enlacesVuelos.aviasales(c, cfg.marcador),
     fuente: 'Aviasales vía Travelpayouts Data API',
     nota: 'Precios vistos por otros viajeros en las últimas 48 horas: confirma el valor al abrir.',
+    ...(cfg.marcador ? { afiliado: true } : {}),
   });
 }
 
