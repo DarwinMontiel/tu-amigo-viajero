@@ -1,0 +1,37 @@
+# API de Tu Amigo Viajero en Cloudflare Workers (plan gratuito).
+# Las claves NO van aquí: se cargan con `wrangler secret put` (ver README).
+name = "tu-amigo-viajero-api"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Orígenes que pueden llamar a la API desde el navegador (separados por coma).
+ORIGENES_PERMITIDOS = "https://darwinmontiel.github.io,http://localhost:5173,http://localhost:4173"
+# Tope de búsquedas diarias en SerpApi para no gastar el plan gratuito (250 al mes).
+SERPAPI_LIMITE_DIARIO = "8"
+# Motores de SerpApi para hoteles: cada uno cuesta una búsqueda. Google Hotels ya trae
+# Booking.com, Expedia, Agoda, Hotels.com y más; agrega ",booking" si te sobra cuota.
+SERPAPI_MOTORES_HOTELES = "google_hotels,airbnb"
+# Modelo gratuito de Workers AI para el asistente (modo JSON).
+IA_MODELO = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+
+# IA gratuita de Cloudflare (10.000 neuronas diarias en el plan Free).
+[ai]
+binding = "AI"
+
+# Caché compartida entre instancias. Créala con:
+#   npx wrangler kv namespace create CACHE
+# y descomenta estas líneas con el id que te devuelva. Sin KV la caché vive en memoria.
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "PEGA_AQUI_EL_ID"
+
+# Límite de peticiones por IP (Rate Limiting de Workers, incluido en el plan gratuito).
+[[ratelimits]]
+name = "LIMITADOR"
+namespace_id = "1001"
+simple = { limit = 30, period = 60 }
+
+[observability]
+enabled = true
