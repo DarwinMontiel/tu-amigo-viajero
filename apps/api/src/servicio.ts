@@ -13,6 +13,7 @@ import {
   type GrupoPlataforma,
   type Moneda,
   type OfertaDestacada,
+  type PerspectivaPrecio,
   type RespuestaBusqueda,
   type RespuestaOfertas,
   type RespuestaOpciones,
@@ -77,40 +78,46 @@ interface Parcial {
   grupos: GrupoPlataforma[];
   fechas: string[];
   avisos: string[];
+  perspectiva?: PerspectivaPrecio;
 }
 
 async function gruposVuelos(c: Consulta, ctx: Contexto): Promise<Parcial> {
   const f = fuentesDisponibles(ctx.env);
   const clave = claveConsulta({ ...c, modulo: 'vuelos' });
-  const tareas: Array<Promise<Guardado<GrupoPlataforma>>> = [];
+  type ConPerspectiva = { grupo: GrupoPlataforma; perspectiva?: PerspectivaPrecio };
+  const tareas: Array<Promise<Guardado<ConPerspectiva>>> = [];
   const nombres: Array<[string, string]> = [];
   if (f.serpapi) {
     nombres.push(['google-flights', 'Google Flights']);
     tareas.push(
-      consultar(ctx, `gf:${clave}`, TTL_VUELOS, true, async () =>
-        serp.mapearGoogleFlights(await clienteSerp(ctx)<serp.RespuestaGoogleFlights>(serp.parametrosGoogleFlights(c)), c),
-      ),
+      consultar(ctx, `gf:${clave}`, TTL_VUELOS, true, async () => {
+        const r = await clienteSerp(ctx)<serp.RespuestaGoogleFlights>(serp.parametrosGoogleFlights(c));
+        const perspectiva = serp.perspectivaGoogle(r);
+        return { grupo: serp.mapearGoogleFlights(r, c), ...(perspectiva ? { perspectiva } : {}) };
+      }),
     );
   }
   if (f.travelpayouts) {
     nombres.push(['aviasales', 'Aviasales']);
     const cfg = { token: ctx.env.TRAVELPAYOUTS_TOKEN ?? '', ...(ctx.env.TRAVELPAYOUTS_MARKER ? { marcador: ctx.env.TRAVELPAYOUTS_MARKER } : {}) };
-    tareas.push(consultar(ctx, `tp:${clave}`, TTL_VUELOS, false, () => tp.vuelosAviasales(c, cfg)));
+    tareas.push(consultar(ctx, `tp:${clave}`, TTL_VUELOS, false, async () => ({ grupo: await tp.vuelosAviasales(c, cfg) })));
   }
   const resultados = await Promise.allSettled(tareas);
   const grupos: GrupoPlataforma[] = [];
   const fechas: string[] = [];
+  let perspectiva: PerspectivaPrecio | undefined;
   resultados.forEach((r, i) => {
     const [id, nombre] = nombres[i]!;
     if (r.status === 'fulfilled') {
-      grupos.push(r.value.valor);
+      grupos.push(r.value.valor.grupo);
+      perspectiva ??= r.value.valor.perspectiva;
       fechas.push(r.value.en);
     } else {
       grupos.push(grupoConError(id, nombre, r.reason));
     }
   });
   grupos.push(...gruposSoloEnlaceVuelos(c));
-  return { grupos, fechas, avisos: [] };
+  return { grupos, fechas, avisos: [], ...(perspectiva ? { perspectiva } : {}) };
 }
 
 function motoresHoteles(env: Entorno): Set<string> {
@@ -175,7 +182,15 @@ async function gruposHoteles(c: Consulta, ctx: Contexto): Promise<Parcial> {
 }
 
 function respuesta(c: Consulta, p: Parcial): RespuestaBusqueda {
-  return { modulo: c.modulo, modo: 'vivo', moneda: c.moneda, consultadoEn: masAntigua(p.fechas), grupos: ordenarGrupos(p.grupos), avisos: p.avisos };
+  return {
+    modulo: c.modulo,
+    modo: 'vivo',
+    moneda: c.moneda,
+    consultadoEn: masAntigua(p.fechas),
+    grupos: ordenarGrupos(p.grupos),
+    avisos: p.avisos,
+    ...(p.perspectiva ? { perspectiva: p.perspectiva } : {}),
+  };
 }
 
 export async function buscar(c: Consulta, ctx: Contexto): Promise<RespuestaBusqueda> {
@@ -190,7 +205,12 @@ export async function buscar(c: Consulta, ctx: Contexto): Promise<RespuestaBusqu
 
   const [vuelos, hoteles] = await Promise.all([gruposVuelos(c, ctx), gruposHoteles(c, ctx)]);
   const paquetes = armarPaquetes(c, vuelos, hoteles);
-  return respuesta(c, { grupos: paquetes.grupos, fechas: [...vuelos.fechas, ...hoteles.fechas], avisos: paquetes.avisos });
+  return respuesta(c, {
+    grupos: paquetes.grupos,
+    fechas: [...vuelos.fechas, ...hoteles.fechas],
+    avisos: paquetes.avisos,
+    ...(vuelos.perspectiva ? { perspectiva: vuelos.perspectiva } : {}),
+  });
 }
 
 export async function ofertas(origen: string, moneda: Moneda, ctx: Contexto): Promise<RespuestaOfertas> {

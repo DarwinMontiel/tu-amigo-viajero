@@ -11,6 +11,15 @@ function fechaEnDias(dias: number): string {
 
 const BUSQUEDA = `origen=BOG&destino=CTG&ida=${fechaEnDias(20)}&regreso=${fechaEnDias(25)}&adultos=2&moneda=COP`;
 
+/** Lleva la vista al título de resultados y le quita el foco para que la captura no muestre el anillo. */
+async function alResultado(page: Page) {
+  await page.evaluate(() => {
+    (document.activeElement as HTMLElement | null)?.blur();
+    const titulo = document.getElementById('titulo-resultados');
+    if (titulo) window.scrollTo({ top: titulo.getBoundingClientRect().top + window.scrollY - 84, behavior: 'instant' });
+  });
+}
+
 async function tema(page: Page, oscuro: boolean) {
   await page.emulateMedia({ colorScheme: oscuro ? 'dark' : 'light' });
 }
@@ -46,8 +55,7 @@ test('vuelos con vendedores (escritorio, claro)', async ({ page }) => {
   await page.goto(`/vuelos?${BUSQUEDA}`);
   await page.getByRole('button', { name: '¿Dónde lo compro más barato?' }).first().click();
   await expect(page.getByRole('list', { name: /Vendedores/ })).toBeVisible();
-  await page.locator('#titulo-resultados').scrollIntoViewIfNeeded();
-  await page.evaluate(() => window.scrollBy(0, -24));
+  await alResultado(page);
   await page.screenshot({ path: `${DOCS}vuelos.png` });
 });
 
@@ -56,9 +64,16 @@ test('paquetes (escritorio, oscuro)', async ({ page }) => {
   await tema(page, true);
   await page.goto(`/paquetes?${BUSQUEDA}&presupuesto=3000000`);
   await expect(page.getByText('Recomendación de tu amigo viajero')).toBeVisible();
-  await page.locator('#titulo-resultados').scrollIntoViewIfNeeded();
-  await page.evaluate(() => window.scrollBy(0, -24));
+  await alResultado(page);
   await page.screenshot({ path: `${DOCS}paquetes.png` });
+});
+
+test('compromiso en celular (375 px, oscuro)', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await tema(page, true);
+  await page.goto('/compromiso');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.screenshot({ path: `${DOCS}compromiso.png` });
 });
 
 test('hoteles en celular (375 px)', async ({ page }) => {
@@ -66,6 +81,6 @@ test('hoteles en celular (375 px)', async ({ page }) => {
   await tema(page, false);
   await page.goto(`/hoteles?${BUSQUEDA}`);
   await expect(page.locator('li.plataforma').first()).toBeVisible();
-  await page.locator('#titulo-resultados').scrollIntoViewIfNeeded();
+  await alResultado(page);
   await page.screenshot({ path: `${DOCS}celular.png` });
 });

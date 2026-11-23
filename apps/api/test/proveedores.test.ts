@@ -24,6 +24,18 @@ describe('SerpApi · Google Flights', () => {
     expect(g.ofertas[2]?.detalle).toMatch(/^1 escala/);
   });
 
+  it('lee el indicador de precio de Google y marca impuestos y maleta', () => {
+    expect(serp.perspectivaGoogle({ price_insights: { price_level: 'high', typical_price_range: [600_000, 900_000] } })).toEqual({
+      nivel: 'alto',
+      rangoTipico: [600_000, 900_000],
+      fuente: 'historial de Google Flights',
+    });
+    expect(serp.perspectivaGoogle({})).toBeUndefined();
+    const g = serp.mapearGoogleFlights(muestras.googleFlights, consulta());
+    expect(g.ofertas[0]).toMatchObject({ incluyeImpuestos: true, avisoEquipaje: expect.stringMatching(/maleta/) });
+    expect(g.ofertas[2]?.avisoEquipaje).toBeUndefined();
+  });
+
   it('las opciones de compra respetan los formularios POST de Google', () => {
     const opciones = serp.mapearOpciones(muestras.opcionesGF, 'https://respaldo');
     expect(opciones.map((o) => o.vendedor)).toEqual(['Despegar', 'Avianca']);
@@ -72,6 +84,11 @@ describe('SerpApi · Booking y Airbnb', () => {
     expect(g.ofertas[0]).toMatchObject({ precio: 1_710_000, precioPorNoche: 342_000, calificacion: 8.1, enlace: { url: 'https://www.booking.com/hotel/co/regatta.html' } });
   });
 
+  it('Booking suma impuestos y tasas al total cuando vienen aparte', () => {
+    const g = serp.mapearBooking({ properties: [{ name: 'Hotel X', link: 'https://www.booking.com/x', extracted_price: 1_000_000, extracted_taxes_and_fees: 190_000 }] }, consulta());
+    expect(g.ofertas[0]).toMatchObject({ precio: 1_190_000, precioPorNoche: 238_000, incluyeImpuestos: true });
+  });
+
   it('Airbnb pasa la calificación de 5 a 10 y calcula el precio por noche', () => {
     const g = serp.mapearAirbnb(muestras.airbnb, consulta());
     expect(g.ofertas[0]).toMatchObject({ titulo: 'Frente al mar', precio: 1_490_000, precioPorNoche: 298_000, calificacion: 9.8 });
@@ -84,6 +101,10 @@ describe('Travelpayouts · Aviasales', () => {
     expect(g.ofertas[0]).toMatchObject({ titulo: 'JetSMART · 13:45 → 15:12', precio: 790_800 });
     expect(g.ofertas[0]?.enlace.url).toBe('https://www.aviasales.com/search/BOG1012CTG15121?t=JA123&marker=M1');
     expect(g.ofertas[1]?.enlace.url).toBe('https://www.aviasales.com/search/BOG1012CTG15122?marker=M1');
+    // Con marcador de afiliado, la tarjeta lo declara; la segunda oferta es de Wingo (bajo costo).
+    expect(g.afiliado).toBe(true);
+    expect(g.ofertas[1]?.avisoEquipaje).toMatch(/maleta/);
+    expect(tp.mapearTP(muestras.travelpayouts, consulta(), {}).afiliado).toBeUndefined();
   });
 
   it('pide fechas exactas, ida y vuelta y mercado colombiano', () => {

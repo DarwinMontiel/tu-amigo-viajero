@@ -49,6 +49,7 @@ export function grupo(
     ...(extra.enlaceBusqueda ? { enlaceBusqueda: extra.enlaceBusqueda } : {}),
     ...(extra.fuente ? { fuente: extra.fuente } : {}),
     ...(extra.nota ? { nota: extra.nota } : {}),
+    ...(extra.afiliado ? { afiliado: true } : {}),
   };
 }
 

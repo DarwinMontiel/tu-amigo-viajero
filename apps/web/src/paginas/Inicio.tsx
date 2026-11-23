@@ -6,6 +6,8 @@ import { useCarga } from '../useCarga.ts';
 import { Asistente } from '../componentes/Asistente.tsx';
 import { IconoAvion, IconoCama, IconoMaleta } from '../componentes/iconos.tsx';
 import { EnlaceOferta } from '../componentes/Resultados.tsx';
+import { useAjustes } from '../ajustes.ts';
+import { COMPROMISOS } from './Compromiso.tsx';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -26,7 +28,8 @@ const ORIGENES = [
 ];
 
 function TarjetaDestacada({ o, moneda }: { o: OfertaDestacada; moneda: Moneda }) {
-  const arte = ARTE[o.destino];
+  const { ahorroDatos } = useAjustes();
+  const arte = ahorroDatos ? undefined : ARTE[o.destino];
   const busqueda = new URLSearchParams({ origen: o.origen, destino: o.destino, ida: o.ida, ...(o.regreso ? { regreso: o.regreso } : {}), adultos: '1', moneda });
   return (
     <li className="destacada">
@@ -145,6 +148,7 @@ function OfertasDestacadas() {
 }
 
 export function Inicio() {
+  const { ahorroDatos } = useAjustes();
   return (
     <>
       <section className="heroe">
@@ -167,11 +171,11 @@ export function Inicio() {
                 <strong>3</strong> mejores precios por cada una
               </li>
               <li>
-                <strong>$0</strong> de comisión
+                <strong>$0</strong> de comisión, sin registro
               </li>
             </ul>
           </div>
-          <img className="heroe__ilustracion" src={`${BASE}ilustraciones/heroe.svg`} width={560} height={480} alt="" />
+          {ahorroDatos ? null : <img className="heroe__ilustracion" src={`${BASE}ilustraciones/heroe.svg`} width={560} height={480} alt="" />}
         </div>
       </section>
 
@@ -208,6 +212,29 @@ export function Inicio() {
       </section>
 
       <OfertasDestacadas />
+
+      <section className="seccion" aria-labelledby="titulo-compromiso">
+        <div className="contenedor">
+          <span className="antetitulo">Nuestro compromiso</span>
+          <h2 id="titulo-compromiso" className="mt-0">
+            Hecho para ayudar, no para venderte
+          </h2>
+          <p className="lead">Un servicio abierto y gratuito para que cualquier persona compare con calma y pague el precio justo.</p>
+          <ul className="compromisos" style={{ marginTop: 18 }}>
+            {COMPROMISOS.slice(0, 3).map((c) => (
+              <li key={c.titulo}>
+                <h3>{c.titulo}</h3>
+                <p>{c.texto}</p>
+              </li>
+            ))}
+          </ul>
+          <p style={{ marginTop: 18 }}>
+            <Link className="boton boton--secundario" to="/compromiso">
+              Lee todo nuestro compromiso
+            </Link>
+          </p>
+        </div>
+      </section>
 
       <section className="seccion seccion--alt" aria-labelledby="titulo-como">
         <div className="contenedor">

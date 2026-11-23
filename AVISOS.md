@@ -51,6 +51,7 @@ Contacto y en el pie del sitio.
 |---|---|---|
 | [SerpApi](https://serpapi.com/) | Resultados públicos de Google Flights, Google Hotels, Booking.com y Airbnb | Plan gratuito con clave del dueño del despliegue |
 | [Travelpayouts](https://www.travelpayouts.com/) · Aviasales Data API | Precios en caché y ofertas | Gratis para afiliados; enlaces con el marcador de afiliado opcional |
+| [ExchangeRate-API](https://www.exchangerate-api.com) (open.er-api.com) | Tasa del día | Gratis y sin clave, con atribución |
 | Travelpayouts · autocompletado | Sugerencias de ciudades y aeropuertos | Público, sin clave |
 | [Open-Meteo](https://open-meteo.com/) | Pronóstico y geocodificación | Gratis para uso no comercial, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) · Llama 3.3 70B | Asistente | Plan Free (10 000 neuronas al día); modelo bajo la licencia comunitaria de Llama 3.3 |

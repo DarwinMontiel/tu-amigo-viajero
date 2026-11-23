@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
 
-const RUTAS = ['vuelos', 'hoteles', 'paquetes', 'contacto'];
+const RUTAS = ['vuelos', 'hoteles', 'paquetes', 'compromiso', 'contacto'];
 
 /**
  * GitHub Pages no sabe de rutas de una SPA. Cada ruta conocida recibe su

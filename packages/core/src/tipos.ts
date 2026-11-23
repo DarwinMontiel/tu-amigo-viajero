@@ -35,6 +35,10 @@ export interface Oferta {
   tokenOpciones?: string;
   /** Paquetes: las dos piezas que lo componen. */
   piezas?: { vuelo: PiezaPaquete; hotel: PiezaPaquete };
+  /** true: el precio ya incluye impuestos y tasas; false: se suman al pagar; sin dato: la fuente no lo dice. */
+  incluyeImpuestos?: boolean;
+  /** Aviso práctico sobre equipaje (por ejemplo, aerolíneas de bajo costo). */
+  avisoEquipaje?: string;
 }
 
 export interface PiezaPaquete {
@@ -64,6 +68,16 @@ export interface GrupoPlataforma {
   /** De dónde salen los precios (por ejemplo «Google Hotels vía SerpApi»). */
   fuente?: string;
   nota?: string;
+  /** Los enlaces llevan un código de afiliado: se declara siempre en la interfaz. */
+  afiliado?: boolean;
+}
+
+/** Qué tan caro está el precio frente a lo habitual (Google Flights lo calcula con su historial). */
+export interface PerspectivaPrecio {
+  nivel: 'bajo' | 'normal' | 'alto';
+  /** Rango típico para esa ruta, en la moneda de la búsqueda. */
+  rangoTipico?: [number, number];
+  fuente: string;
 }
 
 export type ModoDatos = 'demo' | 'vivo';
@@ -77,6 +91,7 @@ export interface RespuestaBusqueda {
   /** Grupos con precio primero, ordenados por su oferta más barata. */
   grupos: GrupoPlataforma[];
   avisos: string[];
+  perspectiva?: PerspectivaPrecio;
 }
 
 export interface OfertaDestacada {

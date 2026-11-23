@@ -23,6 +23,30 @@ viaje con IA gratuita. Aquí no se paga nada: cada precio lleva a la plataforma 
 
 </div>
 
+## Nuestro compromiso
+
+Viajar no debería depender de saber buscar en diez páginas. Tu Amigo Viajero es un **servicio
+abierto para la comunidad**: cualquier persona, en Colombia o desde cualquier lugar, encuentra el
+precio justo en una sola búsqueda y entiende lo que está pagando.
+
+- **Gratis, sin registro y sin publicidad.** No pedimos datos personales ni usamos cookies de seguimiento.
+- **Ordenado solo por precio.** Ninguna plataforma paga por aparecer primero y no escondemos ninguna.
+- **Transparente.** Cada precio dice de dónde sale, cuándo se consultó, si es en vivo o de ejemplo,
+  si trae impuestos y si la maleta se paga aparte.
+- **Afiliados declarados.** Hoy ningún enlace es de afiliado. Si algún día lo es, la tarjeta lo dice
+  y la comisión no cambia el precio ni el orden.
+- **Te ayudamos a decidir, no a gastar:** si conviene comprar ya o esperar, cuánto ahorras al
+  comparar, si un paquete conviene más que comprar por separado y la tasa del día.
+- **Para todas las personas y todos los celulares:** accesibilidad WCAG 2.2 AA, letra grande y modo
+  para ahorrar datos en conexiones lentas.
+
+<img src="docs/compromiso.png" alt="Página «Por qué existe Tu Amigo Viajero» en un celular, tema oscuro, con los compromisos de gratuidad y orden por precio" width="220" align="right">
+
+La página [/compromiso](https://darwinmontiel.github.io/tu-amigo-viajero/compromiso) lo explica en
+el sitio y el [ADR 0006](docs/adr/0006-servicio-para-la-comunidad.md) cuenta cómo está implementado.
+
+<br clear="right">
+
 ## Qué es
 
 Comparar un viaje obliga a abrir cinco páginas y escribir lo mismo en cada una. Tu Amigo Viajero lo
@@ -40,7 +64,14 @@ hace en una sola búsqueda:
 - **Asistente con IA:** escribe «playa en diciembre saliendo de Medellín, 2 adultos, máximo 3
   millones». El asistente arma la búsqueda, muestra lo que entendió antes de buscar y, con los
   resultados, da una recomendación que **no puede inventar precios**.
+- **¿Conviene comprar ahora?** Una orientación clara según la anticipación, las temporadas altas de
+  Colombia y, con datos en vivo, si Google Flights ve el precio bajo, normal o alto para la ruta.
+- **Total real:** marca si el precio trae impuestos (y los suma cuando la fuente los da aparte) y
+  avisa cuando una aerolínea de bajo costo cobra la maleta aparte.
+- **¿Paquete o por separado?** Te da el total por separado como umbral para comparar paquetes armados.
+- **Tasa del día** con la equivalencia en dólares o pesos (ExchangeRate-API).
 - **Clima del destino** para tus fechas, con Open-Meteo.
+- **Letra grande y ahorro de datos**, que se activa solo en conexiones lentas.
 
 Todo es legal y gratis: APIs oficiales o de terceros que lo permiten, **sin raspar páginas**, con
 planes gratuitos protegidos con caché y cuota diaria.
@@ -149,8 +180,8 @@ VITE_API_URL=http://localhost:8787 npm run dev      # web contra la API local
 |---|---|
 | `npm run lint` | ESLint con TypeScript, React Hooks y `jsx-a11y` |
 | `npm run typecheck` | `tsc -b` de los tres paquetes, en modo estricto |
-| `npm test` | 75 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
-| `npm run e2e` | 15 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
+| `npm test` | 89 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
+| `npm run e2e` | 19 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
 | `npx playwright test --config scripts/capturas.config.ts` | Regenera las capturas de `docs/` |
 
 ## Claves que debes crear (todas gratis)
@@ -196,6 +227,7 @@ la página sigue funcionando: no hay cobros sorpresa.
 3. [Backend en Cloudflare Workers con Hono](docs/adr/0003-backend-en-cloudflare-workers.md)
 4. [Asistente con IA gratuita (Workers AI) y respaldo por reglas](docs/adr/0004-asistente-con-ia-gratuita.md)
 5. [Identidad visual «atardecer en vuelo» y accesibilidad AA](docs/adr/0005-identidad-visual-y-accesibilidad.md)
+6. [Un servicio público para la comunidad](docs/adr/0006-servicio-para-la-comunidad.md)
 
 ## Limitaciones conocidas
 
@@ -209,6 +241,12 @@ la página sigue funcionando: no hay cobros sorpresa.
 - Los precios de hoteles son por habitación según cada agencia; impuestos y tasas pueden variar.
 - El **modo demo** tiene datos de ejemplo para 10 rutas y 7 ciudades. Son ilustrativos, no reales.
 - La IA (Llama 3.3) puede entender mal un pedido raro: por eso muestra lo que entendió antes de buscar.
+- **¿Conviene comprar ahora?** es una orientación basada en reglas generales y, en vivo, en el
+  indicador de Google Flights. No predice precios.
+- **Equipaje:** el aviso se basa en el tipo de aerolínea. Las fuentes no siempre informan la tarifa
+  exacta de la maleta.
+- Todavía no hay alertas de precio por correo: exigirían guardar datos personales, y hoy el
+  compromiso es no pedir ninguno. Para volver a revisar, se guarda o comparte el enlace.
 
 ## Estructura
 

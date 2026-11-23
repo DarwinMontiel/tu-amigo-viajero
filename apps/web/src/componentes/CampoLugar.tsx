@@ -1,5 +1,6 @@
 import { buscarLugar, filtrarLugares } from '@tav/core';
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { useAjustes } from '../ajustes.ts';
 
 export interface LugarElegido {
   iata: string;
@@ -58,6 +59,7 @@ interface Props {
 /** Combobox accesible (patrón ARIA 1.2) con lista local inmediata y sugerencias remotas. */
 export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, error, marcador, clase = 'campo' }: Props) {
   const id = useId();
+  const { ahorroDatos } = useAjustes();
   const idLista = `${id}-lista`;
   const idError = `${id}-error`;
   const [texto, setTexto] = useState(valor ? etiqueta(valor) : '');
@@ -85,7 +87,7 @@ export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, 
   }, [buscando, termino, remotos]);
 
   useEffect(() => {
-    if (!buscando) return;
+    if (!buscando || ahorroDatos) return;
     const espera = setTimeout(() => {
       control.current?.abort();
       control.current = new AbortController();
@@ -96,7 +98,7 @@ export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, 
         });
     }, 250);
     return () => clearTimeout(espera);
-  }, [buscando, termino]);
+  }, [buscando, termino, ahorroDatos]);
 
   function elegir(l: LugarElegido) {
     alCambiar(l);

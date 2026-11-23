@@ -2,6 +2,31 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [3.1.0] - 2026-11-23
+
+Tu Amigo Viajero como **servicio para la comunidad**: gratis, neutral, transparente y pensado para
+cualquier persona y cualquier celular.
+
+### Agregado
+
+- Página **Nuestro compromiso** (`/compromiso`) y sección en el Inicio y en el README: sin
+  registro, sin publicidad, orden solo por precio y afiliados declarados.
+- **¿Conviene comprar ahora?**: consejo según la anticipación, las temporadas altas de Colombia
+  (fin de año, Semana Santa calculada, mitad de año) y el `price_insights` de Google Flights en vivo.
+- **Total real**: marca «Impuestos incluidos», suma los impuestos de Booking cuando vienen aparte y
+  avisa cuando una aerolínea de bajo costo cobra la maleta aparte.
+- **¿Paquete o por separado?** en Paquetes, con el umbral para comparar paquetes armados.
+- **Tasa del día** con la equivalencia en dólares o pesos.
+- Etiqueta **«Enlace de afiliado»** cuando se configura el marcador de Travelpayouts.
+- **Letra grande** (botón A+) y **ahorro de datos**, que se activa solo con Save-Data o en 2G.
+- ADR 0006. Pruebas: 89 unitarias y 19 escenarios e2e.
+
+### Cambiado
+
+- Las páginas secundarias se cargan aparte con `React.lazy`; la ruta `/compromiso` responde 200 en
+  GitHub Pages.
+- Encabezado más compacto en celulares de 375 px o menos.
+
 ## [3.0.0] - 2026-11-23
 
 Reconstrucción completa: de agencia ficticia con enlaces a **comparador real de precios** de vuelos,

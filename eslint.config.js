@@ -25,6 +25,8 @@ export default tseslint.config(
       ...jsxA11y.flatConfigs.recommended.rules,
       // El combobox maneja el teclado en el input; las opciones solo reciben el mouse.
       'jsx-a11y/click-events-have-key-events': 'off',
+      // Las etiquetas de los interruptores llevan título y descripción anidados.
+      'jsx-a11y/label-has-associated-control': ['error', { depth: 3 }],
     },
   },
   {
