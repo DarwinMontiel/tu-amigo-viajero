@@ -171,7 +171,9 @@ export function Marco() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    document.title = `${TITULOS[pathname] ?? 'Página no encontrada'} · Tu Amigo Viajero`;
+    // GitHub Pages redirige /vuelos a /vuelos/: se ignora la barra final.
+    const ruta = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+    document.title = `${TITULOS[ruta] ?? 'Página no encontrada'} · Tu Amigo Viajero`;
   }, [pathname]);
 
   return (

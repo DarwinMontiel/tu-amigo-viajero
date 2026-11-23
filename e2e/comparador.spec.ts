@@ -198,6 +198,12 @@ test.describe('Navegación y contacto', () => {
     await sinViolacionesAxe(page);
   });
 
+  test('las rutas con barra final (como las sirve GitHub Pages) tienen su título', async ({ page }) => {
+    await page.goto(`/vuelos/?${BUSQUEDA}`);
+    await expect(page.locator('li.plataforma').first()).toBeVisible();
+    await expect(page).toHaveTitle('Vuelos · Tu Amigo Viajero');
+  });
+
   test('las rutas funcionan al entrar directo y hay página 404', async ({ page }) => {
     await page.goto('/ruta-que-no-existe');
     await expect(page.getByRole('heading', { name: 'Esta ruta no existe' })).toBeVisible();
