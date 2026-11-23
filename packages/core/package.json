@@ -1,0 +1,10 @@
+{
+  "name": "@tav/core",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Dominio compartido: validación de búsquedas, enlaces a cada plataforma, ranking de precios y datos de ejemplo.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

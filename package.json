@@ -1,22 +1,40 @@
 {
   "name": "tu-amigo-viajero",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Sitio estático de una agencia de viajes ficticia colombiana, con buscador de vuelos y hoteles reales y simulador de pago a cuotas. Proyecto académico en equipo (2022).",
+  "description": "Comparador de precios de vuelos, hoteles y paquetes: los 3 resultados más baratos de cada plataforma en una sola búsqueda, en Colombia y el exterior.",
   "license": "MIT",
+  "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "estilos": "sass --no-source-map --quiet-deps --silence-deprecation=import,global-builtin,slash-div,color-functions,if-function sass/style.scss css/style.css",
-    "estilos:vigilar": "npm run estilos -- --watch",
-    "lint:html": "html-validate index.html destination.html pricing.html contact.html buscar.html",
-    "verificar": "node scripts/verificar-sitio.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "check": "npm run lint:html && npm run verificar && npm test"
+    "dev": "npm run dev -w @tav/web",
+    "dev:api": "npm run dev -w @tav/api",
+    "build": "npm run build -w @tav/web",
+    "preview": "npm run preview -w @tav/web",
+    "lint": "eslint .",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "check": "npm run lint && npm run typecheck && npm test"
   },
   "devDependencies": {
-    "html-validate": "11.21.1",
-    "sass": "1.108.2"
+    "@axe-core/playwright": "4.14.0",
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "1.65.1",
+    "@types/node": "24.19.2",
+    "eslint": "9.39.5",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.14.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.74.0",
+    "vitest": "5.1.1"
   }
 }
