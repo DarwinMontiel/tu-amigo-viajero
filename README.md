@@ -149,7 +149,7 @@ VITE_API_URL=http://localhost:8787 npm run dev      # web contra la API local
 |---|---|
 | `npm run lint` | ESLint con TypeScript, React Hooks y `jsx-a11y` |
 | `npm run typecheck` | `tsc -b` de los tres paquetes, en modo estricto |
-| `npm test` | 74 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
+| `npm test` | 75 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
 | `npm run e2e` | 15 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
 | `npx playwright test --config scripts/capturas.config.ts` | Regenera las capturas de `docs/` |
 

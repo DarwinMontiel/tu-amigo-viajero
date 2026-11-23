@@ -117,10 +117,8 @@ export function sanearIntencion(crudo: Record<string, unknown>, texto: string, h
   const ida = fecha(crudo.ida) ?? reglas.ida;
   let regreso = fecha(crudo.regreso) ?? reglas.regreso;
   if (ida && regreso && diasEntre(ida, regreso) <= 0) regreso = undefined;
-  if (ida && !regreso) {
-    const duracion = duracionPedida(texto) ?? (modulo === 'vuelos' ? undefined : 5);
-    if (duracion) regreso = sumarDias(ida, duracion);
-  }
+  const duracion = duracionPedida(texto) ?? (modulo === 'vuelos' ? undefined : 5);
+  if (ida && !regreso && duracion) regreso = sumarDias(ida, duracion);
   const adultosIA = Number(crudo.adultos);
   const adultos = Number.isInteger(adultosIA) && adultosIA >= 1 && adultosIA <= MAX_ADULTOS ? adultosIA : reglas.adultos;
   const valor = Number(crudo.presupuesto);
@@ -143,6 +141,7 @@ export function sanearIntencion(crudo: Record<string, unknown>, texto: string, h
     sugeridos,
     ...(ida ? { ida } : {}),
     ...(regreso ? { regreso } : {}),
+    ...(duracion ? { noches: duracion } : {}),
     adultos,
     ...(presupuesto ? { presupuesto } : {}),
     faltantes,

@@ -15,6 +15,8 @@ export interface Intencion {
   sugeridos: string[];
   ida?: string;
   regreso?: string;
+  /** Noches pedidas ("una semana" → 7), útil cuando no dijo la fecha. */
+  noches?: number;
   adultos: number;
   presupuesto?: { valor: number; moneda: Moneda };
   /** Datos que faltan para poder buscar. */
@@ -259,6 +261,7 @@ export function interpretarConReglas(texto: string, hoy: string = hoyISO()): Int
     sugeridos,
     ...(ida ? { ida } : {}),
     ...(regreso ? { regreso } : {}),
+    ...(nochesDeseadas ? { noches: nochesDeseadas } : {}),
     adultos,
     ...(presupuesto ? { presupuesto } : {}),
     faltantes,

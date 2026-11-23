@@ -57,7 +57,8 @@ export function Asistente() {
     const destino = destinoElegido ?? intencion.destino ?? destinoManual?.iata;
     if (!destino) return;
     const ida = intencion.ida ?? sumarDias(hoy, 21);
-    const regreso = intencion.regreso ?? (intencion.modulo === 'vuelos' ? '' : sumarDias(ida, 5));
+    const noches = intencion.noches ?? (intencion.modulo === 'vuelos' ? 0 : 5);
+    const regreso = intencion.regreso ?? (noches > 0 ? sumarDias(ida, noches) : '');
     const p = new URLSearchParams({ destino, ida, adultos: String(intencion.adultos), moneda: intencion.presupuesto?.moneda ?? 'COP' });
     if (intencion.modulo !== 'hoteles') p.set('origen', origen);
     if (regreso) p.set('regreso', regreso);
@@ -139,8 +140,8 @@ export function Asistente() {
               <div>
                 <dt>Fechas</dt>
                 <dd>
-                  {intencion.ida ? fechaCorta(intencion.ida) : 'en 3 semanas'}
-                  {intencion.regreso ? ` – ${fechaCorta(intencion.regreso)}` : ''}
+                  {intencion.ida ? fechaCorta(intencion.ida) : 'En 3 semanas'}
+                  {intencion.regreso ? ` – ${fechaCorta(intencion.regreso)}` : intencion.noches ? ` · ${intencion.noches} noches` : ''}
                 </dd>
               </div>
               <div>

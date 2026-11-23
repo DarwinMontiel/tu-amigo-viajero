@@ -23,7 +23,7 @@ hoteles y paquetes, nacional e internacional.
 - **Modo demo** con datos de ejemplo grabados (10 rutas, 7 ciudades) que funciona sin claves en
   GitHub Pages y en el CI.
 - Clima del destino para las fechas del viaje (Open-Meteo).
-- Pruebas: 74 unitarias (Vitest) y 15 escenarios e2e a 1440 y 375 px con axe-core en ambos temas.
+- Pruebas: 75 unitarias (Vitest) y 15 escenarios e2e a 1440 y 375 px con axe-core en ambos temas.
 - CI en GitHub Actions; despliegue de la web en Pages con Actions y despliegue opcional de la API.
 - Documentación: arquitectura con diagramas, 5 ADR, guía de claves y despliegue.
 

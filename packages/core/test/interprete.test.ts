@@ -43,6 +43,12 @@ describe('interpretarConReglas', () => {
     expect(interpretarConReglas('San Andrés presupuesto de 2,5 millones', HOY).presupuesto).toEqual({ valor: 2_500_000, moneda: 'COP' });
   });
 
+  it('guarda la duración aunque no diga la fecha', () => {
+    const r = interpretarConReglas('Hotel en Cartagena para una semana con mi familia', HOY);
+    expect(r).toMatchObject({ modulo: 'hoteles', destino: 'CTG', noches: 7, adultos: 4 });
+    expect(r.ida).toBeUndefined();
+  });
+
   it('dice qué falta cuando el pedido es vago', () => {
     const r = interpretarConReglas('quiero viajar', HOY);
     expect(r.faltantes).toEqual(['origen', 'destino', 'ida']);
