@@ -108,6 +108,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html[data-letra='grande'] {
+  font-size: 118.75%;
+}
+
 body {
   margin: 0;
   background: var(--fondo);
@@ -417,6 +421,27 @@ a:has(> .icono),
   .nav[data-abierto='true'] a {
     padding: 12px 14px;
     border-radius: var(--radio-sm);
+  }
+}
+
+@media (max-width: 420px) {
+  .encabezado__fila {
+    gap: 8px;
+  }
+
+  .marca {
+    font-size: 1rem;
+    gap: 8px;
+  }
+
+  .marca svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .boton-icono {
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -1435,6 +1460,135 @@ textarea:hover {
   margin-top: 28px;
   padding-top: 18px;
   border-top: 1px solid var(--borde);
+}
+
+/* ---------- Comunidad y ayudas ---------- */
+
+.boton-letra {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.boton-letra[aria-pressed='true'] {
+  background: var(--tinta);
+  color: var(--fondo);
+}
+
+.compromisos {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.compromisos li {
+  padding: 20px 22px;
+  border-radius: var(--radio);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--acento);
+}
+
+.compromisos h2,
+.compromisos h3 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.compromisos p {
+  margin: 0;
+  color: var(--tinta-suave);
+}
+
+.consejo {
+  padding: 18px 22px;
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  border-left: 6px solid var(--acento);
+  background: var(--superficie);
+  margin-bottom: 18px;
+}
+
+.consejo--comprar {
+  border-left-color: var(--exito);
+}
+
+.consejo--atento {
+  border-left-color: var(--aviso);
+}
+
+.consejo h2 {
+  font-size: 1.15rem;
+  margin: 2px 0 8px;
+}
+
+.consejo ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.oferta__avisos {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+}
+
+.etiqueta-ok,
+.etiqueta-ojo {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.etiqueta-ok {
+  background: var(--exito-suave);
+  color: var(--exito);
+}
+
+.etiqueta-ojo {
+  background: var(--aviso-suave);
+  color: var(--aviso);
+}
+
+.dato__extra {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.ajustes {
+  display: grid;
+  gap: 12px;
+}
+
+.interruptor {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: var(--radio-sm);
+  background: var(--superficie-2);
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.interruptor input {
+  width: 22px;
+  min-height: 22px;
+  margin-top: 2px;
+  accent-color: var(--marca);
+  flex: none;
+}
+
+.interruptor small {
+  display: block;
+  color: var(--tinta-suave);
 }
 
 /* ---------- Utilidades ---------- */

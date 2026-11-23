@@ -1,13 +1,26 @@
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/figtree';
 import './estilos.css';
-import { StrictMode } from 'react';
+import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Link, RouterProvider } from 'react-router';
 import { Marco } from './componentes/Marco.tsx';
-import { Busqueda } from './paginas/Busqueda.tsx';
-import { Contacto } from './paginas/Contacto.tsx';
 import { Inicio } from './paginas/Inicio.tsx';
+
+// El Inicio va en el paquete principal; el resto se descarga al visitarlo (menos datos en celulares).
+const Busqueda = lazy(() => import('./paginas/Busqueda.tsx').then((m) => ({ default: m.Busqueda })));
+const Contacto = lazy(() => import('./paginas/Contacto.tsx').then((m) => ({ default: m.Contacto })));
+const Compromiso = lazy(() => import('./paginas/Compromiso.tsx').then((m) => ({ default: m.Compromiso })));
+
+function Cargando() {
+  return (
+    <div className="contenedor seccion" role="status">
+      <p className="ayuda cargando-puntos">Cargando</p>
+    </div>
+  );
+}
+
+const diferido = (nodo: React.ReactNode) => <Suspense fallback={<Cargando />}>{nodo}</Suspense>;
 
 function NoEncontrada() {
   return (
@@ -31,10 +44,11 @@ const enrutador = createBrowserRouter(
       element: <Marco />,
       children: [
         { index: true, element: <Inicio /> },
-        { path: 'vuelos', element: <Busqueda key="vuelos" modulo="vuelos" /> },
-        { path: 'hoteles', element: <Busqueda key="hoteles" modulo="hoteles" /> },
-        { path: 'paquetes', element: <Busqueda key="paquetes" modulo="paquetes" /> },
-        { path: 'contacto', element: <Contacto /> },
+        { path: 'vuelos', element: diferido(<Busqueda key="vuelos" modulo="vuelos" />) },
+        { path: 'hoteles', element: diferido(<Busqueda key="hoteles" modulo="hoteles" />) },
+        { path: 'paquetes', element: diferido(<Busqueda key="paquetes" modulo="paquetes" />) },
+        { path: 'compromiso', element: diferido(<Compromiso />) },
+        { path: 'contacto', element: diferido(<Contacto />) },
         { path: '*', element: <NoEncontrada /> },
       ],
     },

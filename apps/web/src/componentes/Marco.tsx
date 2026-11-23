@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router';
+import { cambiarAjuste, useAjustes } from '../ajustes.ts';
 import { HAY_API } from '../api.ts';
 import { useTema } from '../tema.ts';
 import { IconoCerrar, IconoLuna, IconoMenu, IconoSol } from './iconos.tsx';
@@ -10,6 +11,7 @@ const ENLACES = [
   { a: '/vuelos', texto: 'Vuelos' },
   { a: '/hoteles', texto: 'Hoteles' },
   { a: '/paquetes', texto: 'Paquetes' },
+  { a: '/compromiso', texto: 'Compromiso' },
   { a: '/contacto', texto: 'Contacto' },
 ];
 
@@ -18,11 +20,13 @@ const TITULOS: Record<string, string> = {
   '/vuelos': 'Vuelos',
   '/hoteles': 'Hoteles',
   '/paquetes': 'Paquetes vuelo + hotel',
+  '/compromiso': 'Nuestro compromiso',
   '/contacto': 'Contacto',
 };
 
 function Encabezado() {
   const [tema, alternarTema] = useTema();
+  const { letraGrande } = useAjustes();
   const [abierto, setAbierto] = useState(false);
   const { pathname } = useLocation();
   const [rutaPrevia, setRutaPrevia] = useState(pathname);
@@ -47,6 +51,16 @@ function Encabezado() {
             </NavLink>
           ))}
         </nav>
+        <button
+          type="button"
+          className="boton-icono boton-letra"
+          aria-pressed={letraGrande}
+          onClick={() => cambiarAjuste('letraGrande', !letraGrande)}
+          title="Letra grande"
+        >
+          <span aria-hidden="true">A+</span>
+          <span className="solo-lectores">Letra grande</span>
+        </button>
         <button
           type="button"
           className="boton-icono"
@@ -94,8 +108,8 @@ function Pie() {
           <div>
             <h2>Tu Amigo Viajero</h2>
             <p>
-              Comparador de precios de viaje: busca una vez y ve los 3 precios más baratos de cada plataforma. No vendemos ni cobramos:
-              la compra se hace en la página de cada plataforma.
+              Un comparador de viajes gratuito y abierto, hecho para ayudar: busca una vez y ve los 3 precios más baratos de cada plataforma,
+              ordenados solo por precio. Sin registro, sin publicidad y sin comisiones ocultas.
             </p>
           </div>
           <div>
@@ -129,6 +143,12 @@ function Pie() {
           <div>
             <h2>Proyecto</h2>
             <ul>
+              <li>
+                <Link to="/compromiso">Nuestro compromiso</Link>
+              </li>
+              <li>
+                <Link to="/compromiso#ajustes">Letra grande y ahorro de datos</Link>
+              </li>
               <li>
                 <Link to="/contacto">Autor y créditos</Link>
               </li>

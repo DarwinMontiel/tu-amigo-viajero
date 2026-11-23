@@ -13,6 +13,7 @@ import {
 } from '@tav/core';
 import { useState, type ReactNode } from 'react';
 import { api, ErrorApi } from '../api.ts';
+import { equivalente, useTasas } from './Ayudas.tsx';
 import { IconoAvion, IconoCama, IconoEstrella, IconoExterno } from './iconos.tsx';
 
 /** Abre la oferta en la plataforma. Google entrega algunos enlaces como formulario POST. */
@@ -121,6 +122,13 @@ function FilaOferta({ oferta, puesto, grupo, consulta, moneda }: { oferta: Ofert
           </div>
         </div>
       ) : null}
+      {oferta.incluyeImpuestos !== undefined || oferta.avisoEquipaje ? (
+        <p className="oferta__avisos">
+          {oferta.incluyeImpuestos === true ? <span className="etiqueta-ok">Impuestos incluidos</span> : null}
+          {oferta.incluyeImpuestos === false ? <span className="etiqueta-ojo">+ impuestos al pagar</span> : null}
+          {oferta.avisoEquipaje ? <span className="etiqueta-ojo">{oferta.avisoEquipaje}</span> : null}
+        </p>
+      ) : null}
       <div className="oferta__acciones">
         {oferta.calificacion ? (
           <span className="estrellas">
@@ -156,6 +164,11 @@ export function TarjetaPlataforma({ grupo, consulta, moneda, ganadora }: { grupo
         <h3 id={idTitulo}>{grupo.plataforma.nombre}</h3>
         {ganadora ? <span className="pastilla pastilla--vivo">Más barata</span> : null}
         {grupo.estado === 'solo-enlace' ? <span className="pastilla">Solo enlace</span> : null}
+        {grupo.afiliado ? (
+          <span className="pastilla" title="Si compras por este enlace, la plataforma nos paga una comisión. No cambia tu precio ni el orden.">
+            Enlace de afiliado
+          </span>
+        ) : null}
       </div>
       {grupo.fuente ? <p className="plataforma__fuente">{grupo.fuente}</p> : null}
       {grupo.estado === 'ok' ? (
@@ -168,6 +181,9 @@ export function TarjetaPlataforma({ grupo, consulta, moneda, ganadora }: { grupo
         <p className="estado-vacio">{grupo.nota ?? TEXTO_ESTADO[grupo.estado]}</p>
       ) : null}
       {grupo.nota && grupo.estado !== 'error' && grupo.estado !== 'sin-resultados' ? <p className="plataforma__nota">{grupo.nota}</p> : null}
+      {grupo.afiliado ? (
+        <p className="plataforma__nota">Enlace de afiliado: si compras por aquí, la plataforma nos paga una comisión. No cambia tu precio ni el orden.</p>
+      ) : null}
       {grupo.enlaceBusqueda ? (
         <div className="plataforma__pie">
           <a
@@ -187,6 +203,7 @@ export function TarjetaPlataforma({ grupo, consulta, moneda, ganadora }: { grupo
 
 export function ResumenResultados({ respuesta, consulta }: { respuesta: RespuestaBusqueda; consulta: Consulta }) {
   const { masBarata, ahorro, plataformasConPrecio } = resumir(respuesta);
+  const tasas = useTasas();
   if (!masBarata) return null;
   const m = respuesta.moneda;
   return (
@@ -194,6 +211,7 @@ export function ResumenResultados({ respuesta, consulta }: { respuesta: Respuest
       <div className="dato dato--destacado">
         <span>Lo más barato · {masBarata.plataforma}</span>
         <strong>{formatearPrecio(masBarata.oferta.precio, m)}</strong>
+        {tasas ? <small className="dato__extra">{equivalente(masBarata.oferta.precio, m, tasas)}</small> : null}
       </div>
       {consulta.adultos > 1 ? (
         <div className="dato">
@@ -223,7 +241,7 @@ export function ListaPlataformas({ respuesta, consulta }: { respuesta: Respuesta
         <>
           <div className="subtitulo-seccion">
             <h2>Los 3 más baratos por plataforma</h2>
-            <span className="ayuda">Ordenadas de la más barata a la más cara</span>
+            <span className="ayuda">Ordenadas solo por precio: ninguna plataforma paga por aparecer primero</span>
           </div>
           <ul className="plataformas">
             {conPrecio.map((g) => (

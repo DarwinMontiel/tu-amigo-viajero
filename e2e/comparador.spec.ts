@@ -144,6 +144,49 @@ test.describe('Hoteles y paquetes', () => {
   });
 });
 
+test.describe('Servicio para la comunidad', () => {
+  test('el compromiso es público, claro y accesible', async ({ page }) => {
+    await page.goto('/compromiso');
+    await expect(page.getByRole('heading', { level: 1, name: 'Por qué existe Tu Amigo Viajero' })).toBeVisible();
+    for (const titulo of ['Gratis, sin registro y sin publicidad', 'Ordenado solo por precio', 'Si algún enlace nos da comisión, lo decimos']) {
+      await expect(page.getByRole('heading', { name: titulo })).toBeVisible();
+    }
+    await sinViolacionesAxe(page);
+    await sinScrollHorizontal(page);
+  });
+
+  test('los resultados aconsejan cuándo comprar y avisan impuestos y maleta', async ({ page }) => {
+    await page.goto(`/vuelos?${BUSQUEDA}`);
+    await expect(page.getByText('¿Conviene comprar ahora?')).toBeVisible();
+    await expect(page.locator('#titulo-consejo')).not.toBeEmpty();
+    await expect(page.getByText('Impuestos incluidos').first()).toBeVisible();
+    await expect(page.getByText(/Bajo costo: la maleta de bodega/).first()).toBeVisible();
+    await expect(page.getByText(/Ordenadas solo por precio/)).toBeVisible();
+  });
+
+  test('paquetes compara contra comprar por separado', async ({ page }) => {
+    await page.goto(`/paquetes?${BUSQUEDA}`);
+    const tarjeta = page.getByRole('region', { name: '¿Paquete o por separado?' });
+    await expect(tarjeta).toBeVisible();
+    const total = (await page.locator('.dato--destacado strong').textContent()) ?? '';
+    await expect(tarjeta).toContainText(total.trim());
+  });
+
+  test('letra grande y ahorro de datos se recuerdan y ahorran descargas', async ({ page }) => {
+    await page.goto('/');
+    const tamano = () => page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
+    const antes = await tamano();
+    await page.getByRole('button', { name: 'Letra grande' }).click();
+    expect(await tamano()).toBeGreaterThan(antes);
+
+    await page.goto('/compromiso');
+    await page.getByLabel(/Ahorrar datos/).check();
+    await page.goto('/');
+    await expect(page.locator('.heroe__ilustracion')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Letra grande' })).toHaveAttribute('aria-pressed', 'true');
+  });
+});
+
 test.describe('Navegación y contacto', () => {
   test('contacto solo ofrece LinkedIn y GitHub, sin datos sensibles', async ({ page }) => {
     await page.goto('/contacto');

@@ -15,6 +15,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { api, HAY_API } from '../api.ts';
 import { useCarga } from '../useCarga.ts';
+import { ConsejoCompra, PaqueteOSeparado, TasaDelDia } from '../componentes/Ayudas.tsx';
 import { Clima } from '../componentes/Clima.tsx';
 import { FormularioBusqueda } from '../componentes/FormularioBusqueda.tsx';
 import { IconoAvion, IconoCama, IconoMaleta } from '../componentes/iconos.tsx';
@@ -166,6 +167,7 @@ export function Busqueda({ modulo }: { modulo: Modulo }) {
                 {respuesta.grupos.filter((g) => g.estado === 'ok').length} plataformas con precios para {resumenBusqueda}.
               </p>
               <ResumenResultados respuesta={respuesta} consulta={consulta} />
+              <TasaDelDia moneda={respuesta.moneda} />
               {avisos.length > 0 ? (
                 <ul className="avisos">
                   {avisos.map((a) => (
@@ -173,6 +175,8 @@ export function Busqueda({ modulo }: { modulo: Modulo }) {
                   ))}
                 </ul>
               ) : null}
+              {respuesta.grupos.some((g) => g.estado === 'ok') ? <ConsejoCompra consulta={consulta} respuesta={respuesta} /> : null}
+              {modulo === 'paquetes' ? <PaqueteOSeparado respuesta={respuesta} /> : null}
               {respuesta.grupos.some((g) => g.estado === 'ok') ? <Recomendacion consulta={consulta} respuesta={respuesta} {...(presupuesto ? { presupuesto } : {})} /> : null}
               <ListaPlataformas respuesta={respuesta} consulta={consulta} />
               <p className="ayuda" style={{ marginTop: 18 }}>

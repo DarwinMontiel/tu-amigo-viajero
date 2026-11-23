@@ -1,5 +1,6 @@
 import { diasEntre, fechaCorta, hoyISO, nombreCiudad, sumarDias } from '@tav/core';
 import { useEffect, useState } from 'react';
+import { useAjustes } from '../ajustes.ts';
 
 interface Dia {
   fecha: string;
@@ -27,10 +28,12 @@ export function describirClima(codigo: number): string {
  * viaje si caen en los próximos 16 días; si no, los próximos 7 como referencia.
  */
 export function Clima({ destino, lugar, ida, regreso }: { destino: string; lugar: string; ida: string; regreso: string }) {
+  const { ahorroDatos } = useAjustes();
   const [dias, setDias] = useState<Dia[] | null>(null);
   const esDelViaje = diasEntre(hoyISO(), ida) <= 15;
 
   useEffect(() => {
+    if (ahorroDatos) return;
     const control = new AbortController();
     const hoy = hoyISO();
     const ciudad = nombreCiudad(destino) !== destino ? nombreCiudad(destino) : lugar.split(',')[0] ?? destino;
@@ -60,9 +63,9 @@ export function Clima({ destino, lugar, ida, regreso }: { destino: string; lugar
       );
     })().catch(() => setDias(null));
     return () => control.abort();
-  }, [destino, lugar, ida, regreso]);
+  }, [destino, lugar, ida, regreso, ahorroDatos]);
 
-  if (!dias || dias.length === 0) return null;
+  if (ahorroDatos || !dias || dias.length === 0) return null;
   return (
     <section aria-labelledby="titulo-clima" style={{ marginTop: 28 }}>
       <div className="subtitulo-seccion">
