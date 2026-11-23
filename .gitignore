@@ -1,13 +1,25 @@
-# Dependencias de desarrollo (Sass y html-validate)
+# Dependencias y compilados
 node_modules/
+dist/
+.wrangler/
+*.tsbuildinfo
 
-# Caché de compilación de Sass y mapas de fuentes
-.sass-cache/
-*.css.map
-!css/bootstrap.css.map
+# Secretos locales del Worker (usa .dev.vars.example como plantilla)
+.dev.vars
+.env
+.env.*
+!.env.example
 
-# Archivos del sistema operativo y del editor
+# Pruebas e2e
+test-results/
+playwright-report/
+blob-report/
+
+# Sistema operativo y editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# Configuración local de Claude Code
+.claude/

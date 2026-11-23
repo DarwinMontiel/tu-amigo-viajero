@@ -1,0 +1,56 @@
+name: Desplegar la API (Cloudflare Workers)
+
+# Opcional: solo despliega si el repositorio tiene el secreto CLOUDFLARE_API_TOKEN.
+# Las claves de SerpApi y Travelpayouts viven en Cloudflare (wrangler secret put),
+# nunca en GitHub ni en el código. Ver README → «Datos en vivo».
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - 'packages/core/**'
+      - '.github/workflows/api.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TIENE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    steps:
+      - name: Sin token de Cloudflare no hay despliegue
+        if: env.TIENE_TOKEN != 'true'
+        run: echo "::notice::No hay CLOUDFLARE_API_TOKEN: la API no se despliega y el sitio sigue en modo demo."
+
+      - uses: actions/checkout@v5
+        if: env.TIENE_TOKEN == 'true'
+
+      - uses: actions/setup-node@v5
+        if: env.TIENE_TOKEN == 'true'
+        with:
+          node-version: 24
+          cache: npm
+
+      - if: env.TIENE_TOKEN == 'true'
+        run: npm ci
+
+      - name: Pruebas antes de desplegar
+        if: env.TIENE_TOKEN == 'true'
+        run: npm test
+
+      - name: wrangler deploy
+        if: env.TIENE_TOKEN == 'true'
+        working-directory: apps/api
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

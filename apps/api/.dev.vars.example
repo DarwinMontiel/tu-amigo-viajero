@@ -1,0 +1,6 @@
+# Copia este archivo como .dev.vars para probar con datos en vivo en `npm run dev:api`.
+# .dev.vars está en .gitignore: nunca subas tus claves.
+SERPAPI_KEY=
+TRAVELPAYOUTS_TOKEN=
+# Opcional: tu marcador de afiliado de Travelpayouts para los enlaces de Aviasales.
+TRAVELPAYOUTS_MARKER=

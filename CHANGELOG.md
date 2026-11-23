@@ -2,6 +2,44 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [3.0.0] - 2026-11-23
+
+Reconstrucción completa: de agencia ficticia con enlaces a **comparador real de precios** de vuelos,
+hoteles y paquetes, nacional e internacional.
+
+### Agregado
+
+- **Precios dentro de la app:** los 3 más baratos de cada plataforma, de menor a mayor. Vuelos de
+  Google Flights (SerpApi) y Aviasales (Travelpayouts); hoteles de Booking.com, Expedia, Agoda,
+  Hotels.com, Trip.com y otras agencias (Google Hotels, reagrupado por agencia) y Airbnb.
+- **«¿Dónde lo compro más barato?»:** vendedores de cada vuelo de Google Flights con su precio,
+  incluidos los enlaces que Google entrega como formulario POST.
+- **Paquetes vuelo + hotel:** vuelo más barato + 3 hoteles más baratos por plataforma, con desglose.
+- **Asistente con IA gratuita** (Workers AI, Llama 3.3 70B) que entiende pedidos en español y
+  recomienda sobre los resultados, con verificación anti-alucinación de precios y respaldo por reglas.
+- **Ofertas destacadas** en el Inicio (nacionales e internacionales) y filtro «¿A dónde voy con mi presupuesto?».
+- **API en Cloudflare Workers** (Hono): caché en memoria y KV, límite por IP, cuota diaria para no
+  pasar del plan gratuito, CORS restringido y degradación por fuente.
+- **Modo demo** con datos de ejemplo grabados (10 rutas, 7 ciudades) que funciona sin claves en
+  GitHub Pages y en el CI.
+- Clima del destino para las fechas del viaje (Open-Meteo).
+- Pruebas: 74 unitarias (Vitest) y 15 escenarios e2e a 1440 y 375 px con axe-core en ambos temas.
+- CI en GitHub Actions; despliegue de la web en Pages con Actions y despliegue opcional de la API.
+- Documentación: arquitectura con diagramas, 5 ADR, guía de claves y despliegue.
+
+### Cambiado
+
+- Stack: TypeScript estricto, React 19 + Vite, monorepo con *npm workspaces*.
+- Identidad visual «atardecer en vuelo» rediseñada: tipografías Bricolage Grotesque y Figtree,
+  ilustración principal nueva, tema claro y oscuro con contraste AA.
+- Módulos: Inicio, Vuelos, Hoteles, Paquetes y Contacto. Contacto ahora es para contactar al autor
+  (LinkedIn y GitHub), sin teléfono ni dirección.
+
+### Eliminado
+
+- La plantilla de GetTemplates (Bootstrap 3, jQuery y sus plugins), las páginas de la agencia
+  ficticia, los planes mensuales y el simulador de cuotas.
+
 ## [2.2.0] - 2026-11-23
 
 ### Agregado
