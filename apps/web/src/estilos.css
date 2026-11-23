@@ -1195,9 +1195,10 @@ textarea:hover {
 /* Clima */
 
 .clima {
+  /* Los días se acomodan en filas: sin zona con scroll, accesible con teclado y en celular. */
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  overflow-x: auto;
   padding-bottom: 4px;
   margin: 0;
   list-style: none;
