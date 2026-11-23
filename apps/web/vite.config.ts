@@ -1,26 +1,34 @@
-import { copyFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
 
+const RUTAS = ['vuelos', 'hoteles', 'paquetes', 'contacto'];
+
 /**
- * GitHub Pages no sabe de rutas de una SPA: copiar index.html como 404.html
- * hace que /tu-amigo-viajero/vuelos?... cargue la app y el enrutador resuelva.
+ * GitHub Pages no sabe de rutas de una SPA. Cada ruta conocida recibe su
+ * propio index.html (responde 200, bueno para compartir enlaces) y 404.html
+ * cubre cualquier otra para que el enrutador muestre «Esta ruta no existe».
  */
-function respaldo404(): Plugin {
+function rutasGithubPages(): Plugin {
   return {
-    name: 'respaldo-404-github-pages',
+    name: 'rutas-github-pages',
     apply: 'build',
     closeBundle() {
       const dist = resolve(import.meta.dirname, 'dist');
-      copyFileSync(resolve(dist, 'index.html'), resolve(dist, '404.html'));
+      const indice = resolve(dist, 'index.html');
+      copyFileSync(indice, resolve(dist, '404.html'));
+      for (const ruta of RUTAS) {
+        mkdirSync(resolve(dist, ruta), { recursive: true });
+        copyFileSync(indice, resolve(dist, ruta, 'index.html'));
+      }
     },
   };
 }
 
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? (process.env.BASE_PATH ?? '/tu-amigo-viajero/') : '/',
-  plugins: [react(), respaldo404()],
+  plugins: [react(), rutasGithubPages()],
   build: {
     target: 'es2022',
     sourcemap: true,
