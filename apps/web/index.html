@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tu Amigo Viajero · Compara vuelos, hoteles y paquetes</title>
+    <meta
+      name="description"
+      content="Compara en una sola búsqueda los 3 precios más baratos de cada plataforma: Google Flights, Aviasales, Booking.com, Expedia, Agoda, Airbnb y más. Con asistente de viaje con IA."
+    />
+    <meta name="theme-color" content="#c2410c" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#170d1c" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:title" content="Tu Amigo Viajero · Compara vuelos, hoteles y paquetes" />
+    <meta property="og:description" content="Los 3 precios más baratos de cada plataforma en una sola búsqueda, en Colombia y el exterior." />
+    <meta property="og:image" content="https://darwinmontiel.github.io/tu-amigo-viajero/vista-previa.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Aplica el tema guardado antes de pintar para evitar el destello.
+      try {
+        var t = localStorage.getItem('tav-tema');
+        if (t === 'claro' || t === 'oscuro') document.documentElement.dataset.theme = t === 'claro' ? 'light' : 'dark';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="raiz"></div>
+    <noscript>Tu Amigo Viajero necesita JavaScript para comparar precios.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
