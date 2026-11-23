@@ -2102,3 +2102,165 @@ body {
 #gtco-subscribe .gtco-heading p {
   color: #fff;
 }
+
+.fila-tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+}
+.fila-tarjetas:before, .fila-tarjetas:after {
+  display: none;
+}
+.fila-tarjetas > [class*=col-] {
+  display: flex;
+  float: none;
+}
+.fila-tarjetas .fh5co-card-item {
+  display: flex;
+  flex-direction: column;
+}
+.fila-tarjetas .fh5co-card-item .fh5co-text {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.fila-tarjetas .fh5co-card-item .destino-precio {
+  margin-top: auto;
+}
+
+#gtco-offcanvas a {
+  color: rgba(255, 255, 255, 0.85);
+}
+#gtco-offcanvas a:hover, #gtco-offcanvas a:focus {
+  color: #fff;
+}
+#gtco-offcanvas .offcanvas-has-dropdown.active > ul {
+  display: block;
+}
+
+.buscador .buscador-formulario {
+  padding: 30px;
+  background: #f7f8f6;
+  border-radius: 4px;
+}
+.buscador .buscador-formulario label {
+  color: #000;
+}
+.buscador .buscador-formulario label small {
+  color: #5f6670;
+}
+.buscador .buscador-formulario .btn {
+  min-width: 220px;
+}
+.buscador .buscador-atajos {
+  font-size: 14px;
+  color: #5f6670;
+}
+.buscador .buscador-atajos a {
+  display: inline-block;
+  margin: 4px 6px 0 0;
+  padding: 2px 10px;
+  border: 1px solid #e5d6cc;
+  border-radius: 999px;
+  color: #b8400b;
+  text-decoration: none;
+}
+.buscador .buscador-atajos a:hover, .buscador .buscador-atajos a:focus {
+  background: #fff3eb;
+}
+.buscador .buscador-resultados {
+  margin-top: 30px;
+}
+.buscador .buscador-resumen {
+  font-size: 18px;
+  color: #000;
+}
+.buscador .buscador-grupo {
+  margin-bottom: 30px;
+}
+.buscador .buscador-grupo h3 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+  color: #000;
+}
+.buscador .buscador-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+.buscador .buscador-proveedor {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-top: 4px solid #b8400b;
+  border-radius: 4px;
+  background: #fff;
+  color: #5f6670;
+  font-size: 14px;
+  line-height: 1.5;
+  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+.buscador .buscador-proveedor strong {
+  font-size: 18px;
+  color: #000;
+  margin-bottom: 4px;
+}
+.buscador .buscador-proveedor .buscador-ir {
+  margin-top: auto;
+  padding-top: 10px;
+  color: #b8400b;
+  font-weight: 700;
+}
+.buscador .buscador-proveedor:hover, .buscador .buscador-proveedor:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+.buscador .buscador-nota {
+  font-size: 15px;
+  color: #5f6670;
+}
+.buscador .buscador-clima {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 0 0 15px 0;
+  padding: 0;
+  list-style: none;
+}
+.buscador .buscador-clima li {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.buscador .buscador-clima .clima-dia {
+  color: #000;
+  font-weight: 700;
+}
+.buscador .buscador-clima .clima-temp {
+  font-size: 18px;
+  color: #000;
+}
+@media screen and (max-width: 480px) {
+  .buscador .buscador-formulario {
+    padding: 20px 15px;
+  }
+  .buscador .buscador-formulario .btn {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .gtco-nav .menu-1 ul li a {
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 14px;
+  }
+}

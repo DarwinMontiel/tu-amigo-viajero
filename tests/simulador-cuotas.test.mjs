@@ -77,10 +77,10 @@ test('valida los datos y responde en español', () => {
 });
 
 test('formatea pesos colombianos y porcentajes', () => {
-	assert.equal(S.formatearCOP(1250000), '$ 1.250.000');
-	assert.equal(S.formatearCOP(999), '$ 999');
-	assert.equal(S.formatearCOP(0), '$ 0');
-	assert.equal(S.formatearCOP(-15000.4), '-$ 15.000');
+	assert.equal(S.formatearCOP(1250000), '$ 1.250.000');
+	assert.equal(S.formatearCOP(999), '$ 999');
+	assert.equal(S.formatearCOP(0), '$ 0');
+	assert.equal(S.formatearCOP(-15000.4), '-$ 15.000');
 	assert.equal(S.formatearPorcentaje(0.018087), '1,81 %');
 	assert.equal(S.formatearPorcentaje(0.24, 0), '24 %');
 });

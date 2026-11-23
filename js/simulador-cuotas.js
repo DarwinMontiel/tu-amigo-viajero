@@ -42,7 +42,7 @@
 		if (typeof texto !== 'string') {
 			return NaN;
 		}
-		var limpio = texto.replace(/[\s$ %]/g, '');
+		var limpio = texto.replace(/[\s$%]/g, ''); // \s incluye el espacio de no separación
 		if (limpio === '' || !/^[0-9.,]+$/.test(limpio)) {
 			return NaN;
 		}
@@ -148,11 +148,14 @@
 		};
 	}
 
-	/** Formatea un valor en pesos colombianos: 1250000 -> "$ 1.250.000". */
+	/**
+	 * Formatea un valor en pesos colombianos: 1250000 -> "$ 1.250.000".
+	 * El espacio es de no separación para que "$" no quede solo al final de una línea.
+	 */
 	function formatearCOP(valor) {
 		var entero = Math.round(Math.abs(valor)).toString();
 		var conPuntos = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-		return (valor < 0 ? '-' : '') + '$ ' + conPuntos;
+		return (valor < 0 ? '-' : '') + '$ ' + conPuntos;
 	}
 
 	/** Formatea una tasa en decimal como porcentaje: 0.021 -> "2,10 %". */

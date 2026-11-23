@@ -40,7 +40,7 @@
 	campoPaquete.addEventListener('change', function () {
 		var precio = campoPaquete.value;
 		if (precio) {
-			campoMonto.value = Simulador.formatearCOP(Number(precio)).replace('$ ', '');
+			campoMonto.value = Simulador.formatearCOP(Number(precio)).replace(/^\$\s/, '');
 		}
 	});
 

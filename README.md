@@ -2,8 +2,9 @@
 
 # Tu Amigo Viajero
 
-**Sitio de una agencia de viajes ficticia por Colombia, con simulador para pagar el viaje a
-cuotas. Proyecto académico en equipo (2022), revisado en 2026.**
+**Sitio de una agencia de viajes ficticia por Colombia, con buscador que compara vuelos y hoteles
+reales en seis páginas y simulador para pagar el viaje a cuotas. Proyecto académico en equipo
+(2022), revisado en 2026.**
 
 [![Calidad del sitio](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/ci.yml/badge.svg)](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/ci.yml)
 [![Sitio en vivo](https://img.shields.io/badge/sitio-GitHub%20Pages-0d9488)](https://darwinmontiel.github.io/tu-amigo-viajero/)
@@ -13,6 +14,7 @@ cuotas. Proyecto académico en equipo (2022), revisado en 2026.**
 ![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue)
 
 [**Ver el sitio**](https://darwinmontiel.github.io/tu-amigo-viajero/) ·
+[**Comparar vuelos y hoteles**](https://darwinmontiel.github.io/tu-amigo-viajero/buscar.html) ·
 [**Probar el simulador**](https://darwinmontiel.github.io/tu-amigo-viajero/pricing.html#simulador)
 
 <img src="docs/portada.png" alt="Portada de Tu Amigo Viajero: ilustración de un avión sobre los Andes y el formulario para reservar" width="860">
@@ -32,11 +34,46 @@ conocer el mar.
 | [`index.html`](index.html) | Portada con formulario de reserva (fecha en español), destinos populares, "Cómo funciona", historias de viajeros y cifras |
 | [`destination.html`](destination.html) | Seis destinos con región, duración, temporada recomendada, precio desde y galería ampliable |
 | [`pricing.html`](pricing.html) | Planes Básico, Familiar y Plus en COP por mes, **simulador "Viaja ahora, paga a cuotas"** y preguntas frecuentes |
-| [`contact.html`](contact.html) | Formulario de contacto e información de la agencia |
+| [`buscar.html`](buscar.html) | **Buscador de vuelos y hoteles:** una búsqueda, seis páginas reales, con el clima del destino y la tasa de cambio del día |
+| [`contact.html`](contact.html) | Formulario de contacto e información de la agencia; "Quiero este plan" llega con el asunto lleno |
 
 Todo es ficticio y está dicho en el propio sitio: precios, cifras, testimonios, teléfono y
 correo. Los formularios validan en el navegador y muestran un mensaje claro, pero no envían
 ni guardan datos.
+
+## Buscador de vuelos y hoteles
+
+Con origen, destino, fechas y número de adultos, arma **la misma búsqueda en seis páginas reales**
+para comparar precios sin volver a escribir nada:
+
+| Tipo | Página | Qué abre |
+|---|---|---|
+| Vuelos | Despegar | Resultados de ida y vuelta (o solo ida) en pesos |
+| Vuelos | Google Flights | Resultados con el indicador de si el precio está alto o bajo |
+| Vuelos | Kayak | Metabuscador de aerolíneas y agencias |
+| Vuelos | Skyscanner | Metabuscador con alertas de precio |
+| Alojamiento | Booking.com | Hoteles del destino para esas noches |
+| Alojamiento | Airbnb | Casas y apartamentos del destino para esas noches |
+
+Además consulta en vivo, sin claves ni servidor propio:
+
+- **Ciudades y aeropuertos del mundo** para el autocompletado (API pública de Travelpayouts),
+  con una lista local de respaldo si no responde.
+- **Pronóstico del clima** del destino para las fechas del viaje, o de los próximos días si el
+  viaje es en más de 15 ([Open-Meteo](https://open-meteo.com/)).
+- **Tasa de cambio del día**, dólar y euro en pesos ([ExchangeRate-API](https://www.exchangerate-api.com)).
+
+Desde las tarjetas de destinos (`buscar.html?destino=guatape`) el buscador sabe a qué aeropuerto
+volar (Medellín), dónde buscar hotel (Guatapé) y de dónde tomar el clima (Guatapé, no Medellín).
+La búsqueda queda en la URL para compartirla (`?origen=BOG&destino=CTG&ida=…`).
+
+La lógica (`js/buscador.js`) valida y construye las URL sin tocar el DOM ni la red, y está
+cubierta con `node --test`; cada formato de URL se comprobó contra la página real.
+
+**Por qué enlaces y no precios dentro del sitio:** las API de precios de vuelos (Amadeus,
+Travelpayouts, Duffel) exigen una clave privada que no puede ir en un sitio estático, y copiar
+precios de otras páginas va contra sus condiciones. El siguiente paso natural es un backend
+pequeño que guarde la clave y consulte una de esas API.
 
 ## Simulador "Viaja ahora, paga a cuotas"
 
@@ -149,7 +186,7 @@ npm run check        # valida HTML, revisa el sitio y corre las pruebas
 
 | Comando | Qué hace |
 |---|---|
-| `npm run lint:html` | Valida las 4 páginas con html-validate |
+| `npm run lint:html` | Valida las 5 páginas con html-validate |
 | `npm run verificar` | Revisa enlaces y anclas, textos alternativos, Open Graph, atribución e imágenes sin uso |
 | `npm test` | Pruebas del simulador, de los formularios y del verificador |
 | `npm run estilos:vigilar` | Recompila los estilos al guardar |

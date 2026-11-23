@@ -30,10 +30,24 @@
 		$('#gtco-offcanvas .has-dropdown').addClass('offcanvas-has-dropdown');
 		$('#gtco-offcanvas').find('li').removeClass('has-dropdown');
 
-		$('.offcanvas-has-dropdown').mouseenter(function () {
-			$(this).addClass('active').find('ul').slideDown(500, 'easeOutExpo');
-		}).mouseleave(function () {
-			$(this).removeClass('active').find('ul').slideUp(500, 'easeOutExpo');
+		// En el celular no hay "hover": el submenú se abre y cierra al tocar su enlace.
+		$('.offcanvas-has-dropdown > a')
+			.attr({ 'aria-expanded': 'false', role: 'button' })
+			.on('click', function (event) {
+				event.preventDefault();
+				var $item = $(this).parent();
+				var abierto = !$item.hasClass('active');
+				$item.toggleClass('active', abierto).children('ul').stop(true, true)[abierto ? 'slideDown' : 'slideUp'](300, 'easeOutExpo');
+				$(this).attr('aria-expanded', abierto ? 'true' : 'false');
+			});
+
+		// Al elegir un destino del menú (anclas de la misma página) el menú se cierra.
+		$('#gtco-offcanvas').on('click', 'a', function () {
+			if ($(this).parent().hasClass('offcanvas-has-dropdown')) {
+				return; // es el botón que abre "Regiones", no un destino
+			}
+			$('body').removeClass('offcanvas overflow');
+			$('.js-gtco-nav-toggle').removeClass('active').attr({ 'aria-expanded': 'false', 'aria-label': 'Abrir menú' });
 		});
 
 		$(window).resize(function () {

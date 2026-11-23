@@ -237,3 +237,179 @@ body {
 #gtco-subscribe .gtco-heading p {
 	color: $brand-white;
 }
+
+// ---------- Cuadrícula de tarjetas con altura pareja ----------
+// Bootstrap 3 usa float: si una tarjeta queda más alta (por ejemplo, un texto de
+// tres líneas), la siguiente se engancha debajo de la columna más corta y deja
+// huecos. Con flex cada fila se alinea y las tarjetas de una misma fila miden igual.
+.fila-tarjetas {
+	display: flex;
+	flex-wrap: wrap;
+	&:before,
+	&:after {
+		display: none; // el clearfix de Bootstrap se volvería un elemento flex
+	}
+	> [class*="col-"] {
+		display: flex;
+		float: none;
+	}
+	.fh5co-card-item {
+		display: flex;
+		flex-direction: column;
+		.fh5co-text {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: column;
+		}
+		.destino-precio {
+			margin-top: auto; // el precio queda alineado al pie en toda la fila
+		}
+	}
+}
+
+// ---------- Menú del celular ----------
+#gtco-offcanvas {
+	a {
+		color: rgba(255, 255, 255, .85);
+		&:hover,
+		&:focus {
+			color: $brand-white;
+		}
+	}
+	.offcanvas-has-dropdown.active > ul {
+		display: block;
+	}
+}
+
+// ---------- Buscador de vuelos y hoteles (buscar.html) ----------
+.buscador {
+	.buscador-formulario {
+		padding: 30px;
+		background: #f7f8f6;
+		border-radius: 4px;
+		label {
+			color: $brand-black;
+			small {
+				color: $color-texto-suave;
+			}
+		}
+		.btn {
+			min-width: 220px;
+		}
+	}
+	.buscador-atajos {
+		font-size: 14px;
+		color: $color-texto-suave;
+		a {
+			display: inline-block;
+			margin: 4px 6px 0 0;
+			padding: 2px 10px;
+			border: 1px solid #e5d6cc;
+			border-radius: 999px;
+			color: $brand-primary;
+			text-decoration: none;
+			&:hover,
+			&:focus {
+				background: #fff3eb;
+			}
+		}
+	}
+	.buscador-resultados {
+		margin-top: 30px;
+	}
+	.buscador-resumen {
+		font-size: 18px;
+		color: $brand-black;
+	}
+	.buscador-grupo {
+		margin-bottom: 30px;
+		h3 {
+			margin: 0 0 15px 0;
+			font-size: 20px;
+			color: $brand-black;
+		}
+	}
+	.buscador-rejilla {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 15px;
+	}
+	.buscador-proveedor {
+		display: flex;
+		flex-direction: column;
+		padding: 18px;
+		border: 1px solid #e5e7eb;
+		border-top: 4px solid $brand-primary;
+		border-radius: 4px;
+		background: $brand-white;
+		color: $color-texto-suave;
+		font-size: 14px;
+		line-height: 1.5;
+		text-decoration: none;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, .06);
+		@include transition(.2s);
+		strong {
+			font-size: 18px;
+			color: $brand-black;
+			margin-bottom: 4px;
+		}
+		.buscador-ir {
+			margin-top: auto;
+			padding-top: 10px;
+			color: $brand-primary;
+			font-weight: 700;
+		}
+		&:hover,
+		&:focus {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 16px rgba(0, 0, 0, .1);
+			text-decoration: none;
+		}
+	}
+	.buscador-nota {
+		font-size: 15px;
+		color: $color-texto-suave;
+	}
+	.buscador-clima {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		gap: 10px;
+		margin: 0 0 15px 0;
+		padding: 0;
+		list-style: none;
+		li {
+			display: flex;
+			flex-direction: column;
+			padding: 12px;
+			border: 1px solid #e5e7eb;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+		.clima-dia {
+			color: $brand-black;
+			font-weight: 700;
+		}
+		.clima-temp {
+			font-size: 18px;
+			color: $brand-black;
+		}
+	}
+	@media screen and (max-width: $screen-xs) {
+		.buscador-formulario {
+			padding: 20px 15px;
+			.btn {
+				width: 100%;
+			}
+		}
+	}
+}
+
+// Entre tableta y escritorio (768–991 px) los seis enlaces del menú no caben a
+// 16 px con 10 px de margen: se compactan para que el menú no se parta en dos líneas.
+@media screen and (min-width: $screen-sm) and (max-width: $screen-md - 1) {
+	.gtco-nav .menu-1 ul li a {
+		padding-left: 6px;
+		padding-right: 6px;
+		font-size: 14px;
+	}
+}

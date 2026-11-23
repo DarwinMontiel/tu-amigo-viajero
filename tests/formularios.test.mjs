@@ -47,3 +47,10 @@ test('suscripción y contacto', () => {
 	assert.deepEqual(Object.keys(errores).sort(), ['correo', 'mensaje', 'nombre']);
 	assert.match(errores.mensaje, /al menos 10 caracteres/);
 });
+
+test('"Quiero este plan" sugiere el asunto en Contacto', () => {
+	assert.equal(F.asuntoDesdeConsulta('?plan=familiar'), 'Quiero el plan Familiar');
+	assert.equal(F.asuntoDesdeConsulta('?x=1&plan=basico'), 'Quiero el plan Básico');
+	assert.equal(F.asuntoDesdeConsulta('?plan=desconocido'), '');
+	assert.equal(F.asuntoDesdeConsulta(''), '');
+});

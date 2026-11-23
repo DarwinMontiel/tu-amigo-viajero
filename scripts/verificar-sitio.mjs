@@ -2,7 +2,7 @@
 /*
  * Revisión estática del sitio, sin dependencias.
  *
- * Comprueba en las 4 páginas que:
+ * Comprueba en las 5 páginas que:
  *   - no queden enlaces ni recursos locales rotos (href, src y url() de estilos);
  *   - todas las imágenes tengan un texto alternativo descriptivo;
  *   - no quede texto de relleno ni restos en inglés de la plantilla;
@@ -16,7 +16,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const PAGINAS = ['index.html', 'destination.html', 'pricing.html', 'contact.html'];
+export const PAGINAS = ['index.html', 'destination.html', 'pricing.html', 'contact.html', 'buscar.html'];
 export const URL_SITIO = 'https://darwinmontiel.github.io/tu-amigo-viajero/';
 
 // Texto que no debe volver a aparecer en las páginas (relleno o plantilla en inglés).

@@ -2,6 +2,29 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2.2.0] - 2026-11-23
+
+### Agregado
+
+- Página `buscar.html`: una búsqueda arma vuelos en Despegar, Google Flights, Kayak y Skyscanner y
+  alojamiento en Booking.com y Airbnb, con autocompletado de ciudades del mundo, pronóstico del
+  clima del destino (Open-Meteo) y tasa de cambio del día. Enlace en el menú y en el pie de todas
+  las páginas, y atajos desde los seis destinos.
+- "Quiero este plan" llega a Contacto con el asunto lleno (`contact.html?plan=familiar`).
+
+### Corregido
+
+- Destinos y portada: con tarjetas de alturas distintas, Bootstrap 3 (float) dejaba huecos y
+  colgaba una tarjeta sola en la tercera columna. Las filas de tarjetas ahora usan flex: cada fila
+  se alinea y las tarjetas miden lo mismo, con el precio al pie.
+- La portada tardaba varios segundos en mostrar el título y el formulario porque esperaban la
+  animación de scroll; el contenido de la cabecera ahora se ve de inmediato en las cinco páginas.
+- Menú del celular: el submenú "Regiones" solo se abría con el mouse; ahora abre y cierra al
+  tocarlo, y el menú se cierra al elegir un destino de la misma página. Enlaces más legibles.
+- Entre 769 y 991 px el menú se partía en dos líneas; se compacta para caber en una.
+- El simulador podía cortar "$" y el valor en líneas distintas ("12 cuotas de $ / 120.554"); el
+  peso usa un espacio de no separación.
+
 ## [2.1.0] - 2026-11-17
 
 ### Cambiado

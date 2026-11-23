@@ -151,7 +151,21 @@
 		}
 	}
 
+	var PLANES = { basico: 'Básico', familiar: 'Familiar', plus: 'Plus' };
+
+	/** Asunto sugerido cuando se llega a Contacto desde "Quiero este plan" (?plan=familiar). */
+	function asuntoDesdeConsulta(busqueda) {
+		var m = /[?&]plan=([a-z]+)/.exec(busqueda || '');
+		return m && PLANES[m[1]] ? 'Quiero el plan ' + PLANES[m[1]] : '';
+	}
+
 	function iniciar(documento) {
+		var asunto = documento.querySelector('form[data-formulario="contacto"] [data-campo="asunto"]');
+		var sugerido = asuntoDesdeConsulta(documento.location ? documento.location.search : '');
+		if (asunto && sugerido && !asunto.value) {
+			asunto.value = sugerido;
+		}
+
 		var formularios = documento.querySelectorAll('form[data-formulario]');
 		for (var i = 0; i < formularios.length; i++) {
 			formularios[i].setAttribute('novalidate', '');
@@ -186,6 +200,7 @@
 		validarRegistro: validarRegistro,
 		validarSuscripcion: validarSuscripcion,
 		validarContacto: validarContacto,
+		asuntoDesdeConsulta: asuntoDesdeConsulta,
 		iniciar: iniciar
 	};
 }));
