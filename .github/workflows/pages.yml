@@ -1,0 +1,56 @@
+name: Publicar en GitHub Pages
+
+# La web se compila y se publica con cada push a main. Si la variable del
+# repositorio API_URL apunta a la API desplegada, el sitio usa datos en vivo;
+# si está vacía, el sitio queda en modo demo con datos de ejemplo.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Compilar la web
+        run: npm run build
+        env:
+          BASE_PATH: /tu-amigo-viajero/
+          VITE_API_URL: ${{ vars.API_URL }}
+
+      - name: Vista previa para redes sociales
+        run: cp docs/vista-previa.png apps/web/dist/vista-previa.png
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: apps/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

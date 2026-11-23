@@ -2,214 +2,244 @@
 
 # Tu Amigo Viajero
 
-**Sitio de una agencia de viajes ficticia por Colombia, con buscador que compara vuelos y hoteles
-reales en seis páginas y simulador para pagar el viaje a cuotas. Proyecto académico en equipo
-(2022), revisado en 2026.**
+**Comparador de precios de viaje para Colombia y el exterior: una búsqueda, los 3 precios más
+baratos de cada plataforma, de menor a mayor, para vuelos, hoteles y paquetes. Con un asistente de
+viaje con IA gratuita. Aquí no se paga nada: cada precio lleva a la plataforma para comprar.**
 
-[![Calidad del sitio](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/ci.yml/badge.svg)](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/ci.yml)
-[![Sitio en vivo](https://img.shields.io/badge/sitio-GitHub%20Pages-0d9488)](https://darwinmontiel.github.io/tu-amigo-viajero/)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![Sass](https://img.shields.io/badge/Sass-CC6699?logo=sass&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue)
+[![Calidad](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/ci.yml/badge.svg)](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/ci.yml)
+[![GitHub Pages](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/pages.yml/badge.svg)](https://github.com/DarwinMontiel/tu-amigo-viajero/actions/workflows/pages.yml)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![React 19](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflare&logoColor=white)
+![WCAG 2.2 AA](https://img.shields.io/badge/WCAG_2.2-AA-7a2e5e)
+![Costo $0](https://img.shields.io/badge/costo-%240-146c36)
 
-[**Ver el sitio**](https://darwinmontiel.github.io/tu-amigo-viajero/) ·
-[**Comparar vuelos y hoteles**](https://darwinmontiel.github.io/tu-amigo-viajero/buscar.html) ·
-[**Probar el simulador**](https://darwinmontiel.github.io/tu-amigo-viajero/pricing.html#simulador)
+[**Abrir el comparador**](https://darwinmontiel.github.io/tu-amigo-viajero/) ·
+[Vuelos](https://darwinmontiel.github.io/tu-amigo-viajero/vuelos) ·
+[Hoteles](https://darwinmontiel.github.io/tu-amigo-viajero/hoteles) ·
+[Paquetes](https://darwinmontiel.github.io/tu-amigo-viajero/paquetes)
 
-<img src="docs/portada.png" alt="Portada de Tu Amigo Viajero: ilustración de un avión sobre los Andes y el formulario para reservar" width="860">
+<img src="docs/portada.png" alt="Portada de Tu Amigo Viajero: título «Busca una vez. Paga lo justo.», el asistente de viaje y una ilustración de un avión sobre el atardecer con tres precios comparados" width="860">
 
 </div>
 
-## De qué se trata
+## Qué es
 
-*Tu Amigo Viajero* es una agencia que no existe. Vende paquetes a seis destinos colombianos
-(Cartagena, Caño Cristales, Salento, Guatapé, San Andrés y Villa de Leyva), ofrece planes
-mensuales en pesos y deja simular el pago del viaje a cuotas antes de decidir. La portada
-cuenta el proceso con una clienta ficticia: doña Gloria, pensionada de Bogotá que quería
-conocer el mar.
+Comparar un viaje obliga a abrir cinco páginas y escribir lo mismo en cada una. Tu Amigo Viajero lo
+hace en una sola búsqueda:
 
-| Página | Contenido |
-|---|---|
-| [`index.html`](index.html) | Portada con formulario de reserva (fecha en español), destinos populares, "Cómo funciona", historias de viajeros y cifras |
-| [`destination.html`](destination.html) | Seis destinos con región, duración, temporada recomendada, precio desde y galería ampliable |
-| [`pricing.html`](pricing.html) | Planes Básico, Familiar y Plus en COP por mes, **simulador "Viaja ahora, paga a cuotas"** y preguntas frecuentes |
-| [`buscar.html`](buscar.html) | **Buscador de vuelos y hoteles:** una búsqueda, seis páginas reales, con el clima del destino y la tasa de cambio del día |
-| [`contact.html`](contact.html) | Formulario de contacto e información de la agencia; "Quiero este plan" llega con el asunto lleno |
+- **Vuelos:** los 3 más baratos de **Google Flights** y de **Aviasales**, y la búsqueda ya armada en
+  **Despegar, Kayak y Skyscanner**. En cada vuelo, «¿Dónde lo compro más barato?» muestra qué
+  vendedor lo ofrece más barato: la aerolínea, Despegar, Expedia, Kiwi y otros.
+- **Hoteles:** los 3 más baratos de **Booking.com, Expedia, Agoda, Hotels.com, Trip.com, Airbnb** y
+  cualquier otra agencia que aparezca en Google Hotels, con el total de la estadía y el precio por noche.
+- **Paquetes:** el vuelo más barato sumado a los 3 hoteles más baratos de cada plataforma, con el
+  desglose, más los paquetes armados de Despegar y Expedia.
+- **Inicio:** las ofertas más baratas que otros viajeros encontraron en los portales, nacionales e
+  internacionales, desde Bogotá, Medellín o Cali, con el filtro **«¿A dónde voy con mi presupuesto?»**.
+- **Asistente con IA:** escribe «playa en diciembre saliendo de Medellín, 2 adultos, máximo 3
+  millones». El asistente arma la búsqueda, muestra lo que entendió antes de buscar y, con los
+  resultados, da una recomendación que **no puede inventar precios**.
+- **Clima del destino** para tus fechas, con Open-Meteo.
 
-Todo es ficticio y está dicho en el propio sitio: precios, cifras, testimonios, teléfono y
-correo. Los formularios validan en el navegador y muestran un mensaje claro, pero no envían
-ni guardan datos.
+Todo es legal y gratis: APIs oficiales o de terceros que lo permiten, **sin raspar páginas**, con
+planes gratuitos protegidos con caché y cuota diaria.
 
-## Buscador de vuelos y hoteles
-
-Con origen, destino, fechas y número de adultos, arma **la misma búsqueda en seis páginas reales**
-para comparar precios sin volver a escribir nada:
-
-| Tipo | Página | Qué abre |
+| Asistente (tema oscuro) | Vuelos con vendedores | Celular (375 px) |
 |---|---|---|
-| Vuelos | Despegar | Resultados de ida y vuelta (o solo ida) en pesos |
-| Vuelos | Google Flights | Resultados con el indicador de si el precio está alto o bajo |
-| Vuelos | Kayak | Metabuscador de aerolíneas y agencias |
-| Vuelos | Skyscanner | Metabuscador con alertas de precio |
-| Alojamiento | Booking.com | Hoteles del destino para esas noches |
-| Alojamiento | Airbnb | Casas y apartamentos del destino para esas noches |
+| <img src="docs/asistente.png" alt="El asistente interpretó un pedido de playa: vuelo + hotel desde Medellín a Cartagena para 2 adultos con presupuesto de 3 millones" width="300"> | <img src="docs/vuelos.png" alt="Resultados de vuelos Bogotá–Cartagena: resumen con el más barato, recomendación y los 3 precios de Google Flights y Aviasales, con la lista de vendedores abierta" width="300"> | <img src="docs/celular.png" alt="Resultados de hoteles en Cartagena vistos en un celular" width="140"> |
 
-Además consulta en vivo, sin claves ni servidor propio:
+<img src="docs/paquetes.png" alt="Paquetes vuelo + hotel en tema oscuro: tarjetas por plataforma con el total y el desglose de vuelo y hotel" width="860">
 
-- **Ciudades y aeropuertos del mundo** para el autocompletado (API pública de Travelpayouts),
-  con una lista local de respaldo si no responde.
-- **Pronóstico del clima** del destino para las fechas del viaje, o de los próximos días si el
-  viaje es en más de 15 ([Open-Meteo](https://open-meteo.com/)).
-- **Tasa de cambio del día**, dólar y euro en pesos ([ExchangeRate-API](https://www.exchangerate-api.com)).
+## Arquitectura
 
-Desde las tarjetas de destinos (`buscar.html?destino=guatape`) el buscador sabe a qué aeropuerto
-volar (Medellín), dónde buscar hotel (Guatapé) y de dónde tomar el clima (Guatapé, no Medellín).
-La búsqueda queda en la URL para compartirla (`?origen=BOG&destino=CTG&ida=…`).
-
-La lógica (`js/buscador.js`) valida y construye las URL sin tocar el DOM ni la red, y está
-cubierta con `node --test`; cada formato de URL se comprobó contra la página real.
-
-**Por qué enlaces y no precios dentro del sitio:** las API de precios de vuelos (Amadeus,
-Travelpayouts, Duffel) exigen una clave privada que no puede ir en un sitio estático, y copiar
-precios de otras páginas va contra sus condiciones. El siguiente paso natural es un backend
-pequeño que guarde la clave y consulte una de esas API.
-
-## Simulador "Viaja ahora, paga a cuotas"
-
-<img src="docs/simulador.png" alt="Simulador con un paquete a Cartagena a 12 meses: cuota mensual, total de intereses y tabla de amortización" width="860">
-
-Con el valor del paquete, el plazo y una tasa efectiva anual (E.A.), calcula una **cuota fija
-mensual (sistema francés)** y la tabla de amortización mes a mes: cuota, intereses, abono a
-capital y saldo.
-
-- Convierte la tasa E.A. en mensual equivalente: `i = (1 + EA)^(1/12) − 1`.
-- Cuota: `C = P · i / (1 − (1 + i)^−n)`; con tasa 0 es simplemente `P / n`.
-- Trabaja en **pesos enteros** y la última cuota absorbe la diferencia de redondeo, así que el
-  saldo cierra exactamente en $0 y los abonos suman el valor del viaje.
-- Entiende cómo se escriben los números en Colombia (`1.290.000`, `24,5`) y responde con
-  mensajes de error en español cuando el valor, el plazo o la tasa están fuera de rango.
+```mermaid
+flowchart LR
+  U([Persona]) --> W[Web · React 19 + Vite<br/>GitHub Pages]
+  W -- "sin VITE_API_URL" --> D[(Modo demo<br/>@tav/core en el navegador)]
+  W -- "HTTPS + CORS" --> A[API · Hono<br/>Cloudflare Workers]
+  A --> C[(Caché<br/>memoria + KV)]
+  A --> L{{Límite por IP<br/>y cuota diaria}}
+  A --> S[SerpApi<br/>Google Flights · Google Hotels · Airbnb · Booking]
+  A --> T[Travelpayouts<br/>Aviasales Data API]
+  A --> IA[Workers AI<br/>Llama 3.3 70B]
+  W --> OM[Open-Meteo<br/>clima]
+  W --> TP[Autocompletado<br/>de ciudades]
+  subgraph core [packages/core · compartido]
+    V[validarConsulta] --- R[3 más baratos y paquetes] --- E[Enlaces a cada plataforma] --- I[Intérprete por reglas]
+  end
+  W -. usa .-> core
+  A -. usa .-> core
+```
 
 ```mermaid
 sequenceDiagram
-    actor V as Viajero
-    participant UI as simulador-ui.js
-    participant S as simulador-cuotas.js
-    V->>UI: Elige paquete, plazo y tasa E.A.
-    UI->>S: parsearNumero("1.290.000"), parsearNumero("24")
-    UI->>S: validar(monto, plazo, tasa)
-    alt Datos fuera de rango
-        S-->>UI: { monto: "El valor debe estar entre..." }
-        UI-->>V: Mensaje de error y campo marcado
-    else Datos válidos
-        UI->>S: simular(1290000, 12, 0.24)
-        S-->>UI: cuota, totales y tabla en pesos enteros
-        UI-->>V: Resumen y tabla de amortización
-    end
+  actor P as Persona
+  participant W as Web
+  participant A as API (Worker)
+  participant S as SerpApi / Travelpayouts
+  participant IA as Workers AI
+  P->>W: «Playa en diciembre desde Medellín, máximo 3 millones»
+  W->>A: POST /api/asistente/interpretar
+  A->>IA: JSON con esquema (modo JSON)
+  IA-->>A: intención
+  A-->>W: intención saneada (+ reglas si falta algo)
+  P->>W: Comparar precios
+  W->>A: GET /api/paquetes?origen=MDE&destino=CTG…
+  par en paralelo, con caché y cuota
+    A->>S: Google Flights
+    A->>S: Aviasales
+    A->>S: Google Hotels + Airbnb
+  end
+  A-->>W: grupos por plataforma, 3 más baratos cada uno
+  W->>A: POST /api/asistente/recomendar
+  A->>IA: resultados resumidos
+  A-->>W: recomendación (verificada contra los precios reales)
 ```
 
-La lógica (`js/simulador-cuotas.js`) es JavaScript puro, sin dependencias ni acceso al DOM:
-funciona en el navegador y se prueba con `node --test`. La interfaz (`js/simulador-ui.js`)
-solo lee el formulario y pinta los estados vacío, error y resultado.
+| Paquete | Responsabilidad |
+|---|---|
+| [`packages/core`](packages/core/src) | Dominio puro y probado: validación, enlaces, ranking, paquetes, intérprete en español y datos de ejemplo |
+| [`apps/api`](apps/api/src) | Proveedores, caché, límites, cuota diaria, IA y rutas HTTP |
+| [`apps/web`](apps/web/src) | Interfaz React accesible, temas claro y oscuro, cliente de la API o del modo demo |
 
-## Qué demuestra y cómo se relaciona con mi experiencia
+### API
 
-Es el proyecto más antiguo de mi portafolio y el más centrado en frontend. Lo conservo porque
-muestra de dónde vengo y porque, al revisarlo, le agregué algo de mi trabajo actual.
+| Ruta | Qué hace | Costo en SerpApi |
+|---|---|---|
+| `GET /api/vuelos?origen=BOG&destino=CTG&ida=…&regreso=…&adultos=2&moneda=COP` | 3 más baratos por plataforma | 1 |
+| `GET /api/hoteles?destino=CTG&ida=…&regreso=…` | Agrupa Google Hotels por agencia + Airbnb | 2 |
+| `GET /api/paquetes?…` | Vuelo más barato + 3 hoteles por plataforma | 3 (reusa la caché) |
+| `GET /api/vuelos/opciones?token=…&…` | Vendedores de un vuelo | 1–2, bajo demanda |
+| `GET /api/hoteles/ir?token=…&fuente=Expedia&…` | Redirige al enlace exacto de esa agencia | 1, solo al hacer clic |
+| `GET /api/ofertas?origen=BOG` | Ofertas destacadas (Aviasales) | 0 |
+| `POST /api/asistente/interpretar` · `POST /api/asistente/recomendar` | Asistente con IA | 0 |
+| `GET /api/salud` | Modo y fuentes configuradas | 0 |
 
-- **Cálculo de cuotas como en cartera.** Trabajo en automatización y backend para el sector de
-  cartera y cobranzas, donde una cuota mal redondeada o un saldo que no cierra en cero es un
-  error real. El simulador aplica esas mismas reglas: pesos enteros, ajuste en la última
-  cuota y pruebas que verifican que todo cuadre.
-- **Lógica separada de la interfaz.** Las reglas viven en módulos puros con pruebas; el DOM
-  queda en una capa delgada.
-- **Calidad automatizada aun en un sitio estático.** La integración continua valida el HTML,
-  revisa enlaces y anclas, textos alternativos, etiquetas Open Graph, imágenes sin uso y que
-  `css/style.css` esté compilado desde Sass.
-- **Cuidado con las licencias.** Se conserva la atribución CC BY 3.0 de la plantilla y se
-  reemplazaron las fotos sin fuente por ilustraciones propias ([AVISOS.md](AVISOS.md)).
+## Cómo correrlo
 
-Mis proyectos de backend y RPA están en
-[colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa) (bots con colas RabbitMQ),
-[radar-cartera](https://github.com/DarwinMontiel/radar-cartera) (ETL y calidad de datos de
-cartera) y [faro-cobranza](https://github.com/DarwinMontiel/faro-cobranza) (CRM de cobranza).
+Requisitos: Node.js 22.22 o superior (el CI usa 24).
 
-## Proyecto académico en equipo
-
-Lo hicimos en 2022 **Darwin Montiel, Andrés, Jhon y Martín** como proyecto de la carrera
-de Ingeniería de Sistemas. Partimos de una plantilla gratuita de
-[GetTemplates.co](https://gettemplates.co/) (licencia
-[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/deed.es)) y la adaptamos con páginas,
-formularios y contenido propios de la agencia.
-
-**Qué aporté.** En 2022 trabajé con el equipo en la adaptación de las páginas, los formularios
-y los textos; no conservamos el detalle de quién hizo cada parte, así que no lo atribuyo por
-persona. En 2026 hice solo la revisión que se ve hoy:
-
-- Reescribí todo el contenido en español: agencia colombiana, destinos nacionales, precios en
-  COP y "/mes", sin texto de relleno ni restos en inglés de la plantilla.
-- Reemplacé las fotos sin fuente conocida por ilustraciones SVG de destinos y fondos creadas
-  para este repositorio.
-- Programé el simulador de cuotas, la validación de formularios con mensajes en español y el
-  selector de fechas en español (dd/mm/aaaa).
-- Agregué accesibilidad básica (textos alternativos, enlace para saltar al contenido, etiquetas
-  ARIA), Open Graph para compartir enlaces, pruebas, validación de HTML e integración continua.
-- Quité scripts, estilos e imágenes de la plantilla que no se usaban.
-
-El historial completo está en el [CHANGELOG](CHANGELOG.md).
-
-## Tecnologías
-
-- **HTML5** y **CSS3** compilado desde **Sass** (`sass/style.scss` + `sass/_tu-amigo.scss`).
-- **Bootstrap 3** (grilla responsive) y **jQuery** con Waypoints (animaciones al hacer
-  scroll), Stellar (parallax), Magnific Popup (galería) y Bootstrap Datepicker.
-- **JavaScript** sin dependencias para el simulador y los formularios.
-- **Node.js 24** solo para desarrollo: `node --test`, html-validate y Sass.
-
-<img src="docs/celular.png" alt="Página de destinos vista en un celular" width="260">
-
-## Ejecutar localmente
-
-No requiere instalación: abre `index.html` en el navegador o sirve la carpeta.
+### Sin claves (modo demo)
 
 ```bash
-python -m http.server 8000      # http://localhost:8000
+npm ci
+npm run dev          # http://localhost:5173
 ```
 
-Para desarrollar (Node.js 20 o superior):
+La web usa los datos de ejemplo dentro del navegador. Todo funciona, incluido el asistente por
+reglas, y los enlaces abren las búsquedas reales. Hay datos de ejemplo para 10 rutas, como
+Bogotá → Cartagena, Medellín → San Andrés, Bogotá → Miami y Bogotá → Madrid, y para 7 ciudades de
+hoteles. Cualquier otra ruta muestra los enlaces a las plataformas.
+
+### Con claves (datos en vivo)
 
 ```bash
-npm ci               # Sass y html-validate, versiones fijas
-npm run estilos      # compila sass/ en css/style.css
-npm run check        # valida HTML, revisa el sitio y corre las pruebas
+cp apps/api/.dev.vars.example apps/api/.dev.vars   # pega SERPAPI_KEY y TRAVELPAYOUTS_TOKEN
+npm run dev:api                                     # API en http://localhost:8787
+VITE_API_URL=http://localhost:8787 npm run dev      # web contra la API local
 ```
+
+`.dev.vars` está en `.gitignore`. Workers AI usa tu cuenta de Cloudflare también en local
+(`npx wrangler login`).
+
+### Calidad
 
 | Comando | Qué hace |
 |---|---|
-| `npm run lint:html` | Valida las 5 páginas con html-validate |
-| `npm run verificar` | Revisa enlaces y anclas, textos alternativos, Open Graph, atribución e imágenes sin uso |
-| `npm test` | Pruebas del simulador, de los formularios y del verificador |
-| `npm run estilos:vigilar` | Recompila los estilos al guardar |
+| `npm run lint` | ESLint con TypeScript, React Hooks y `jsx-a11y` |
+| `npm run typecheck` | `tsc -b` de los tres paquetes, en modo estricto |
+| `npm test` | 74 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
+| `npm run e2e` | 15 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
+| `npx playwright test --config scripts/capturas.config.ts` | Regenera las capturas de `docs/` |
+
+## Claves que debes crear (todas gratis)
+
+| # | Servicio | Para qué | Dónde se obtiene |
+|---|---|---|---|
+| 1 | **SerpApi** | Google Flights, Google Hotels y Airbnb | [serpapi.com/users/sign_up](https://serpapi.com/users/sign_up) → plan **Free** (250 búsquedas al mes) → *Dashboard* → **Your Private API Key** |
+| 2 | **Travelpayouts** | Vuelos y ofertas de Aviasales | [travelpayouts.com](https://www.travelpayouts.com/) → crear cuenta → *Programs* → unirse a **Aviasales** → *Profile* → **API token**. El *Partner ID* es el marcador opcional |
+| 3 | **Cloudflare** | Alojar la API e IA gratuita | [dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) (plan Free). Workers AI no necesita otra clave |
+| 4 | *(opcional)* Token de Cloudflare para GitHub Actions | Desplegar la API con cada push | *My Profile* → *API Tokens* → plantilla **Edit Cloudflare Workers**; y el **Account ID** de la página de Workers |
+
+### Despliegue
+
+1. **API** (una vez, desde tu equipo):
+
+   ```bash
+   cd apps/api
+   npx wrangler login
+   npx wrangler secret put SERPAPI_KEY
+   npx wrangler secret put TRAVELPAYOUTS_TOKEN
+   npx wrangler secret put TRAVELPAYOUTS_MARKER     # opcional
+   npx wrangler deploy                              # imprime https://tu-amigo-viajero-api.<tu-subdominio>.workers.dev
+   ```
+
+   Opcional, para compartir la caché entre instancias: `npx wrangler kv namespace create CACHE` y
+   descomenta el bloque `[[kv_namespaces]]` de [`wrangler.toml`](apps/api/wrangler.toml).
+
+2. **Web:** en GitHub, *Settings → Secrets and variables → Actions → Variables*, crea `API_URL` con la
+   URL del paso 1 y vuelve a ejecutar **Publicar en GitHub Pages**. Sin esa variable el sitio queda en
+   modo demo.
+
+3. *(Opcional)* Guarda `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID` como *secrets* del repositorio:
+   el flujo [`api.yml`](.github/workflows/api.yml) despliega la API con cada cambio. Sin el token, ese
+   flujo no hace nada.
+
+**Costo total: $0.** Si se agota alguna cuota gratuita, la plataforma afectada lo dice y el resto de
+la página sigue funcionando: no hay cobros sorpresa.
+
+## Decisiones técnicas (ADR)
+
+1. [Monorepo TypeScript con modo demo de primera clase](docs/adr/0001-monorepo-y-modo-demo.md)
+2. [Fuentes de precios: SerpApi + Travelpayouts, sin scraping](docs/adr/0002-fuentes-de-precios.md). Incluye por qué no se usan Amadeus (cerrado en julio de 2026), Duffel ni las APIs de afiliados
+3. [Backend en Cloudflare Workers con Hono](docs/adr/0003-backend-en-cloudflare-workers.md)
+4. [Asistente con IA gratuita (Workers AI) y respaldo por reglas](docs/adr/0004-asistente-con-ia-gratuita.md)
+5. [Identidad visual «atardecer en vuelo» y accesibilidad AA](docs/adr/0005-identidad-visual-y-accesibilidad.md)
+
+## Limitaciones conocidas
+
+- **Cuota gratuita:** con 250 búsquedas al mes en SerpApi, la API se limita a 8 búsquedas en vivo
+  por día (`SERPAPI_LIMITE_DIARIO`); las repetidas salen de la caché. Subirla es cambiar una variable.
+- **Aviasales** muestra precios que otros viajeros vieron en las últimas 48 horas: pueden cambiar
+  al abrir la página.
+- **Despegar, Kayak y Skyscanner** no tienen API pública de precios: aparecen como «Solo enlace».
+- **Google Hotels** no acepta fechas por URL: el respaldo de los enlaces abre el hotel y ahí se
+  eligen las fechas. Con la API, el enlace exacto de cada agencia sí lleva las fechas.
+- Los precios de hoteles son por habitación según cada agencia; impuestos y tasas pueden variar.
+- El **modo demo** tiene datos de ejemplo para 10 rutas y 7 ciudades. Son ilustrativos, no reales.
+- La IA (Llama 3.3) puede entender mal un pedido raro: por eso muestra lo que entendió antes de buscar.
 
 ## Estructura
 
 ```
-├── index.html, destination.html, pricing.html, contact.html
-├── sass/                 estilos fuente (plantilla + _tu-amigo.scss)
-├── css/                  estilos compilados y de librerías
-├── js/
-│   ├── simulador-cuotas.js   lógica pura del simulador (probada)
-│   ├── simulador-ui.js       estados del simulador en la página
-│   ├── formularios.js        validación y mensajes de los formularios (probada)
-│   └── main.js               menú, animaciones, contadores y fechas
-├── images/               ilustraciones SVG propias
-├── scripts/verificar-sitio.mjs
-├── tests/                pruebas con node --test
-└── docs/                 capturas del README y vista previa para redes
+├── packages/core/          dominio compartido (+ test/)
+│   └── src/demo/           datos de ejemplo y generador del modo demo
+├── apps/api/               Worker: index.ts (rutas), servicio.ts, ia.ts, cache.ts, limites.ts
+│   └── src/proveedores/    serpapi.ts, travelpayouts.ts
+├── apps/web/               React: paginas/, componentes/, api.ts, estilos.css
+├── e2e/                    Playwright + axe-core
+├── scripts/                capturas reproducibles
+└── docs/                   capturas y adr/
 ```
 
-## Licencia y créditos
+## Historia y créditos
 
-Código y contenido propios bajo [licencia MIT](LICENSE). Diseño base: plantilla gratuita de
-[GetTemplates.co](https://gettemplates.co/) bajo CC BY 3.0, con atribución en el pie de cada
-página. Las licencias de cada librería están en [AVISOS.md](AVISOS.md).
+Tu Amigo Viajero nació en 2022 como **proyecto académico en equipo** de Ingeniería de Sistemas,
+hecho por **Darwin Montiel, Andrés, Jhon y Martín**: una agencia de viajes ficticia sobre una
+plantilla gratuita de GetTemplates. No conservamos el detalle de quién hizo cada parte, así que no
+lo atribuyo por persona.
+
+En 2026 lo revisé (versiones 2.x: simulador de cuotas, buscador con enlaces) y luego lo
+**reconstruí desde cero como comparador real** (3.0): arquitectura, API, IA, diseño, pruebas y
+documentación. De la versión original quedan el nombre, la idea y las ilustraciones de destinos
+creadas para este repositorio. Detalle en el [CHANGELOG](CHANGELOG.md) y en [AVISOS.md](AVISOS.md).
+
+**Autor de la versión 3.0:** Darwin Montiel ·
+[LinkedIn](https://www.linkedin.com/in/darwin-montiel-mora-925216206) ·
+[GitHub](https://github.com/DarwinMontiel)
+
+## Licencia
+
+Código bajo [licencia MIT](LICENSE). Licencias de terceros en [AVISOS.md](AVISOS.md). Las marcas
+citadas pertenecen a sus dueños; este proyecto no está afiliado a ninguna de ellas.

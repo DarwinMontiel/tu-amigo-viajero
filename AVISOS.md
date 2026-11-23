@@ -1,45 +1,60 @@
-# Licencias y atribuciones
+# Licencias, atribuciones y fuentes de datos
 
-Este repositorio mezcla código propio con material de terceros. Cada parte conserva su
-licencia.
+## Código propio — MIT
 
-## Código y contenido propios — MIT
+Todo el código de `packages/`, `apps/`, `e2e/` y `scripts/` se distribuye bajo la
+[licencia MIT](LICENSE). El texto de la licencia está en inglés porque es su versión oficial; en
+resumen: puedes usar, copiar y modificar este código siempre que conserves el aviso de copyright, y
+se entrega sin garantías.
 
-Los textos de la agencia ficticia, las ilustraciones SVG de `images/`, `sass/_tu-amigo.scss`,
-`js/simulador-cuotas.js`, `js/simulador-ui.js`, `js/formularios.js`,
-`js/bootstrap-datepicker.es.js`, `scripts/` y `tests/` se distribuyen bajo la
-[licencia MIT](LICENSE). El texto de la licencia está en inglés porque es su versión oficial;
-en resumen: puedes usar, copiar y modificar este código siempre que conserves el aviso de
-copyright, y se entrega sin garantías.
+## Plantilla de 2022 (GetTemplates, CC BY 3.0): ya no se usa
 
-## Plantilla de diseño — CC BY 3.0
+Las versiones 1.x y 2.x partían de una plantilla gratuita de [GetTemplates.co](https://gettemplates.co/)
+publicada bajo [Creative Commons Atribución 3.0](https://creativecommons.org/licenses/by/3.0/deed.es),
+con Bootstrap 3, jQuery y varios plugins. **En la versión 3.0.0 no queda nada de esa plantilla:** la
+estructura, los estilos, los scripts y las fuentes se reescribieron desde cero en React y CSS propio.
+Por eso ya no se incluye la atribución en el pie del sitio. El historial de esas versiones sigue en
+git y en el [CHANGELOG](CHANGELOG.md), donde se reconoce la plantilla original.
 
-La estructura de las páginas, `sass/style.scss` y `js/main.js` parten de una plantilla
-gratuita de [GetTemplates.co](https://gettemplates.co/), publicada bajo
-[Creative Commons Atribución 3.0](https://creativecommons.org/licenses/by/3.0/deed.es).
-Esa licencia pide reconocer al autor original: la atribución aparece en el pie de cada página
-y en el README. Los cambios hechos sobre la plantilla (traducción, contenido, estilos y
-JavaScript nuevos) son del equipo del proyecto.
+## Proyecto académico original
 
-## Librerías incluidas en el repositorio
-
-| Archivo | Proyecto | Licencia |
-|---|---|---|
-| `css/bootstrap.css`, `js/bootstrap.min.js`, `sass/bootstrap/`, `fonts/bootstrap/` | Bootstrap 3 | MIT |
-| `js/jquery.min.js` | jQuery | MIT |
-| `js/jquery.easing.1.3.js` | jQuery Easing (George McGinley Smith) | BSD |
-| `js/jquery.waypoints.min.js` | Waypoints | MIT |
-| `js/jquery.stellar.min.js` | Stellar.js | MIT |
-| `js/jquery.countTo.js` | jQuery countTo | MIT |
-| `js/jquery.magnific-popup.min.js`, `css/magnific-popup.css` | Magnific Popup | MIT |
-| `js/bootstrap-datepicker.min.js`, `css/bootstrap-datepicker.min.css` | Bootstrap Datepicker 1.5 | Apache 2.0 |
-| `js/modernizr-2.6.2.min.js` | Modernizr | MIT y BSD |
-| `css/animate.css` | Animate.css | MIT |
-| `css/themify-icons.css`, `fonts/themify-icons/` | Themify Icons | SIL OFL 1.1 |
-| `css/icomoon.css`, `fonts/icomoon/` | Íconos de IcoMoon incluidos en la plantilla | Según la plantilla de GetTemplates |
+Tu Amigo Viajero nació en 2022 como proyecto académico en equipo de **Darwin Montiel, Andrés, Jhon y
+Martín**. El nombre y la idea vienen de ese trabajo y se reconocen en el README, en la página de
+Contacto y en el pie del sitio.
 
 ## Imágenes
 
-La versión de 2022 usaba fotos de demostración sin una fuente identificable. En 2026 se
-reemplazaron por ilustraciones SVG creadas para este repositorio, así que todas las
-imágenes de `images/` y las capturas de `docs/` son propias.
+- `apps/web/public/ilustraciones/heroe.svg` y `favicon.svg`: creadas para la versión 3.0 (MIT).
+- `apps/web/public/ilustraciones/*.svg` de destinos: creadas para este repositorio en 2026 para
+  reemplazar las fotos sin fuente de 2022 (MIT).
+- `docs/*.png`: capturas del propio sitio, generadas con `scripts/capturas.spec.ts`.
+- Las plataformas se identifican con su nombre y un punto de color: no se usan sus logos.
+
+## Dependencias principales
+
+| Paquete | Uso | Licencia |
+|---|---|---|
+| React, React DOM | Interfaz | MIT |
+| React Router | Rutas de la web | MIT |
+| Vite, @vitejs/plugin-react | Compilación | MIT |
+| Hono | API en Workers | MIT |
+| Wrangler | Despliegue del Worker | MIT o Apache 2.0 |
+| @fontsource-variable/bricolage-grotesque | Tipografía de títulos | SIL OFL 1.1 |
+| @fontsource-variable/figtree | Tipografía de texto | SIL OFL 1.1 |
+| Vitest, Playwright, @axe-core/playwright | Pruebas | MIT y MPL 2.0 (axe-core) |
+| ESLint, typescript-eslint, eslint-plugin-jsx-a11y, eslint-plugin-react-hooks | Calidad | MIT |
+| TypeScript | Tipos | Apache 2.0 |
+
+## Fuentes de datos y servicios
+
+| Servicio | Uso | Condiciones |
+|---|---|---|
+| [SerpApi](https://serpapi.com/) | Resultados públicos de Google Flights, Google Hotels, Booking.com y Airbnb | Plan gratuito con clave del dueño del despliegue |
+| [Travelpayouts](https://www.travelpayouts.com/) · Aviasales Data API | Precios en caché y ofertas | Gratis para afiliados; enlaces con el marcador de afiliado opcional |
+| Travelpayouts · autocompletado | Sugerencias de ciudades y aeropuertos | Público, sin clave |
+| [Open-Meteo](https://open-meteo.com/) | Pronóstico y geocodificación | Gratis para uso no comercial, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/) · Llama 3.3 70B | Asistente | Plan Free (10 000 neuronas al día); modelo bajo la licencia comunitaria de Llama 3.3 |
+
+Los datos del **modo demo** (`packages/core/src/demo/datos.ts`) son de ejemplo, armados a mano. No
+son precios reales y la interfaz siempre lo indica. Los nombres de aerolíneas, hoteles y plataformas
+son marcas de sus dueños y se mencionan solo para identificar la oferta.
