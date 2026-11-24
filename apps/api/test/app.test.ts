@@ -303,3 +303,11 @@ describe('seguridad y casos borde de la revisión 3.1.1', () => {
     expect(r.status).toBe(200);
   });
 });
+
+describe('en vivo solo con SerpApi (sin Travelpayouts)', () => {
+  it('las ofertas del Inicio no muestran datos de ejemplo', async () => {
+    const r = (await (await pedir(crearApp(), '/api/ofertas?origen=BOG', { SERPAPI_KEY: 'k' })).json()) as { modo: string; nacionales: unknown[] };
+    expect(r.modo).toBe('vivo');
+    expect(r.nacionales).toEqual([]);
+  });
+});

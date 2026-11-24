@@ -238,7 +238,13 @@ export async function buscar(c: Consulta, ctx: Contexto): Promise<RespuestaBusqu
 
 export async function ofertas(origen: string, moneda: Moneda, ctx: Contexto): Promise<RespuestaOfertas> {
   const token = ctx.env.TRAVELPAYOUTS_TOKEN?.trim();
-  if (!token) return ofertasDemo(origen, moneda, hoyEnColombia());
+  if (!token) {
+    // En vivo sin Travelpayouts no se muestran ofertas de ejemplo: la web ofrece destinos para comparar.
+    if (fuentesDisponibles(ctx.env).serpapi) {
+      return { modo: 'vivo', moneda, origen, consultadoEn: new Date().toISOString(), nacionales: [], internacionales: [], avisos: [] };
+    }
+    return ofertasDemo(origen, moneda, hoyEnColombia());
+  }
   const cfg = { token, ...(ctx.env.TRAVELPAYOUTS_MARKER ? { marcador: ctx.env.TRAVELPAYOUTS_MARKER } : {}) };
   const guardado = await consultar<OfertaDestacada[]>(ctx, `of:${origen}:${moneda}`, TTL_OFERTAS, 0, () => tp.ofertasDesde(origen, moneda, cfg));
   const lista = guardado.valor;

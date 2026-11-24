@@ -36,6 +36,8 @@ export function urlDelDespliegue(salida: string): string | null {
 export function validarClave(nombre: 'SERPAPI_KEY' | 'TRAVELPAYOUTS_TOKEN' | 'TRAVELPAYOUTS_MARKER', valor: string): string | null {
   const v = valor.trim();
   if (nombre === 'TRAVELPAYOUTS_MARKER') return v === '' || /^\d{3,10}$/.test(v) ? null : 'El marcador (Partner ID) son solo números.';
+  // Travelpayouts es opcional: sin token, los vuelos salen solo de Google Flights.
+  if (nombre === 'TRAVELPAYOUTS_TOKEN' && v === '') return null;
   if (v.length === 0) return 'Pega la clave: no puede quedar vacía.';
   if (/\s/.test(v)) return 'La clave no puede tener espacios: revisa que la copiaste completa.';
   if (nombre === 'SERPAPI_KEY' && !/^[a-f0-9]{64}$/i.test(v)) return 'La clave de SerpApi tiene 64 caracteres hexadecimales (0-9, a-f).';
