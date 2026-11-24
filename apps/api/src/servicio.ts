@@ -99,7 +99,8 @@ async function gruposVuelos(c: Consulta, ctx: Contexto): Promise<Parcial> {
   if (f.serpapi) {
     nombres.push(['google-flights', 'Google Flights']);
     tareas.push(
-      consultar(ctx, `gf:${clave}`, TTL_VUELOS, 1, async () => {
+      // «gf2»: desde que se piden también los itinerarios ocultos (show_hidden).
+      consultar(ctx, `gf2:${clave}`, TTL_VUELOS, 1, async () => {
         const r = await clienteSerp(ctx)<serp.RespuestaGoogleFlights>(serp.parametrosGoogleFlights(c));
         const perspectiva = serp.perspectivaGoogle(r);
         const grupo = serp.mapearGoogleFlights(r, c);

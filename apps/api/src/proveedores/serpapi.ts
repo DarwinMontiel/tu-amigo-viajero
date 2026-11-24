@@ -38,10 +38,18 @@ interface TramoGF {
   departure_airport?: { id?: string; time?: string };
   arrival_airport?: { id?: string; time?: string };
   airline?: string;
+  extensions?: string[];
+}
+interface EscalaGF {
+  id?: string;
+  name?: string;
+  self_transfer?: boolean;
 }
 interface VueloGF {
   flights?: TramoGF[];
-  layovers?: unknown[];
+  layovers?: EscalaGF[];
+  extensions?: string[];
+  self_transfer?: boolean;
   total_duration?: number;
   price?: number;
   booking_token?: string;
@@ -89,7 +97,20 @@ export function parametrosGoogleFlights(c: Consulta): Record<string, string> {
     hl: 'es',
     gl: 'co',
     sort_by: '2',
+    // Incluye los itinerarios que Google oculta por defecto (como las conexiones por cuenta
+    // propia), que a veces son los más baratos. La interfaz los marca con su advertencia.
+    show_hidden: 'true',
   };
+}
+
+export const AVISO_CUENTA_PROPIA =
+  'Conexión por cuenta propia: son tiquetes separados. Recoges y vuelves a despachar la maleta, y si pierdes la conexión la aerolínea no responde.';
+
+/** Google marca así los itinerarios armados con tiquetes separados. */
+export function esConexionPorCuentaPropia(v: VueloGF): boolean {
+  if (v.self_transfer || (v.layovers ?? []).some((l) => l.self_transfer)) return true;
+  const textos = [...(v.extensions ?? []), ...(v.flights ?? []).flatMap((t) => t.extensions ?? [])].join(' ');
+  return /self[- ]?transfer|cuenta propia|separate tickets|boletos separados|tiquetes separados/i.test(textos);
 }
 
 export function mapearGoogleFlights(r: RespuestaGoogleFlights, c: Consulta): GrupoPlataforma {
@@ -102,22 +123,41 @@ export function mapearGoogleFlights(r: RespuestaGoogleFlights, c: Consulta): Gru
     if (!precio || tramos.length === 0) return;
     const aerolineas = [...new Set(tramos.map((t) => t.airline).filter(Boolean))].join(' + ');
     const escalas = v.layovers?.length ?? tramos.length - 1;
+    const codigos = (v.layovers ?? []).map((l) => l.id).filter(Boolean).join(', ');
+    const cuentaPropia = esConexionPorCuentaPropia(v);
     const token = v.booking_token ? `book:${v.booking_token}` : v.departure_token ? `dep:${v.departure_token}` : undefined;
     ofertas.push({
       id: `google-flights-${i}`,
       titulo: `${aerolineas || 'Aerolínea'} · ${hora(tramos[0]?.departure_airport?.time)} → ${hora(tramos.at(-1)?.arrival_airport?.time)}`,
-      detalle: [escalas === 0 ? 'Directo' : `${escalas} escala${escalas > 1 ? 's' : ''}`, duracionTexto(v.total_duration), c.regreso ? 'ida y vuelta' : 'solo ida']
+      detalle: [
+        escalas === 0 ? 'Directo' : `${escalas} escala${escalas > 1 ? 's' : ''}${codigos ? ` (${codigos})` : ''}`,
+        duracionTexto(v.total_duration),
+        c.regreso ? 'ida y vuelta' : 'solo ida',
+        cuentaPropia ? 'conexión por cuenta propia' : '',
+      ]
         .filter(Boolean)
         .join(' · '),
       precio,
       enlace: { metodo: 'GET', url: enlace },
       // Google Flights muestra el total con impuestos y tasas.
       incluyeImpuestos: true,
-      ...(esBajoCosto(aerolineas) ? { avisoEquipaje: AVISO_BAJO_COSTO } : {}),
+      ...(cuentaPropia
+        ? { avisoEquipaje: AVISO_CUENTA_PROPIA }
+        : esBajoCosto(aerolineas)
+          ? { avisoEquipaje: AVISO_BAJO_COSTO }
+          : {}),
       ...(token ? { tokenOpciones: token } : {}),
     });
   });
-  return grupo('google-flights', ofertas, { enlaceBusqueda: enlace, fuente: 'Google Flights vía SerpApi' });
+  return grupo('google-flights', ofertas, {
+    enlaceBusqueda: enlace,
+    fuente: 'Google Flights vía SerpApi',
+    // La fuente no entrega las combinaciones de tiquetes separados que Google Flights y Kayak
+    // a veces muestran más baratas: se avisa para no dar a entender que no existen.
+    ...(ofertas.some((o) => o.avisoEquipaje === AVISO_CUENTA_PROPIA)
+      ? {}
+      : { nota: 'Google Flights y Kayak pueden mostrar además combinaciones con conexión por cuenta propia (tiquetes separados), a veces más baratas. Revísalas en «Ver todos».' }),
+  });
 }
 
 // ---------- Opciones de compra (dónde comprar un vuelo) ----------

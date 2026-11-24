@@ -260,6 +260,9 @@ la página sigue funcionando: no hay cobros sorpresa.
 - **Aviasales** muestra precios que otros viajeros vieron en las últimas 48 horas: pueden cambiar
   al abrir la página.
 - **Despegar, Kayak y Skyscanner** no tienen API pública de precios: aparecen como «Solo enlace».
+- **Conexiones por cuenta propia** (tiquetes separados, como Arajet + LATAM): Google Flights y Kayak a
+  veces las muestran como lo más barato, pero SerpApi no las entrega aunque se pidan los resultados
+  ocultos (`show_hidden`). La tarjeta de Google Flights lo avisa y enlaza a la búsqueda completa.
 - **Google Hotels** no acepta fechas por URL: el respaldo de los enlaces abre el hotel y ahí se
   eligen las fechas. Con la API, el enlace exacto de cada agencia sí lleva las fechas.
 - Los precios de hoteles son por habitación según cada agencia; impuestos y tasas pueden variar.

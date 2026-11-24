@@ -13,7 +13,7 @@ function consulta(cambios: Record<string, string> = {}): Consulta {
 describe('SerpApi · Google Flights', () => {
   it('pide los vuelos ordenados por precio, en la moneda de la búsqueda', () => {
     expect(serp.parametrosGoogleFlights(consulta())).toMatchObject({ departure_id: 'BOG', arrival_id: 'CTG', return_date: '2026-12-15', type: '1', sort_by: '2', currency: 'COP', adults: '2' });
-    expect(serp.parametrosGoogleFlights(consulta({ regreso: '' }))).toMatchObject({ type: '2' });
+    expect(serp.parametrosGoogleFlights(consulta({ regreso: '' }))).toMatchObject({ type: '2', show_hidden: 'true' });
   });
 
   it('devuelve los 3 más baratos con aerolínea, horario, escalas y token para ver vendedores', () => {
@@ -34,6 +34,28 @@ describe('SerpApi · Google Flights', () => {
     const g = serp.mapearGoogleFlights(muestras.googleFlights, consulta());
     expect(g.ofertas[0]).toMatchObject({ incluyeImpuestos: true, avisoEquipaje: expect.stringMatching(/maleta/) });
     expect(g.ofertas[2]?.avisoEquipaje).toBeUndefined();
+  });
+
+  it('incluye la conexión por cuenta propia más barata, con sus escalas y la advertencia', () => {
+    const r: serp.RespuestaGoogleFlights = {
+      other_flights: [
+        {
+          flights: [
+            { departure_airport: { time: '2027-04-21 15:45' }, arrival_airport: { time: '2027-04-21 19:30' }, airline: 'Arajet' },
+            { departure_airport: { time: '2027-04-22 05:00' }, arrival_airport: { time: '2027-04-22 09:35' }, airline: 'LATAM', extensions: ['Self transfer'] },
+          ],
+          layovers: [{ id: 'PUJ' }, { id: 'GRU' }],
+          total_duration: 950,
+          price: 1_283_639,
+        },
+        { flights: [{ departure_airport: { time: '2027-04-21 04:50' }, arrival_airport: { time: '2027-04-21 16:40' }, airline: 'LATAM' }], layovers: [{ id: 'LIM' }], total_duration: 590, price: 1_357_930 },
+      ],
+    };
+    const g = serp.mapearGoogleFlights(r, consulta({ regreso: '' }));
+    expect(g.ofertas[0]).toMatchObject({ titulo: 'Arajet + LATAM · 15:45 → 09:35', precio: 1_283_639, avisoEquipaje: serp.AVISO_CUENTA_PROPIA });
+    expect(g.ofertas[0]?.detalle).toBe('2 escalas (PUJ, GRU) · 15 h 50 min · solo ida · conexión por cuenta propia');
+    expect(g.ofertas[1]?.detalle).toBe('1 escala (LIM) · 9 h 50 min · solo ida');
+    expect(g.ofertas[1]?.avisoEquipaje).toBeUndefined();
   });
 
   it('las opciones de compra respetan los formularios POST de Google', () => {
