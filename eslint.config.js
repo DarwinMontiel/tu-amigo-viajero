@@ -37,4 +37,10 @@ export default tseslint.config(
     files: ['e2e/**/*.ts', '*.config.{ts,js}', '**/test/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
+  {
+    // Herramientas de línea de comandos: hablan con la persona por consola.
+    files: ['scripts/**/*.ts'],
+    languageOptions: { globals: globals.node },
+    rules: { 'no-console': 'off' },
+  },
 );
