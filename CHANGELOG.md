@@ -2,6 +2,34 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [3.1.1] - 2026-11-23
+
+Correcciones de una revisión completa del código. Casi todas afectan a la API en vivo.
+
+### Corregido
+
+- **Cuota de SerpApi:**
+  - Las consultas en paralelo de un paquete se cuentan todas; antes, 3 llamadas contaban como 1.
+  - El contador vive aparte de la caché, así que llenar la caché ya no lo reinicia.
+  - «¿Dónde lo compro?» de ida y vuelta cobra las 2 búsquedas que hace.
+- **Tokens firmados (HMAC)** en «¿Dónde lo compro?» y en los enlaces exactos de hoteles: un token
+  inventado ya no gasta cuota.
+- **Hora del servidor:**
+  - El Worker corre en UTC y, entre las 7 p. m. y la medianoche de Colombia, rechazaba los viajes que
+    salen hoy.
+  - Ahora valida con el «hoy» más atrasado del planeta y usa la fecha de Colombia para la IA y las ofertas.
+- **Caché de hoteles:** el lugar buscado forma parte de la clave. Ya no se pueden guardar hoteles de
+  otra ciudad bajo la clave de un destino.
+- **Destinos fuera del catálogo:** la web envía el nombre del lugar, así que los hoteles ya no se
+  buscan por el código del aeropuerto.
+- **Campo de ciudad:** si cambias el texto de una ciudad ya elegida, el formulario pide elegir de la
+  lista en vez de buscar la anterior sin avisar.
+- **Aviasales:** ya no se calcula la hora de llegada, que salía en la zona horaria del origen. Se
+  muestra la hora de salida y la duración.
+- **`/api/asistente/recomendar`:** acepta datos mal formados sin responder 500 y solo admite módulos
+  válidos.
+- **Consejo de compra:** la ventana internacional dice «entre 6 semanas y 5 meses».
+
 ## [3.1.0] - 2026-11-23
 
 Tu Amigo Viajero como **servicio para la comunidad**: gratis, neutral, transparente y pensado para

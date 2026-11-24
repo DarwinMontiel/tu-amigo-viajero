@@ -1,6 +1,6 @@
 {
   "name": "tu-amigo-viajero",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "private": true,
   "description": "Comparador de precios de vuelos, hoteles y paquetes: los 3 resultados más baratos de cada plataforma en una sola búsqueda, en Colombia y el exterior.",
   "license": "MIT",

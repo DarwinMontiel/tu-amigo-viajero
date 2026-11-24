@@ -180,8 +180,8 @@ VITE_API_URL=http://localhost:8787 npm run dev      # web contra la API local
 |---|---|
 | `npm run lint` | ESLint con TypeScript, React Hooks y `jsx-a11y` |
 | `npm run typecheck` | `tsc -b` de los tres paquetes, en modo estricto |
-| `npm test` | 89 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
-| `npm run e2e` | 19 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
+| `npm test` | 100 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
+| `npm run e2e` | 21 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
 | `npx playwright test --config scripts/capturas.config.ts` | Regenera las capturas de `docs/` |
 
 ## Claves que debes crear (todas gratis)
@@ -231,8 +231,12 @@ la página sigue funcionando: no hay cobros sorpresa.
 
 ## Limitaciones conocidas
 
-- **Cuota gratuita:** con 250 búsquedas al mes en SerpApi, la API se limita a 8 búsquedas en vivo
-  por día (`SERPAPI_LIMITE_DIARIO`); las repetidas salen de la caché. Subirla es cambiar una variable.
+- **Cuota gratuita:** SerpApi da 250 búsquedas al mes, y la API se limita a 8 por día
+  (`SERPAPI_LIMITE_DIARIO`). Ojo: son búsquedas de SerpApi, no de personas. Un paquete gasta 3 y
+  un «¿Dónde lo compro?» de ida y vuelta gasta 2. Las búsquedas repetidas salen de la caché.
+  - En producción conviene crear el KV `CACHE` para que la cuota y la caché se compartan entre
+    instancias.
+  - Subir el tope es cambiar una variable.
 - **Aviasales** muestra precios que otros viajeros vieron en las últimas 48 horas: pueden cambiar
   al abrir la página.
 - **Despegar, Kayak y Skyscanner** no tienen API pública de precios: aparecen como «Solo enlace».
