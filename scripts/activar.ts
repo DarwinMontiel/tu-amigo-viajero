@@ -22,20 +22,20 @@ import { activarKvEnToml, idDeKv, tieneKv, urlDelDespliegue, validarClave } from
 const API = fileURLToPath(new URL('../apps/api/', import.meta.url));
 const TOML = `${API}wrangler.toml`;
 const REPO = 'DarwinMontiel/tu-amigo-viajero';
-const esWindows = process.platform === 'win32';
+// Wrangler se ejecuta con el mismo Node, sin pasar por la shell (más seguro y sin avisos en Windows).
+const WRANGLER = fileURLToPath(new URL('../node_modules/wrangler/bin/wrangler.js', import.meta.url));
 
 function ejecutar(comando: string, args: string[], opciones: { entrada?: string; mostrar?: boolean } = {}) {
   const r = spawnSync(comando, args, {
     cwd: API,
     encoding: 'utf8',
-    shell: esWindows,
     input: opciones.entrada,
     stdio: opciones.mostrar ? 'inherit' : ['pipe', 'pipe', 'pipe'],
   });
   return { ok: r.status === 0, salida: `${r.stdout ?? ''}${r.stderr ?? ''}` };
 }
 
-const wrangler = (args: string[], opciones?: { entrada?: string; mostrar?: boolean }) => ejecutar('npx', ['wrangler', ...args], opciones);
+const wrangler = (args: string[], opciones?: { entrada?: string; mostrar?: boolean }) => ejecutar(process.execPath, [WRANGLER, ...args], opciones);
 
 function paso(n: number, texto: string) {
   console.log(`\n\x1b[1m${n}. ${texto}\x1b[0m`);
@@ -79,10 +79,15 @@ async function main() {
   };
   const secretos: Array<[string, string]> = [
     ['SERPAPI_KEY', await pedirClave('SERPAPI_KEY', 'Clave de SerpApi (serpapi.com → Dashboard → Your Private API Key)')],
-    ['TRAVELPAYOUTS_TOKEN', await pedirClave('TRAVELPAYOUTS_TOKEN', 'Token de Travelpayouts (Profile → API token)')],
   ];
-  const marcador = await pedirClave('TRAVELPAYOUTS_MARKER', 'Partner ID de Travelpayouts (opcional, Enter para omitir)');
-  if (marcador) secretos.push(['TRAVELPAYOUTS_MARKER', marcador]);
+  const tokenTp = await pedirClave('TRAVELPAYOUTS_TOKEN', 'Token de Travelpayouts (opcional: Enter para omitir; suma Aviasales y ofertas del Inicio)');
+  if (tokenTp) {
+    secretos.push(['TRAVELPAYOUTS_TOKEN', tokenTp]);
+    const marcador = await pedirClave('TRAVELPAYOUTS_MARKER', 'Partner ID de Travelpayouts (opcional, Enter para omitir)');
+    if (marcador) secretos.push(['TRAVELPAYOUTS_MARKER', marcador]);
+  } else {
+    console.log('  Sin Travelpayouts: los vuelos usan Google Flights y el Inicio muestra destinos para comparar.');
+  }
   rl.close();
 
   for (const [nombre, valor] of secretos) {

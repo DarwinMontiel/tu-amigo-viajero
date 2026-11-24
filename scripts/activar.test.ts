@@ -1,8 +1,8 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { activarKvEnToml, idDeKv, tieneKv, urlDelDespliegue, validarClave } from './activar-lib.ts';
 
-const TOML = readFileSync(new URL('../apps/api/wrangler.toml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+// Fragmento con el bloque de KV comentado, como queda wrangler.toml antes de activar.
+const TOML = '[vars]\nIA_MODELO = "x"\n\n# [[kv_namespaces]]\n# binding = "CACHE"\n# id = "PEGA_AQUI_EL_ID"\n';
 const ID = '0123456789abcdef0123456789abcdef';
 
 describe('npm run activar', () => {
@@ -32,7 +32,8 @@ describe('npm run activar', () => {
     expect(validarClave('SERPAPI_KEY', 'abc')).toMatch(/64/);
     expect(validarClave('SERPAPI_KEY', `${'a'.repeat(32)} ${'a'.repeat(31)}`)).toMatch(/espacios/);
     expect(validarClave('TRAVELPAYOUTS_TOKEN', 'f'.repeat(32))).toBeNull();
-    expect(validarClave('TRAVELPAYOUTS_TOKEN', '')).toMatch(/vacía/);
+    expect(validarClave('TRAVELPAYOUTS_TOKEN', '')).toBeNull();
+    expect(validarClave('SERPAPI_KEY', '')).toMatch(/vacía/);
     expect(validarClave('TRAVELPAYOUTS_MARKER', '')).toBeNull();
     expect(validarClave('TRAVELPAYOUTS_MARKER', 'abc')).toMatch(/números/);
   });

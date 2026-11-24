@@ -23,9 +23,9 @@ binding = "AI"
 # Caché y cuota compartidas entre instancias (recomendado en producción). Créala con:
 #   npx wrangler kv namespace create CACHE
 # y descomenta estas líneas con el id que te devuelva. Sin KV la caché vive en memoria.
-# [[kv_namespaces]]
-# binding = "CACHE"
-# id = "PEGA_AQUI_EL_ID"
+[[kv_namespaces]]
+binding = "CACHE"
+id = "7fd5fe3a513846608a7c847114124953"
 
 # Límite de peticiones por IP (Rate Limiting de Workers, incluido en el plan gratuito).
 [[ratelimits]]

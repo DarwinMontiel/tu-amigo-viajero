@@ -1,4 +1,4 @@
-import { fechaCorta, formatearPrecio, type Moneda, type OfertaDestacada, type RespuestaOfertas } from '@tav/core';
+import { buscarLugar, fechaCorta, formatearPrecio, hoyISO, sumarDias, type Moneda, type OfertaDestacada, type RespuestaOfertas } from '@tav/core';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { api } from '../api.ts';
@@ -61,6 +61,52 @@ function TarjetaDestacada({ o, moneda }: { o: OfertaDestacada; moneda: Moneda })
   );
 }
 
+const DESTINOS: Record<'nacionales' | 'internacionales', string[]> = {
+  nacionales: ['CTG', 'SMR', 'ADZ', 'MDE', 'BOG', 'PEI', 'CLO', 'LET'],
+  internacionales: ['MIA', 'MAD', 'CUN', 'PTY', 'MEX', 'LIM', 'PUJ', 'JFK'],
+};
+
+/** Destinos frecuentes (sin precio inventado): cada uno abre la comparación en vivo para dentro de 3 semanas. */
+function DestinosParaComparar({ origen, tipo }: { origen: string; tipo: 'nacionales' | 'internacionales' }) {
+  const { ahorroDatos } = useAjustes();
+  const ida = sumarDias(hoyISO(), 21);
+  const regreso = sumarDias(ida, 5);
+  const destinos = DESTINOS[tipo].filter((d) => d !== origen).slice(0, 6);
+  return (
+    <ul className="grilla" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+      {destinos.map((destino) => {
+        const arte = ahorroDatos ? undefined : ARTE[destino];
+        const lugar = buscarLugar(destino);
+        const p = new URLSearchParams({ origen, destino, ida, regreso, adultos: '1', moneda: 'COP' });
+        return (
+          <li key={destino} className="destacada">
+            {arte ? (
+              <img className="destacada__imagen" src={`${BASE}ilustraciones/${arte.archivo}`} alt={arte.alt} width={900} height={506} loading="lazy" />
+            ) : (
+              <div className="destacada__arte" aria-hidden="true">
+                {destino}
+              </div>
+            )}
+            <div className="destacada__cuerpo">
+              <h3>
+                {lugar?.ciudad ?? destino}
+                {lugar && tipo === 'internacionales' ? <span className="ayuda">, {lugar.pais}</span> : null}
+              </h3>
+              <p className="destacada__meta">
+                {fechaCorta(ida)} – {fechaCorta(regreso)} · ida y vuelta
+              </p>
+              <div className="destacada__acciones">
+                <Link to={`/vuelos?${p}`}>Ver precios reales</Link>
+                <Link to={`/paquetes?${p}`}>Vuelo + hotel</Link>
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 function OfertasDestacadas() {
   const [origen, setOrigen] = useState('BOG');
   const [tipo, setTipo] = useState<'nacionales' | 'internacionales'>('nacionales');
@@ -68,6 +114,8 @@ function OfertasDestacadas() {
   const { datos, error } = useCarga<RespuestaOfertas>(origen, (senal) => api.ofertas(origen, 'COP', senal), 'No pudimos cargar las ofertas.');
 
   const lista = datos ? datos[tipo] : [];
+  // En vivo sin fuente de ofertas: se ofrecen destinos frecuentes para comparar precios reales al instante.
+  const sinOfertas = datos?.modo === 'vivo' && datos.nacionales.length === 0 && datos.internacionales.length === 0;
   const maximo = useMemo(() => Math.max(0, ...(datos ? [...datos.nacionales, ...datos.internacionales].map((o) => o.precio) : [0])), [datos]);
   const visibles = tope ? lista.filter((o) => o.precio <= tope) : lista;
 
@@ -79,9 +127,15 @@ function OfertasDestacadas() {
           <h2 id="titulo-ofertas" className="mt-0">
             Los vuelos más baratos desde {ORIGENES.find((o) => o.iata === origen)?.nombre}
           </h2>
-          {datos ? <span className={`pastilla ${datos.modo === 'vivo' ? 'pastilla--vivo' : 'pastilla--demo'}`}>{datos.modo === 'vivo' ? 'En vivo · Aviasales' : 'Datos de ejemplo'}</span> : null}
+          {datos && !sinOfertas ? (
+            <span className={`pastilla ${datos.modo === 'vivo' ? 'pastilla--vivo' : 'pastilla--demo'}`}>{datos.modo === 'vivo' ? 'En vivo · Aviasales' : 'Datos de ejemplo'}</span>
+          ) : null}
         </div>
-        <p className="lead">Precios de ida y vuelta por persona que otros viajeros encontraron en los portales en las últimas horas. Ábrelos para confirmar o compáralos en todas las plataformas.</p>
+        <p className="lead">
+          {sinOfertas
+            ? 'Elige un destino y comparamos al instante los precios reales de todas las plataformas para tus fechas.'
+            : 'Precios de ida y vuelta por persona que otros viajeros encontraron en los portales en las últimas horas. Ábrelos para confirmar o compáralos en todas las plataformas.'}
+        </p>
 
         <div className="fila" style={{ margin: '18px 0' }} role="group" aria-label="Ciudad de salida">
           {ORIGENES.map((o) => (
@@ -130,7 +184,8 @@ function OfertasDestacadas() {
               ))}
             </div>
           ) : null}
-          {datos ? (
+          {datos && sinOfertas ? <DestinosParaComparar origen={origen} tipo={tipo} /> : null}
+          {datos && !sinOfertas ? (
             visibles.length > 0 ? (
               <ul className="grilla" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
                 {visibles.slice(0, 6).map((o) => (
