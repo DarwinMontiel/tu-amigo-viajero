@@ -100,6 +100,13 @@ async function main() {
   paso(4, 'Despliegue de la API');
   const despliegue = wrangler(['deploy']);
   const url = urlDelDespliegue(despliegue.salida);
+  if (/register a workers\.dev subdomain/i.test(despliegue.salida)) {
+    const enlace = /https:\/\/dash\.cloudflare\.com\/\S+onboarding/.exec(despliegue.salida)?.[0] ?? 'https://dash.cloudflare.com → Workers & Pages';
+    throw new Error(
+      'Tu cuenta de Cloudflare aún no tiene un subdominio workers.dev (se registra una sola vez, gratis).\n' +
+        `  1. Abre ${enlace}\n  2. Elige un nombre (por ejemplo, tu usuario) y confírmalo.\n  3. Vuelve a ejecutar: npm.cmd run activar`,
+    );
+  }
   if (!despliegue.ok || !url) throw new Error(`El despliegue falló:\n${despliegue.salida}`);
   console.log(`✓ API publicada en ${url}`);
   const salud = (await (await fetch(`${url}/api/salud`)).json()) as { modo?: string; fuentes?: Record<string, boolean> };
