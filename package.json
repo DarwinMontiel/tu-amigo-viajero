@@ -1,6 +1,6 @@
 {
   "name": "tu-amigo-viajero",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "private": true,
   "description": "Comparador de precios de vuelos, hoteles y paquetes: los 3 resultados más baratos de cada plataforma en una sola búsqueda, en Colombia y el exterior.",
   "license": "MIT",
@@ -22,7 +22,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "check": "npm run lint && npm run typecheck && npm test"
+    "check": "npm run lint && npm run typecheck && npm test",
+    "activar": "node scripts/activar.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",

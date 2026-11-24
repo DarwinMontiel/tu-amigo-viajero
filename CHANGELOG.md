@@ -2,6 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [3.2.0] - 2026-11-23
+
+### Agregado
+
+- `npm run activar` activa los datos en vivo en un solo comando:
+  - inicia sesión en Cloudflare y crea el KV;
+  - guarda las claves como secretos, revisando que estén bien pegadas;
+  - despliega la API y comprueba `/api/salud`;
+  - conecta la web con la API y la vuelve a publicar.
+- Incluye pruebas de las funciones del asistente.
+
 ## [3.1.1] - 2026-11-23
 
 Correcciones de una revisión completa del código. Casi todas afectan a la API en vivo.

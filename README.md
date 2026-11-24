@@ -180,7 +180,7 @@ VITE_API_URL=http://localhost:8787 npm run dev      # web contra la API local
 |---|---|
 | `npm run lint` | ESLint con TypeScript, React Hooks y `jsx-a11y` |
 | `npm run typecheck` | `tsc -b` de los tres paquetes, en modo estricto |
-| `npm test` | 100 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
+| `npm test` | 104 pruebas unitarias con Vitest: dominio, proveedores con respuestas de muestra, API, caché, cuota, límites e IA |
 | `npm run e2e` | 21 escenarios e2e con Playwright, cada uno a 1440 y 375 px, con **axe-core** en tema claro y oscuro |
 | `npx playwright test --config scripts/capturas.config.ts` | Regenera las capturas de `docs/` |
 
@@ -193,7 +193,27 @@ VITE_API_URL=http://localhost:8787 npm run dev      # web contra la API local
 | 3 | **Cloudflare** | Alojar la API e IA gratuita | [dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) (plan Free). Workers AI no necesita otra clave |
 | 4 | *(opcional)* Token de Cloudflare para GitHub Actions | Desplegar la API con cada push | *My Profile* → *API Tokens* → plantilla **Edit Cloudflare Workers**; y el **Account ID** de la página de Workers |
 
-### Despliegue
+### Activar los datos en vivo en un solo comando
+
+Con las claves 1 y 2 a mano y una cuenta gratuita de Cloudflare:
+
+```bash
+npm ci
+npm run activar
+```
+
+El asistente hace esto:
+
+1. Inicia sesión en Cloudflare.
+2. Crea el KV de caché y cuota.
+3. Pide las claves, revisa que estén bien pegadas y las guarda como secretos del Worker.
+4. Despliega la API y comprueba `/api/salud`.
+5. Si tienes `gh`, conecta la web con la API (variable `API_URL`) y la vuelve a publicar.
+
+Al terminar, el sitio deja el modo demo y muestra precios en vivo. Solo queda hacer commit del
+`wrangler.toml` con el id del KV, que no es secreto.
+
+### Despliegue paso a paso (alternativa manual)
 
 1. **API** (una vez, desde tu equipo):
 
