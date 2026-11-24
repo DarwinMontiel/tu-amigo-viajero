@@ -69,6 +69,24 @@ describe('SerpApi · Google Hotels', () => {
     expect(porId.expedia!.ofertas[0]?.enlace.url).toBe('https://api/ir?token=PROP_1&fuente=Expedia');
   });
 
+  it('sin desglose por agencia, muestra la mejor tarifa de Google Hotels por hotel', () => {
+    const r: serp.RespuestaGoogleHotels = {
+      properties: [
+        { name: 'Hotel Caro', rate_per_night: { extracted_lowest: 500_000 }, total_rate: { extracted_lowest: 2_500_000 }, overall_rating: 4.5 },
+        { name: 'Hotel Barato', rate_per_night: { extracted_lowest: 200_000 } },
+        { name: 'Sin precio' },
+      ],
+    };
+    const grupos = serp.mapearGoogleHotels(r, consulta(), () => '', new Set());
+    expect(grupos).toHaveLength(1);
+    expect(grupos[0]!.plataforma.id).toBe('google-hotels');
+    expect(grupos[0]!.ofertas.map((o) => [o.titulo, o.precio])).toEqual([
+      ['Hotel Barato', 1_000_000],
+      ['Hotel Caro', 2_500_000],
+    ]);
+    expect(grupos[0]!.ofertas[1]).toMatchObject({ calificacion: 9, precioPorNoche: 500_000 });
+  });
+
   it('el enlace de agencia sale del detalle de la propiedad', async () => {
     const llamar: serp.LlamarSerpApi = async <T,>() =>
       ({ prices: [{ source: 'Agoda', link: 'https://www.agoda.com/x' }, { source: 'Expedia', link: 'https://www.expedia.com/y' }] }) as T;

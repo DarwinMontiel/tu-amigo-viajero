@@ -188,6 +188,8 @@ interface PropiedadGH {
   total_rate?: { extracted_lowest?: number };
   prices?: PrecioFuenteGH[];
   images?: Array<{ thumbnail?: string }>;
+  /** Sitio del hotel (cuando Google lo conoce). */
+  link?: string;
 }
 export interface RespuestaGoogleHotels {
   properties?: PropiedadGH[];
@@ -247,12 +249,40 @@ export function mapearGoogleHotels(
       porFuente.set(id, entrada);
     }
   });
-  return [...porFuente.entries()].map(([id, { nombre, ofertas }]) =>
+  const porAgencia = [...porFuente.entries()].map(([id, { nombre, ofertas }]) =>
     grupo(id, ofertas, {
       enlaceBusqueda: id === 'booking' ? enlacesHoteles.booking(c) : enlacesHoteles.googleHotels(c),
       fuente: `${nombre} vía Google Hotels (SerpApi)`,
     }),
   );
+  if (porAgencia.length > 0) return porAgencia;
+
+  // La búsqueda de Google Hotels no siempre trae el precio de cada agencia (eso viene en el detalle
+  // de cada hotel, que gasta cuota). Sin desglose, se muestra la mejor tarifa que Google encontró por hotel.
+  const mejores: Oferta[] = [];
+  (r.properties ?? []).forEach((p, i) => {
+    const porNoche = precioValido(p.rate_per_night?.extracted_lowest);
+    const total = precioValido(p.total_rate?.extracted_lowest) ?? (porNoche ? porNoche * n : null);
+    if (!p.name || !total) return;
+    mejores.push({
+      id: `google-hotels-${i}`,
+      titulo: p.name,
+      detalle: `${p.hotel_class ?? p.type ?? 'Alojamiento'} · ${n} ${n === 1 ? 'noche' : 'noches'} · mejor tarifa entre agencias`,
+      precio: total,
+      precioPorNoche: porNoche ?? Math.round(total / n),
+      ...(p.overall_rating ? { calificacion: Math.round(p.overall_rating * 20) / 10 } : {}),
+      ...(p.images?.[0]?.thumbnail ? { imagen: p.images[0].thumbnail } : {}),
+      // Google Hotels abre el hotel con las tarifas de todas las agencias para comparar.
+      enlace: { metodo: 'GET', url: enlacesHoteles.googleHotels(c, `${p.name} ${c.lugar}`) },
+    });
+  });
+  if (mejores.length === 0) return [];
+  return [
+    grupo('google-hotels', mejores, {
+      enlaceBusqueda: enlacesHoteles.googleHotels(c),
+      fuente: 'Mejor tarifa por hotel entre Booking.com, Expedia, Agoda y otras (Google Hotels vía SerpApi)',
+    }),
+  ];
 }
 
 interface DetalleGH {
