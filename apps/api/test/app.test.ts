@@ -4,6 +4,7 @@ import { CacheMemoria } from '../src/cache.ts';
 import type { Entorno } from '../src/entorno.ts';
 import { recomendacionFiel, sanearIntencion } from '../src/ia.ts';
 import { crearApp } from '../src/index.ts';
+import { abrirToken, firmarToken } from '../src/firma.ts';
 import { CuotaDiaria, LimitadorMemoria } from '../src/limites.ts';
 import type { LlamarSerpApi } from '../src/proveedores/serpapi.ts';
 import * as muestras from './muestras.ts';
@@ -194,11 +195,38 @@ describe('caché y límites', () => {
 
   it('la cuota diaria se reinicia cada día', async () => {
     let dia = '2026-11-23';
-    const cuota = new CuotaDiaria(new CacheMemoria(), 1, () => dia);
+    const cuota = new CuotaDiaria(1, undefined, () => dia, new Map(), new Set());
     expect(await cuota.consumir()).toBe(true);
     expect(await cuota.consumir()).toBe(false);
     dia = '2026-11-24';
     expect(await cuota.disponible()).toBe(1);
+  });
+
+  it('la cuota cuenta todas las reservas hechas en paralelo y cobra el costo real', async () => {
+    const cuota = new CuotaDiaria(4, undefined, () => '2026-11-23', new Map(), new Set());
+    const resultados = await Promise.all([cuota.consumir(), cuota.consumir(), cuota.consumir()]);
+    expect(resultados).toEqual([true, true, true]);
+    expect(await cuota.disponible()).toBe(1);
+    expect(await cuota.consumir(2)).toBe(false);
+    expect(await cuota.disponible()).toBe(1);
+  });
+
+  it('la cuota no depende de la caché: llenarla no la reinicia', async () => {
+    const uso = new Map<string, number>();
+    const cuota = new CuotaDiaria(1, undefined, () => '2026-11-23', uso, new Set());
+    await cuota.consumir();
+    const cache = new CacheMemoria();
+    for (let i = 0; i < 400; i++) await cache.guardar(`busqueda:${i}`, i, 60);
+    expect(await cuota.consumir()).toBe(false);
+  });
+
+  it('con KV, la cuota retoma el uso guardado por otra instancia', async () => {
+    const guardado = new Map<string, string>([['cuota:serpapi:2026-11-23', '5']]);
+    const kv = { get: async (k: string) => guardado.get(k) ?? null, put: async (k: string, v: string) => void guardado.set(k, v) } as unknown as KVNamespace;
+    const cuota = new CuotaDiaria(6, kv, () => '2026-11-23', new Map(), new Set());
+    expect(await cuota.consumir()).toBe(true);
+    expect(await cuota.consumir()).toBe(false);
+    expect(guardado.get('cuota:serpapi:2026-11-23')).toBe('6');
   });
 
   it('responde 429 cuando una IP busca demasiado seguido', async () => {
@@ -211,5 +239,67 @@ describe('caché y límites', () => {
     let ultimo = 0;
     for (let i = 0; i < 31; i++) ultimo = (await app.request(`/api/ofertas?origen=BOG`, { headers }, {})).status;
     expect(ultimo).toBe(429);
+  });
+});
+
+describe('seguridad y casos borde de la revisión 3.1.1', () => {
+  const consulta = () => {
+    const v = validarConsulta('vuelos', { origen: 'BOG', destino: 'CTG', ida: '2026-12-10', regreso: '2026-12-15', adultos: '2' }, '2026-11-23');
+    if (!v.ok) throw new Error('consulta inválida');
+    return v.consulta;
+  };
+
+  it('los tokens firmados solo abren con la misma búsqueda y sin alterarse', async () => {
+    const firmado = await firmarToken('book:ABC', consulta(), 'secreto');
+    expect(await abrirToken(firmado, consulta(), 'secreto')).toBe('book:ABC');
+    expect(await abrirToken(firmado, { ...consulta(), adultos: 3 }, 'secreto')).toBeNull();
+    expect(await abrirToken(firmado.replace('ABC', 'XYZ'), consulta(), 'secreto')).toBeNull();
+    expect(await abrirToken('book:ABC', consulta(), 'secreto')).toBeNull();
+  });
+
+  it('un token inventado no gasta cuota en «¿Dónde lo compro?»', async () => {
+    const llamar = vi.fn();
+    const app = crearApp({ llamarSerpApi: llamar as unknown as LlamarSerpApi });
+    const r = await pedir(app, `/api/vuelos/opciones?token=book:INVENTADO~xyz&${BUSQUEDA}`, { SERPAPI_KEY: 'k' });
+    expect(r.status).toBe(400);
+    expect(llamar).not.toHaveBeenCalled();
+  });
+
+  it('los vuelos en vivo entregan tokens firmados que la API acepta después', async () => {
+    const llamar = vi.fn(async (p: Record<string, string>) => (p.booking_token || p.departure_token ? muestras.opcionesGF : muestras.googleFlights));
+    const app = crearApp({ llamarSerpApi: llamar as unknown as LlamarSerpApi });
+    const env: Entorno = { SERPAPI_KEY: 'k', SERPAPI_LIMITE_DIARIO: '50' };
+    const busqueda = BUSQUEDA.replace('2026-12-10', '2026-12-14');
+    const vuelos = (await (await pedir(app, `/api/vuelos?${busqueda}`, env)).json()) as RespuestaBusqueda;
+    const token = vuelos.grupos.find((g) => g.plataforma.id === 'google-flights')?.ofertas[0]?.tokenOpciones ?? '';
+    expect(token).toContain('~');
+    const r = await pedir(app, `/api/vuelos/opciones?token=${encodeURIComponent(token)}&${busqueda}`, env);
+    expect(r.status).toBe(200);
+  });
+
+  it('un enlace de hotel sin firma válida va a Google Hotels sin gastar cuota', async () => {
+    const llamar = vi.fn();
+    const app = crearApp({ llamarSerpApi: llamar as unknown as LlamarSerpApi });
+    const r = await pedir(app, `/api/hoteles/ir?token=PROP&fuente=Expedia&firma=falsa&${BUSQUEDA}`, { SERPAPI_KEY: 'k' });
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toMatch(/^https:\/\/www\.google\.com\/travel\/search/);
+    expect(llamar).not.toHaveBeenCalled();
+  });
+
+  it('a las 8 p. m. de Bogotá la API acepta viajes que salen hoy', async () => {
+    vi.setSystemTime(new Date('2026-11-24T01:00:00Z'));
+    const r = await pedir(crearApp(), '/api/vuelos?origen=BOG&destino=CTG&ida=2026-11-23&adultos=1');
+    expect(r.status).toBe(200);
+  });
+
+  it('recomendar resiste datos mal formados en vez de responder 500', async () => {
+    const r = await pedir(crearApp(), '/api/asistente/recomendar', {}, {
+      method: 'POST',
+      body: JSON.stringify({
+        consulta: { origen: 'BOG', destino: 'CTG', ida: '2026-12-10', adultos: '1' },
+        respuesta: { modulo: 'xyz', grupos: [null, 5, { plataforma: null, ofertas: [null, { precio: 'x' }] }] },
+      }),
+    });
+    expect(r.status).toBe(200);
   });
 });

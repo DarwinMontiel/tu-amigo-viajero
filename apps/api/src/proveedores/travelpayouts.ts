@@ -5,7 +5,7 @@ import {
   enlacesVuelos,
   esNacional,
   grupo,
-  hoyISO,
+  hoyEnColombia,
   nombreAerolinea,
   nombreCiudad,
   precioValido,
@@ -95,7 +95,8 @@ export function mapearTP(r: RespuestaTP, c: Consulta, cfg: Pick<ConfigTP, 'marca
     const escalas = b.transfers ?? 0;
     ofertas.push({
       id: `aviasales-${i}`,
-      titulo: `${nombreAerolinea(b.airline ?? '')} · ${hhmm(b.departure_at)} → ${hhmm(b.departure_at, b.duration_to ?? 0)}`,
+      // La API da la hora local de salida y la duración; la llegada en hora local del destino no viene, así que no se inventa.
+      titulo: `${nombreAerolinea(b.airline ?? '')} · sale ${hhmm(b.departure_at)}`,
       detalle: [escalas === 0 ? 'Directo' : `${escalas} escala${escalas > 1 ? 's' : ''}`, duracion(b.duration_to), c.regreso ? 'ida y vuelta' : 'solo ida']
         .filter(Boolean)
         .join(' · '),
@@ -120,7 +121,7 @@ export async function vuelosAviasales(c: Consulta, cfg: ConfigTP): Promise<Grupo
 }
 
 /** Ofertas para la portada: el boleto más barato por destino desde una ciudad. */
-export function mapearOfertas(r: RespuestaTP, origen: string, moneda: Moneda, cfg: Pick<ConfigTP, 'marcador'>, hoy = hoyISO()): OfertaDestacada[] {
+export function mapearOfertas(r: RespuestaTP, origen: string, moneda: Moneda, cfg: Pick<ConfigTP, 'marcador'>, hoy = hoyEnColombia()): OfertaDestacada[] {
   const vistos = new Set<string>();
   const ofertas: OfertaDestacada[] = [];
   for (const b of r.data ?? []) {

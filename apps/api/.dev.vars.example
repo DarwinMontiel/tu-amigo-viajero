@@ -2,5 +2,7 @@
 # .dev.vars está en .gitignore: nunca subas tus claves.
 SERPAPI_KEY=
 TRAVELPAYOUTS_TOKEN=
+# Opcional: secreto para firmar tokens de la API (si falta, se usa SERPAPI_KEY).
+FIRMA_SECRETO=
 # Opcional: tu marcador de afiliado de Travelpayouts para los enlaces de Aviasales.
 TRAVELPAYOUTS_MARKER=

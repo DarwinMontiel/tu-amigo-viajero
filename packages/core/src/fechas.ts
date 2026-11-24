@@ -21,6 +21,26 @@ export function hoyISO(ahora: Date = new Date()): string {
   return local.toISOString().slice(0, 10);
 }
 
+/** Fecha de hoy en una zona horaria IANA ("America/Bogota"), sin depender de la zona del equipo. */
+export function hoyEnZona(zona: string, ahora: Date = new Date()): string {
+  // en-CA formatea como AAAA-MM-DD.
+  return new Intl.DateTimeFormat('en-CA', { timeZone: zona, year: 'numeric', month: '2-digit', day: '2-digit' }).format(ahora);
+}
+
+/** Hoy en Colombia: lo que usa el servidor para hablar de fechas con la persona. */
+export function hoyEnColombia(ahora: Date = new Date()): string {
+  return hoyEnZona('America/Bogota', ahora);
+}
+
+/**
+ * El «hoy» más atrasado del planeta (UTC−12). El servidor valida con esta fecha
+ * para no rechazar nunca un viaje que todavía es «hoy» para quien busca, esté
+ * donde esté (el Worker corre en UTC: a las 8 p. m. de Bogotá ya es mañana).
+ */
+export function hoyMasTemprano(ahora: Date = new Date()): string {
+  return hoyEnZona('Etc/GMT+12', ahora);
+}
+
 export function sumarDias(iso: string, dias: number): string {
   const fecha = parsearISO(iso);
   if (!fecha) throw new RangeError(`Fecha inválida: ${iso}`);

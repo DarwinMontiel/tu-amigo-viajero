@@ -4,6 +4,8 @@ export interface Entorno {
   SERPAPI_KEY?: string;
   /** Secreto: token de la Data API de Travelpayouts (Aviasales). */
   TRAVELPAYOUTS_TOKEN?: string;
+  /** Opcional: secreto para firmar tokens; si falta se usa SERPAPI_KEY. */
+  FIRMA_SECRETO?: string;
   /** Opcional: marcador de afiliado para los enlaces de Aviasales. */
   TRAVELPAYOUTS_MARKER?: string;
   ORIGENES_PERMITIDOS?: string;

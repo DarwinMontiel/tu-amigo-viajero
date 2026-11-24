@@ -85,7 +85,13 @@ export function validarConsulta(modulo: Modulo, entrada: Entrada, hoy: string = 
 
   if (Object.keys(errores).length > 0) return { ok: false, errores };
 
-  const lugar = leer(entrada, 'lugar') || buscarLugar(destino)?.alojamiento || destino;
+  // El texto de hospedaje se limita y se limpia: viaja en URLs y llega a las fuentes de precios.
+  const lugarPedido = [...leer(entrada, 'lugar')]
+    .filter((ch) => ch.charCodeAt(0) >= 32 && ch !== '<' && ch !== '>')
+    .join('')
+    .slice(0, 80)
+    .trim();
+  const lugar = lugarPedido || buscarLugar(destino)?.alojamiento || destino;
   return {
     ok: true,
     consulta: {
@@ -110,6 +116,8 @@ export function consultaAParametros(c: Consulta): URLSearchParams {
   const p = new URLSearchParams();
   if (c.origen) p.set('origen', c.origen);
   p.set('destino', c.destino);
+  // El lugar solo viaja si no es el del catálogo (destinos del autocompletado mundial).
+  if (c.lugar && c.lugar !== (buscarLugar(c.destino)?.alojamiento ?? c.destino)) p.set('lugar', c.lugar);
   p.set('ida', c.ida);
   if (c.regreso) p.set('regreso', c.regreso);
   p.set('adultos', String(c.adultos));
@@ -117,7 +125,7 @@ export function consultaAParametros(c: Consulta): URLSearchParams {
   return p;
 }
 
-/** Clave estable para la caché: mismo orden de campos siempre. */
+/** Clave estable para la caché: mismo orden de campos siempre, incluido el lugar que se busca. */
 export function claveConsulta(c: Consulta): string {
-  return [c.modulo, c.origen || '-', c.destino, c.ida, c.regreso || '-', c.adultos, c.moneda].join(':');
+  return [c.modulo, c.origen || '-', c.destino, c.ida, c.regreso || '-', c.adultos, c.moneda, c.lugar.toLowerCase()].join(':');
 }

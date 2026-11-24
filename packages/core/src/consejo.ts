@@ -107,7 +107,7 @@ export function consejoDeCompra(c: Consulta, opciones: { hoy?: string; perspecti
   razones.push(
     tipo === 'nacional'
       ? `En vuelos nacionales los mejores precios suelen aparecer entre ${Math.round(v.desde / 7)} y ${Math.round(v.hasta / 7)} semanas antes. Faltan ${dias} días.`
-      : `En vuelos internacionales los mejores precios suelen aparecer entre ${Math.round(v.desde / 30)} y ${Math.round(v.hasta / 30)} meses antes. Faltan ${dias} días.`,
+      : `En vuelos internacionales los mejores precios suelen aparecer entre ${Math.round(v.desde / 7)} semanas y ${Math.round(v.hasta / 30)} meses antes. Faltan ${dias} días.`,
   );
   if (temporada) razones.push(`Viajas en ${temporada}, temporada alta: los cupos baratos se acaban primero.`);
   if (nivel === 'esperar') razones.push('Vuelve a buscar en unas semanas: guarda o comparte este enlace, la búsqueda queda en la dirección.');

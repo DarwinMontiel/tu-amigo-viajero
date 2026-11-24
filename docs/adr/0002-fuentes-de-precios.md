@@ -45,6 +45,15 @@ terceros que lo permitan. Y el presupuesto es **$0**.
 - Caché en memoria + KV opcional: vuelos 3 h, hoteles 6 h, ofertas 6 h.
 - **Cuota diaria** (`SERPAPI_LIMITE_DIARIO`, por defecto 8): 8 × 30 días = 240 < 250. Al agotarse, la
   plataforma muestra «Se agotó la cuota diaria gratuita» y el resto de la página sigue funcionando.
+  - El tope cuenta **búsquedas de SerpApi, no búsquedas de personas**: un paquete gasta 3 y un
+    «¿Dónde lo compro?» de ida y vuelta gasta 2.
+  - La reserva es atómica dentro de cada isolate (sin `await` entre leer y anotar) y vive en un
+    almacén propio, no en la caché, así que llenar la caché no la reinicia.
+  - Con KV el uso se comparte entre instancias. KV es eventual, así que puede haber un pequeño
+    exceso si dos instancias reservan en el mismo segundo.
+  - *(Corregido en 3.1.1: antes las consultas en paralelo de un paquete contaban como una.)*
+- **Tokens firmados:** los tokens de «¿Dónde lo compro?» y de `/api/hoteles/ir` llevan una firma
+  HMAC atada a la búsqueda. Un token inventado no gasta cuota.
 - Límite por IP (Rate Limiting de Workers + ventana en memoria).
 - Una búsqueda de vuelos gasta 1; hoteles 2; paquetes 3; «¿Dónde lo compro?» 1 o 2.
 

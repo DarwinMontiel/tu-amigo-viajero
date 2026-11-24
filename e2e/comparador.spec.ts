@@ -133,6 +133,17 @@ test.describe('Hoteles y paquetes', () => {
     await sinViolacionesAxe(page);
   });
 
+  test('si cambias el texto de la ciudad elegida, no busca otra ciudad sin avisar', async ({ page }) => {
+    await page.goto('/hoteles');
+    const destino = page.getByRole('combobox', { name: '¿A dónde vas?' });
+    await destino.fill('Cartag');
+    await page.getByRole('option', { name: /Cartagena/ }).first().click();
+    await destino.fill('Bogo');
+    await page.getByRole('button', { name: 'Comparar hoteles' }).click();
+    await expect(page.getByText('Elige el destino de la lista.')).toBeVisible();
+    await expect(page).toHaveURL(/\/hoteles$/);
+  });
+
   test('paquetes suma vuelo y hotel y muestra el desglose', async ({ page }) => {
     await page.goto(`/paquetes?${BUSQUEDA}`);
     const desglose = page.getByRole('group', { name: 'Desglose del paquete' }).first();
