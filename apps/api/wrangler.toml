@@ -4,6 +4,9 @@ name = "tu-amigo-viajero-api"
 main = "src/index.ts"
 compatibility_date = "2026-11-01"
 compatibility_flags = ["nodejs_compat"]
+# Publica la API en https://tu-amigo-viajero-api.<subdominio>.workers.dev
+workers_dev = true
+preview_urls = false
 
 [vars]
 # Orígenes que pueden llamar a la API desde el navegador (separados por coma).
