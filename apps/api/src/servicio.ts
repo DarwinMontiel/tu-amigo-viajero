@@ -5,7 +5,7 @@ import {
   consultaAParametros,
   enlacesHoteles,
   gruposSoloEnlaceVuelos,
-  hoyISO,
+  hoyEnColombia,
   ofertasDemo,
   opcionesDemo,
   ordenarGrupos,
@@ -20,6 +20,7 @@ import {
 } from '@tav/core';
 import { conCache, type Cache } from './cache.ts';
 import { fuentesDisponibles, type Entorno } from './entorno.ts';
+import { abrirToken, firmar, firmarToken, huellaRuta, verificar } from './firma.ts';
 import { CuotaAgotada, CuotaDiaria } from './limites.ts';
 import * as serp from './proveedores/serpapi.ts';
 import * as tp from './proveedores/travelpayouts.ts';
@@ -50,13 +51,21 @@ function clienteSerp(ctx: Contexto): serp.LlamarSerpApi {
 
 function cuota(ctx: Contexto): CuotaDiaria {
   const limite = Number(ctx.env.SERPAPI_LIMITE_DIARIO ?? '8');
-  return new CuotaDiaria(ctx.cache, Number.isFinite(limite) && limite > 0 ? limite : 8);
+  return new CuotaDiaria(Number.isFinite(limite) && limite > 0 ? limite : 8, ctx.env.CACHE);
 }
 
-/** Una consulta a una fuente: con caché, con cuota (SerpApi) y con fecha de consulta. */
-async function consultar<T>(ctx: Contexto, clave: string, ttl: number, gastaCuota: boolean, producir: () => Promise<T>): Promise<Guardado<T>> {
+/** Secreto con que se firman los tokens: el propio de la API o, si no hay, la clave de SerpApi. */
+function secreto(ctx: Contexto): string {
+  return ctx.env.FIRMA_SECRETO?.trim() || ctx.env.SERPAPI_KEY?.trim() || '';
+}
+
+/**
+ * Una consulta a una fuente: con caché, con cuota y con fecha de consulta.
+ * `costo` es cuántas búsquedas de SerpApi gasta (0 para fuentes sin cuota).
+ */
+async function consultar<T>(ctx: Contexto, clave: string, ttl: number, costo: number, producir: () => Promise<T>): Promise<Guardado<T>> {
   const { valor } = await conCache<Guardado<T>>(ctx.cache, clave, ttl, async () => {
-    if (gastaCuota && !(await cuota(ctx).consumir())) throw new CuotaAgotada();
+    if (costo > 0 && !(await cuota(ctx).consumir(costo))) throw new CuotaAgotada();
     return { valor: await producir(), en: new Date().toISOString() };
   });
   return valor;
@@ -90,17 +99,23 @@ async function gruposVuelos(c: Consulta, ctx: Contexto): Promise<Parcial> {
   if (f.serpapi) {
     nombres.push(['google-flights', 'Google Flights']);
     tareas.push(
-      consultar(ctx, `gf:${clave}`, TTL_VUELOS, true, async () => {
+      consultar(ctx, `gf:${clave}`, TTL_VUELOS, 1, async () => {
         const r = await clienteSerp(ctx)<serp.RespuestaGoogleFlights>(serp.parametrosGoogleFlights(c));
         const perspectiva = serp.perspectivaGoogle(r);
-        return { grupo: serp.mapearGoogleFlights(r, c), ...(perspectiva ? { perspectiva } : {}) };
+        const grupo = serp.mapearGoogleFlights(r, c);
+        // Los tokens de «¿Dónde lo compro?» salen firmados y atados a esta ruta.
+        const clave = secreto(ctx);
+        grupo.ofertas = await Promise.all(
+          grupo.ofertas.map(async (o) => (o.tokenOpciones ? { ...o, tokenOpciones: await firmarToken(o.tokenOpciones, c, clave) } : o)),
+        );
+        return { grupo, ...(perspectiva ? { perspectiva } : {}) };
       }),
     );
   }
   if (f.travelpayouts) {
     nombres.push(['aviasales', 'Aviasales']);
     const cfg = { token: ctx.env.TRAVELPAYOUTS_TOKEN ?? '', ...(ctx.env.TRAVELPAYOUTS_MARKER ? { marcador: ctx.env.TRAVELPAYOUTS_MARKER } : {}) };
-    tareas.push(consultar(ctx, `tp:${clave}`, TTL_VUELOS, false, async () => ({ grupo: await tp.vuelosAviasales(c, cfg) })));
+    tareas.push(consultar(ctx, `tp:${clave}`, TTL_VUELOS, 0, async () => ({ grupo: await tp.vuelosAviasales(c, cfg) })));
   }
   const resultados = await Promise.allSettled(tareas);
   const grupos: GrupoPlataforma[] = [];
@@ -129,11 +144,14 @@ async function gruposHoteles(c: Consulta, ctx: Contexto): Promise<Parcial> {
   const clave = claveConsulta({ ...c, modulo: 'hoteles', origen: '' });
   const llamar = clienteSerp(ctx);
   const omitir = new Set<string>([...(motores.has('booking') ? ['booking'] : []), ...(motores.has('airbnb') ? ['airbnb'] : [])]);
+  /** Firma de cada par hotel + agencia, para que /api/hoteles/ir no acepte tokens inventados. */
+  const firmasIr = new Map<string, string>();
   const enlaceIr = (token: string, fuente: string): string => {
     const p = consultaAParametros({ ...c, modulo: 'hoteles' });
     p.set('token', token);
     p.set('fuente', fuente);
     p.set('lugar', c.lugar);
+    p.set('firma', firmasIr.get(`${token}|${fuente}`) ?? '');
     return `${ctx.origenApi}/api/hoteles/ir?${p}`;
   };
 
@@ -142,23 +160,28 @@ async function gruposHoteles(c: Consulta, ctx: Contexto): Promise<Parcial> {
     tareas.push([
       'google-hotels',
       'Google Hotels',
-      consultar(ctx, `gh:${clave}`, TTL_HOTELES, true, async () =>
-        serp.mapearGoogleHotels(await llamar<serp.RespuestaGoogleHotels>(serp.parametrosGoogleHotels(c)), c, enlaceIr, omitir),
-      ),
+      consultar(ctx, `gh:${clave}`, TTL_HOTELES, 1, async () => {
+        const r = await llamar<serp.RespuestaGoogleHotels>(serp.parametrosGoogleHotels(c));
+        const pares = (r.properties ?? []).flatMap((p) =>
+          p.property_token ? (p.prices ?? []).map((x) => [p.property_token!, x.source?.trim() ?? ''] as const).filter(([, f]) => f) : [],
+        );
+        await Promise.all(pares.map(async ([t, f]) => firmasIr.set(`${t}|${f}`, await firmar(firmaIr(t, f, c), secreto(ctx)))));
+        return serp.mapearGoogleHotels(r, c, enlaceIr, omitir);
+      }),
     ]);
   }
   if (motores.has('booking')) {
     tareas.push([
       'booking',
       'Booking.com',
-      consultar(ctx, `bk:${clave}`, TTL_HOTELES, true, async () => [serp.mapearBooking(await llamar<serp.RespuestaBooking>(serp.parametrosBooking(c)), c)]),
+      consultar(ctx, `bk:${clave}`, TTL_HOTELES, 1, async () => [serp.mapearBooking(await llamar<serp.RespuestaBooking>(serp.parametrosBooking(c)), c)]),
     ]);
   }
   if (motores.has('airbnb')) {
     tareas.push([
       'airbnb',
       'Airbnb',
-      consultar(ctx, `ab:${clave}`, TTL_HOTELES, true, async () => [serp.mapearAirbnb(await llamar<serp.RespuestaAirbnb>(serp.parametrosAirbnb(c)), c)]),
+      consultar(ctx, `ab:${clave}`, TTL_HOTELES, 1, async () => [serp.mapearAirbnb(await llamar<serp.RespuestaAirbnb>(serp.parametrosAirbnb(c)), c)]),
     ]);
   }
 
@@ -215,9 +238,9 @@ export async function buscar(c: Consulta, ctx: Contexto): Promise<RespuestaBusqu
 
 export async function ofertas(origen: string, moneda: Moneda, ctx: Contexto): Promise<RespuestaOfertas> {
   const token = ctx.env.TRAVELPAYOUTS_TOKEN?.trim();
-  if (!token) return ofertasDemo(origen, moneda, hoyISO());
+  if (!token) return ofertasDemo(origen, moneda, hoyEnColombia());
   const cfg = { token, ...(ctx.env.TRAVELPAYOUTS_MARKER ? { marcador: ctx.env.TRAVELPAYOUTS_MARKER } : {}) };
-  const guardado = await consultar<OfertaDestacada[]>(ctx, `of:${origen}:${moneda}`, TTL_OFERTAS, false, () => tp.ofertasDesde(origen, moneda, cfg));
+  const guardado = await consultar<OfertaDestacada[]>(ctx, `of:${origen}:${moneda}`, TTL_OFERTAS, 0, () => tp.ofertasDesde(origen, moneda, cfg));
   const lista = guardado.valor;
   return {
     modo: 'vivo',
@@ -230,18 +253,36 @@ export async function ofertas(origen: string, moneda: Moneda, ctx: Contexto): Pr
   };
 }
 
-export async function opciones(token: string, c: Consulta, ctx: Contexto): Promise<RespuestaOpciones> {
-  if (token.startsWith('demo:') || !fuentesDisponibles(ctx.env).serpapi) return opcionesDemo(token, c);
-  const guardado = await consultar(ctx, `op:${token.slice(0, 120)}:${claveConsulta(c)}`, TTL_VUELOS, true, () => serp.opcionesCompra(clienteSerp(ctx), token, c));
+export class TokenInvalido extends Error {
+  constructor() {
+    super('Este enlace venció o no corresponde a la búsqueda. Vuelve a buscar para ver los vendedores.');
+    this.name = 'TokenInvalido';
+  }
+}
+
+export async function opciones(firmado: string, c: Consulta, ctx: Contexto): Promise<RespuestaOpciones> {
+  if (firmado.startsWith('demo:') || !fuentesDisponibles(ctx.env).serpapi) return opcionesDemo(firmado, c);
+  const token = await abrirToken(firmado, c, secreto(ctx));
+  if (!token) throw new TokenInvalido();
+  // Ida y vuelta (token de salida) son 2 búsquedas: regresos + vendedores.
+  const costo = token.startsWith('dep:') ? 2 : 1;
+  const guardado = await consultar(ctx, `op:${firmado.slice(-43)}:${huellaRuta(c)}`, TTL_VUELOS, costo, () => serp.opcionesCompra(clienteSerp(ctx), token, c));
   return { modo: 'vivo', moneda: c.moneda, opciones: guardado.valor };
 }
 
+/** Datos que firma cada enlace de hotel: el hotel, la agencia y la búsqueda. */
+function firmaIr(token: string, fuente: string, c: Consulta): string {
+  return `${token}|${fuente}|${huellaRuta(c)}|${c.lugar.toLowerCase()}`;
+}
+
 /** Enlace exacto de una agencia para un hotel; si falla, Google Hotels con el nombre del lugar. */
-export async function enlaceHotel(token: string, fuente: string, c: Consulta, ctx: Contexto): Promise<string> {
+export async function enlaceHotel(token: string, fuente: string, firma: string, c: Consulta, ctx: Contexto): Promise<string> {
   const respaldo = enlacesHoteles.googleHotels(c);
   if (!fuentesDisponibles(ctx.env).serpapi) return respaldo;
+  // Sin firma válida no se gasta cuota: se manda a Google Hotels.
+  if (!(await verificar(firmaIr(token, fuente, c), firma, secreto(ctx)))) return respaldo;
   try {
-    const guardado = await consultar(ctx, `ir:${token.slice(0, 120)}:${fuente}:${claveConsulta(c)}`, TTL_HOTELES, true, async () =>
+    const guardado = await consultar(ctx, `ir:${firma}`, TTL_HOTELES, 1, async () =>
       (await serp.enlaceDeAgencia(clienteSerp(ctx), token, fuente, c)) ?? '',
     );
     return guardado.valor || respaldo;

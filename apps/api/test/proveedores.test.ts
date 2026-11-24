@@ -98,7 +98,7 @@ describe('SerpApi · Booking y Airbnb', () => {
 describe('Travelpayouts · Aviasales', () => {
   it('multiplica el precio por adulto y arma el enlace con el marcador de afiliado', () => {
     const g = tp.mapearTP(muestras.travelpayouts, consulta(), { marcador: 'M1' });
-    expect(g.ofertas[0]).toMatchObject({ titulo: 'JetSMART · 13:45 → 15:12', precio: 790_800 });
+    expect(g.ofertas[0]).toMatchObject({ titulo: 'JetSMART · sale 13:45', precio: 790_800 });
     expect(g.ofertas[0]?.enlace.url).toBe('https://www.aviasales.com/search/BOG1012CTG15121?t=JA123&marker=M1');
     expect(g.ofertas[1]?.enlace.url).toBe('https://www.aviasales.com/search/BOG1012CTG15122?marker=M1');
     // Con marcador de afiliado, la tarjeta lo declara; la segunda oferta es de Wingo (bajo costo).

@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 import {
   MONEDAS,
+  hoyMasTemprano,
   noches,
   validarConsulta,
   type Consulta,
@@ -19,6 +20,8 @@ import { permitirPeticion } from './limites.ts';
 import * as servicio from './servicio.ts';
 
 type Ctx = Context<{ Bindings: Entorno }>;
+
+const MODULOS: readonly Modulo[] = ['vuelos', 'hoteles', 'paquetes'];
 
 export function crearApp(opciones: Partial<Pick<servicio.Contexto, 'llamarSerpApi'>> = {}) {
   const app = new Hono<{ Bindings: Entorno }>();
@@ -61,7 +64,8 @@ export function crearApp(opciones: Partial<Pick<servicio.Contexto, 'llamarSerpAp
     return c.json({ ok: true, modo: f.serpapi || f.travelpayouts ? 'vivo' : 'demo', fuentes: f });
   });
 
-  const leerConsulta = (c: Ctx, modulo: Modulo) => validarConsulta(modulo, new URL(c.req.url).searchParams);
+  // El Worker corre en UTC: se valida con el «hoy» más atrasado del planeta para no rechazar viajes de hoy.
+  const leerConsulta = (c: Ctx, modulo: Modulo) => validarConsulta(modulo, new URL(c.req.url).searchParams, hoyMasTemprano());
 
   for (const modulo of ['vuelos', 'hoteles', 'paquetes'] as const) {
     app.get(`/api/${modulo}`, limitar('busqueda'), async (c) => {
@@ -77,15 +81,21 @@ export function crearApp(opciones: Partial<Pick<servicio.Contexto, 'llamarSerpAp
     const token = c.req.query('token') ?? '';
     const v = leerConsulta(c, 'vuelos');
     if (!token || token.length > 4000 || !v.ok) return c.json({ error: 'Faltan el vuelo o los datos de la búsqueda.' }, 400);
-    return c.json(await servicio.opciones(token, v.consulta, contexto(c)));
+    try {
+      return c.json(await servicio.opciones(token, v.consulta, contexto(c)));
+    } catch (e) {
+      if (e instanceof servicio.TokenInvalido) return c.json({ error: e.message }, 400);
+      throw e;
+    }
   });
 
   app.get('/api/hoteles/ir', limitar('busqueda'), async (c) => {
     const token = c.req.query('token') ?? '';
     const fuente = c.req.query('fuente') ?? '';
+    const firma = c.req.query('firma') ?? '';
     const v = leerConsulta(c, 'hoteles');
-    if (!token || !fuente || token.length > 4000 || !v.ok) return c.json({ error: 'Enlace incompleto.' }, 400);
-    const destino = await servicio.enlaceHotel(token, fuente, v.consulta, contexto(c));
+    if (!token || !fuente || token.length > 4000 || fuente.length > 60 || firma.length > 64 || !v.ok) return c.json({ error: 'Enlace incompleto.' }, 400);
+    const destino = await servicio.enlaceHotel(token, fuente, firma, v.consulta, contexto(c));
     // Solo se redirige a URLs https que vienen de la fuente o al respaldo de Google.
     return destino.startsWith('https://') ? c.redirect(destino, 302) : c.json({ error: 'Enlace no disponible.' }, 502);
   });
@@ -106,7 +116,8 @@ export function crearApp(opciones: Partial<Pick<servicio.Contexto, 'llamarSerpAp
 
   app.post('/api/asistente/recomendar', limitar('ia'), async (c) => {
     const cuerpo = await c.req.json<{ consulta?: Record<string, string>; respuesta?: RespuestaBusqueda; presupuesto?: unknown }>().catch(() => null);
-    const v = cuerpo?.consulta && cuerpo.respuesta ? validarConsulta(cuerpo.respuesta.modulo ?? 'vuelos', cuerpo.consulta) : null;
+    const modulo: Modulo = MODULOS.includes(cuerpo?.respuesta?.modulo as Modulo) ? (cuerpo!.respuesta!.modulo as Modulo) : 'vuelos';
+    const v = cuerpo?.consulta && typeof cuerpo.consulta === 'object' && cuerpo.respuesta ? validarConsulta(modulo, cuerpo.consulta, hoyMasTemprano()) : null;
     if (!cuerpo?.respuesta || !v?.ok) return c.json({ error: 'Faltan los resultados para recomendar.' }, 400);
     const respuesta = sanearRespuesta(cuerpo.respuesta, v.consulta);
     const p = cuerpo.presupuesto as { valor?: unknown; moneda?: unknown } | undefined;
@@ -133,10 +144,11 @@ export function crearApp(opciones: Partial<Pick<servicio.Contexto, 'llamarSerpAp
  */
 function sanearRespuesta(r: RespuestaBusqueda, consulta: Consulta): RespuestaBusqueda {
   const texto = (v: unknown, max: number): string => (typeof v === 'string' ? v.slice(0, max) : '');
-  const grupos: GrupoPlataforma[] = (Array.isArray(r.grupos) ? r.grupos : []).slice(0, 20).map((g) => ({
+  const esObjeto = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null;
+  const grupos: GrupoPlataforma[] = (Array.isArray(r.grupos) ? r.grupos : []).filter(esObjeto).slice(0, 20).map((g) => ({
     plataforma: { id: texto(g.plataforma?.id, 40), nombre: texto(g.plataforma?.nombre, 60) },
     estado: g.estado === 'ok' ? 'ok' : 'sin-resultados',
-    ofertas: (Array.isArray(g.ofertas) ? g.ofertas : []).slice(0, 3).flatMap((o) => {
+    ofertas: (Array.isArray(g.ofertas) ? g.ofertas : []).filter(esObjeto).slice(0, 3).flatMap((o) => {
       const precio = Number(o.precio);
       if (!Number.isFinite(precio) || precio <= 0) return [];
       const porNoche = Number(o.precioPorNoche);

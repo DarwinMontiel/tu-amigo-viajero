@@ -3,7 +3,7 @@ import {
   duracionPedida,
   sumarDias,
   formatearPrecio,
-  hoyISO,
+  hoyEnColombia,
   interpretarConReglas,
   LUGARES,
   MAX_ADULTOS,
@@ -150,7 +150,7 @@ export function sanearIntencion(crudo: Record<string, unknown>, texto: string, h
   };
 }
 
-export async function interpretar(texto: string, env: Entorno, hoy = hoyISO()): Promise<Intencion> {
+export async function interpretar(texto: string, env: Entorno, hoy = hoyEnColombia()): Promise<Intencion> {
   const ia = ejecutor(env);
   if (!ia) return interpretarConReglas(texto, hoy);
   try {

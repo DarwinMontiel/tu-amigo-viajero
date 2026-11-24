@@ -20,7 +20,7 @@ IA_MODELO = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 [ai]
 binding = "AI"
 
-# Caché compartida entre instancias. Créala con:
+# Caché y cuota compartidas entre instancias (recomendado en producción). Créala con:
 #   npx wrangler kv namespace create CACHE
 # y descomenta estas líneas con el id que te devuelva. Sin KV la caché vive en memoria.
 # [[kv_namespaces]]

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { claveConsulta, consultaAParametros, noches, validarConsulta } from '../src/index.ts';
+import { claveConsulta, consultaAParametros, hoyEnColombia, hoyMasTemprano, noches, validarConsulta } from '../src/index.ts';
 
 const HOY = '2026-11-23';
 const base = { origen: 'bog', destino: 'ctg', ida: '2026-12-10', regreso: '2026-12-17', adultos: '2', moneda: 'cop' };
@@ -52,6 +52,26 @@ describe('validarConsulta', () => {
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(consultaAParametros(r.consulta).toString()).toBe('origen=BOG&destino=CTG&ida=2026-12-10&regreso=2026-12-17&adultos=2&moneda=COP');
-    expect(claveConsulta(r.consulta)).toBe('paquetes:BOG:CTG:2026-12-10:2026-12-17:2:COP');
+    expect(claveConsulta(r.consulta)).toBe('paquetes:BOG:CTG:2026-12-10:2026-12-17:2:COP:cartagena de indias, colombia');
+  });
+
+  it('un lugar fuera del catálogo viaja en los parámetros y separa la caché', () => {
+    const catalogo = validarConsulta('hoteles', { ...base, lugar: '' }, HOY);
+    const otro = validarConsulta('hoteles', { ...base, destino: 'LET', lugar: 'Leticia, Amazonas<script>' }, HOY);
+    expect(catalogo.ok && consultaAParametros(catalogo.consulta).has('lugar')).toBe(false);
+    if (!otro.ok) throw new Error('consulta inválida');
+    expect(otro.consulta.lugar).toBe('Leticia, Amazonasscript');
+    expect(consultaAParametros(otro.consulta).get('lugar')).toBe('Leticia, Amazonasscript');
+    const conLima = validarConsulta('hoteles', { ...base, lugar: 'Lima' }, HOY);
+    expect(conLima.ok && catalogo.ok && claveConsulta(conLima.consulta) !== claveConsulta(catalogo.consulta)).toBe(true);
+  });
+});
+
+describe('fechas del servidor', () => {
+  it('a las 8 p. m. de Bogotá (01:00 UTC) sigue siendo hoy en Colombia y en UTC−12', () => {
+    const ahora = new Date('2026-11-24T01:00:00Z');
+    expect(hoyEnColombia(ahora)).toBe('2026-11-23');
+    expect(hoyMasTemprano(ahora)).toBe('2026-11-23');
+    expect(validarConsulta('vuelos', { ...base, ida: '2026-11-23', regreso: '' }, hoyMasTemprano(ahora)).ok).toBe(true);
   });
 });
