@@ -64,6 +64,7 @@ export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, 
   const idError = `${id}-error`;
   const [texto, setTexto] = useState(valor ? etiqueta(valor) : '');
   const [valorPrevio, setValorPrevio] = useState(valor);
+  const [textoPropio, setTextoPropio] = useState(false);
   const [abierto, setAbierto] = useState(false);
   const [activo, setActivo] = useState(0);
   const [remotos, setRemotos] = useState<{ termino: string; lista: LugarElegido[] }>({ termino: '', lista: [] });
@@ -72,7 +73,9 @@ export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, 
   // Si el valor cambia desde afuera (por ejemplo «Invertir»), el texto lo sigue.
   if (valor !== valorPrevio) {
     setValorPrevio(valor);
-    setTexto(valor ? etiqueta(valor) : '');
+    // Si el valor se borró porque la persona cambió el texto, se respeta lo que escribió.
+    if (valor || !textoPropio) setTexto(valor ? etiqueta(valor) : '');
+    setTextoPropio(false);
   }
 
   const termino = texto.trim();
@@ -115,7 +118,11 @@ export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, 
       if (valor && texto === etiqueta(valor)) return;
       const directo = lugarDesdeIata(/^[A-Z]{3}$/.test(t) ? t : (/\(([A-Z]{3})\)/.exec(t)?.[1] ?? ''));
       if (directo) elegir(directo);
-      else if (!t) alCambiar(null);
+      // El texto ya no corresponde a la ciudad elegida: se borra el valor para no buscar otra sin avisar.
+      else if (valor) {
+        setTextoPropio(Boolean(t));
+        alCambiar(null);
+      }
     }, 120);
   }
 
@@ -159,6 +166,12 @@ export function CampoLugar({ etiqueta: textoEtiqueta, nombre, valor, alCambiar, 
           setTexto(e.target.value);
           setAbierto(true);
           setActivo(0);
+          // En cuanto el texto deja de ser la ciudad elegida, el valor se borra: así el formulario
+          // no puede enviar la ciudad anterior aunque se haga clic en «Comparar» de inmediato.
+          if (valor && e.target.value !== etiqueta(valor)) {
+            setTextoPropio(true);
+            alCambiar(null);
+          }
         }}
         onFocus={() => setAbierto(true)}
         onBlur={alSalir}

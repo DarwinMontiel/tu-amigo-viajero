@@ -1,6 +1,6 @@
 {
   "name": "@tav/web",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "private": true,
   "description": "Interfaz de Tu Amigo Viajero: React + Vite, desplegada en GitHub Pages.",
   "type": "module",
